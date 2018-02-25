@@ -16,6 +16,7 @@ public class Game extends Winnable {
 
 	private Player server;
 	private Player receiver;
+	private GameScore score;
 	private final List<Point> points = new ArrayList<>();
 	
 	@Override
@@ -24,7 +25,7 @@ public class Game extends Winnable {
 	}
 
 	public Game(Player server, Player receiver, boolean initialize) {
-		this(server, receiver);
+		this(server, receiver, new GameScore());
 		if (initialize) {
 			this.initialize();
 		}

@@ -19,6 +19,7 @@ public class Match extends Winnable {
 	private Player startingServer;
 	private Player startingReceiver;
 	private MatchRules matchRules;
+	private MatchScore score;
 	private final List<Set> sets = new ArrayList<>();
 	
 	@Override

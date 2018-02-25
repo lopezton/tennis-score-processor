@@ -16,10 +16,11 @@ public class Set extends Winnable {
 
 	private Player startingServer;
 	private Player startingReceiver;
+	private SetScore score;
 	private final List<Game> games = new ArrayList<>();
 	
 	public Set(Player startingServer, Player startingReceiver, boolean initialize) {
-		this(startingServer, startingReceiver);
+		this(startingServer, startingReceiver, new SetScore());
 		if (initialize) {
 			this.initialize();
 		}
