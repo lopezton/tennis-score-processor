@@ -1,3 +1,16 @@
+/**
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 package com.tonelope.tennischarter.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +39,11 @@ import com.tonelope.tennischarter.processor.scoring.point.DefaultPointCompletion
 import com.tonelope.tennischarter.processor.scoring.set.DefaultSetCompletionStrategy;
 import com.tonelope.tennischarter.processor.scoring.set.NoFinalSetTiebreakSetCompletionStrategy;
 
+/**
+ * 
+ * @author Tony Lopez
+ *
+ */
 @Configuration
 public class DefaultFrameworkConfiguration {
 
@@ -41,16 +59,6 @@ public class DefaultFrameworkConfiguration {
 	public MatchProcessor singlesMatchProcessor(ScoreCompletionStrategyResolver resolver) {
 		return new SinglesMatchProcessor(resolver);
 	}
-	
-//	@Bean
-//	public Map<Class<?>, ScoreCompletionStrategy<?>> defaultScoringCompletionStrategies() {
-//		Map<Class<?>, ScoreCompletionStrategy<?>> strategies = new HashMap<>();
-//		strategies.put(Point.class, new DefaultPointCompletionStrategy());
-//		strategies.put(Game.class, new DeuceGameCompletionStrategy());
-//		strategies.put(Set.class, new DefaultSetCompletionStrategy());
-//		strategies.put(Match.class, new DefaultMatchCompletionStrategy());
-//		return strategies;
-//	}
 	
 	@Bean
 	public ScoreCompletionStrategyResolver defaultScoreCompletionStrategyResolver(ApplicationContext context) {

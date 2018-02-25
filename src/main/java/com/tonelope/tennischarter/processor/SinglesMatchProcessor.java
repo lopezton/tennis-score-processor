@@ -26,7 +26,6 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 		}
 		
 		if (match.isNotStarted()) {
-			match.initialize();
 			match.setStatus(Status.IN_PROGRESS);
 		}
 		
