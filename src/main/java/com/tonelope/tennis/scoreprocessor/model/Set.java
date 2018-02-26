@@ -34,13 +34,14 @@ import lombok.ToString;
 @Getter @Setter @ToString
 public class Set extends Winnable {
 
+	private MatchRules matchRules;
 	private Player startingServer;
 	private Player startingReceiver;
 	private final SetScore score = new SetScore();
 	private final List<Game> games = new ArrayList<>();
 	
-	public Set(Player startingServer, Player startingReceiver, boolean initialize) {
-		this(startingServer, startingReceiver);
+	public Set(MatchRules matchRules, Player startingServer, Player startingReceiver, boolean initialize) {
+		this(matchRules, startingServer, startingReceiver);
 		if (initialize) {
 			this.initialize();
 		}
@@ -58,5 +59,13 @@ public class Set extends Winnable {
 	@Override
 	public void initialize() {
 		this.games.add(new Game(startingServer, startingReceiver, true));
+	}
+	
+	/**
+	 * @param currentSet
+	 * @return
+	 */
+	public boolean isNextGameTiebreakEligible() {
+		return this.getGames().size() == (2 * this.matchRules.getNumberOfGamesPerSet());
 	}
 }

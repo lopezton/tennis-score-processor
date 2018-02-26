@@ -50,6 +50,6 @@ public class Match extends Winnable {
 
 	@Override
 	public void initialize() {
-		this.sets.add(new Set(this.startingServer, this.startingReceiver, true));
+		this.sets.add(new Set(this.matchRules, this.startingServer, this.startingReceiver, true));
 	}
 }

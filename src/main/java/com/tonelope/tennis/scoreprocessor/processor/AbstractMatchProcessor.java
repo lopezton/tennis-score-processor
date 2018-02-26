@@ -16,8 +16,10 @@ package com.tonelope.tennis.scoreprocessor.processor;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.tonelope.tennis.scoreprocessor.model.MatchRules;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
+import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
