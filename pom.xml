@@ -3,14 +3,37 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.tonelope</groupId>
-	<artifactId>tennischarter</artifactId>
+	<groupId>com.tonelope.tennis</groupId>
+	<artifactId>scoreprocessor</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-
-	<name>tennis-charter</name>
+	
+	<name>tennis-score-processor</name>
 	<description>Tooling for tracking tennis metrics</description>
-
+	<url>http://scoreprocessor.tonelope.com</url>
+	
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+	
+	<developers>
+	    <developer>
+			<name>Tony Lopez</name>
+			<email>tony.lopez1013@gmail.com</email>
+			<organization>tonelope</organization>
+			<organizationUrl>http://tonelope.com</organizationUrl>
+	    </developer>
+  	</developers>
+  	
+	<scm>
+		<connection>scm:git:git://github.com/lopezton/tennis-score-processor.git</connection>
+		<developerConnection>scm:git:ssh://github.com:lopezton/tennis-score-processor.git</developerConnection>
+		<url>http://github.com/lopezton/tennis-score-processor/tree/master</url>
+	</scm>
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -26,34 +49,25 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-beans</artifactId>
 		</dependency>
-		<!-- 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
 		</dependency>
-		 -->
-		<!-- 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-autoconfigure</artifactId>
 		</dependency>
-		 -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-rest</artifactId>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-logging</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -73,8 +87,18 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			   </plugin>
 		</plugins>
 	</build>
-
-
 </project>
