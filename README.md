@@ -1,6 +1,8 @@
 # Tennis Score Processor
 > Tennis Score Processor is an open source library dedicated to processing tennis match scoring. 
 
+[![Build Status](https://travis-ci.org/lopezton/tennis-score-processor.svg?branch=master)](https://travis-ci.org/lopezton/tennis-score-processor)
+
 Tennis Score Processor is a Java based library that accepts tennis point data as input and then processes the results into a variety of data sets. 
 
 Use Tennis Score Processor to:  
