@@ -1,9 +1,18 @@
-# Tennis Charter
-> Tennis Charter is an open source project dedicated to collecting, analyzing, and sharing tennis match analytics using modern technologies. 
+# Tennis Score Processor
+> Tennis Score Processor is an open source library dedicated to processing tennis match scoring. 
 
-Most of the technology out in the software world for collecting tennis analytics is not readily accessible or easy to integrate with. Most of the good services are also not free. Tennis charter seeks to fix that by building a processing program that can collect, analyze, and provide that data back to clients at little to no cost. Sync up with Tennis Charter to store match data on a stroke-by-stroke basis, or strap a UI onto it and build a scoring application.
+[![Build Status](https://travis-ci.org/lopezton/tennis-score-processor.svg?branch=master)](https://travis-ci.org/lopezton/tennis-score-processor)
 
-The application is currently in it's discovery phase. Contributions are welcome. Tennis enthusiasts are extremely welcome!
+Tennis Score Processor is a Java based library that accepts tennis point data as input and then processes the results into a variety of data sets. 
+
+Use Tennis Score Processor to:  
+
+* Record match data on a stroke-by-stroke basis
+* Analyze recorded match data
+* Process tennis scoring results in real-time
+* Whatever else your imagine can dream up!
+
+The application is currently in it's discovery phase. Feedback and Pull Requests are welcome.
 
 ## Installation
 
@@ -34,11 +43,11 @@ Tony Lopez – tony.lopez1013@gmail.com
 
 Distributed under the Apache License. See ``LICENSE`` for more information.
 
-[https://github.com/lopezton/tennis-charter](https://github.com/lopezton/)
+[https://github.com/lopezton/tennis-score-processor](https://github.com/lopezton/tennis-score-processor)
 
 ## Contributing
 
-1. Fork it (<https://github.com/lopezton/tennis-charter/fork>)
+1. Fork it (<https://github.com/lopezton/tennis-score-processor/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
