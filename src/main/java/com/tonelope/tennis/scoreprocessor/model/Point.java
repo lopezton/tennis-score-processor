@@ -44,7 +44,7 @@ public class Point extends Winnable {
 			return null;
 		}
 		
-		Stroke stroke = ListUtils.getLast(this.strokes);
+		Stroke stroke = this.getCurrentStroke();
 		
 		// Winner
 		if (!stroke.isOut()) {
@@ -60,6 +60,10 @@ public class Point extends Winnable {
 		return this.receiver;
 	}
 
+	public Stroke getCurrentStroke() {
+		return ListUtils.getLast(this.strokes);
+	}
+	
 	@Override
 	public void initialize() {
 		

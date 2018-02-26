@@ -16,6 +16,8 @@ package com.tonelope.tennis.scoreprocessor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,10 @@ public class Game extends Winnable {
 		return this.getWinningPlayer(this.points);
 	}
 
+	public Point getCurrentPoint() {
+		return ListUtils.getLast(this.points);
+	}
+	
 	public Game(Player server, Player receiver, boolean initialize) {
 		this(server, receiver);
 		if (initialize) {

@@ -31,7 +31,7 @@ public class DefaultPointCompletionStrategy implements PointCompletionStrategy {
 	public boolean apply(Point scoringObject, Match match) {
 		
 		boolean isComplete = false;
-		Stroke stroke = ListUtils.getLast(scoringObject.getStrokes());
+		Stroke stroke = scoringObject.getCurrentStroke();
 		
 		if (stroke.isWinner() || stroke.isOutRallyShot() || stroke.isDoubleFault()) {
 			isComplete = true;

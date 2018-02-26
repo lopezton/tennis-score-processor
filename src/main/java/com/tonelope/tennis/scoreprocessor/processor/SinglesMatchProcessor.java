@@ -12,7 +12,6 @@ import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	
@@ -40,6 +39,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 		
 		currentPoint.getStrokes().add(stroke);
 		
+		// TODO Refactor - complexity
 		if (this.isComplete(currentPoint, match)) {
 			if (this.isComplete(currentGame, match)) {
 				if (this.isComplete(currentSet, match)) {
@@ -87,9 +87,8 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	}
 
 	private boolean validateStroke(Match match, Stroke stroke) {
-		Set currentSet = ListUtils.getLast(match.getSets());
-		Game currentGame = ListUtils.getLast(currentSet.getGames());
-		Point currentPoint = ListUtils.getLast(currentGame.getPoints());
+		Game currentGame = match.getCurrentSet().getCurrentGame();
+		Point currentPoint = currentGame.getCurrentPoint();
 		
 		if (currentPoint.getStrokes().isEmpty()) {
 			if (!StrokeType.FIRST_SERVE.equals(stroke.getStrokeType())) {

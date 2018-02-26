@@ -16,6 +16,8 @@ package com.tonelope.tennis.scoreprocessor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,10 @@ public class Set extends Winnable {
 		if (initialize) {
 			this.initialize();
 		}
+	}
+	
+	public Game getCurrentGame() {
+		return ListUtils.getLast(this.games);
 	}
 	
 	@Override

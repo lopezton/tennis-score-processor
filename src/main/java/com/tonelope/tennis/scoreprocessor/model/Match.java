@@ -3,6 +3,8 @@ package com.tonelope.tennis.scoreprocessor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -33,6 +35,10 @@ public class Match extends Winnable {
 	@Override
 	public Player getWinningPlayer() {
 		return this.getWinningPlayer(this.sets);
+	}
+	
+	public Set getCurrentSet() {
+		return ListUtils.getLast(this.sets);
 	}
 	
 	public boolean isCurrentlyInFinalSet() {

@@ -34,9 +34,7 @@ import com.tonelope.tennis.scoreprocessor.model.SetScore;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
-import com.tonelope.tennis.scoreprocessor.processor.MatchFactory;
 import com.tonelope.tennis.scoreprocessor.service.ScoringUpdateService;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
@@ -80,10 +78,9 @@ public class AbstractProcessingTests {
 	
 	private boolean isPlayerCurrentServer(Match match, Player player) {
 		Player currentServer = match.getStartingServer();
-		Set currentSet = ListUtils.getLast(match.getSets());
+		Set currentSet = match.getCurrentSet();
 		if (null != currentSet) {
-			Game currentGame = ListUtils.getLast(currentSet.getGames());
-			currentServer = currentGame.getServer();
+			currentServer = currentSet.getCurrentGame().getServer();
 		}
 		if (!currentServer.equals(player)) {
 			return false;
@@ -140,8 +137,7 @@ public class AbstractProcessingTests {
 	protected void winSet(Match match, Player player) {
 		Player losingPlayer = match.getPlayers().stream().filter(p -> !p.equals(player)).collect(Collectors.toList()).get(0);
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
-		Game currentGame = ListUtils.getLast(currentSet.getGames());
+		Game currentGame = match.getCurrentSet().getCurrentGame();
 		
 		if (!currentGame.getServer().equals(player)) {
 			this.loseServiceGame(match, losingPlayer);
@@ -161,8 +157,7 @@ public class AbstractProcessingTests {
 	protected void winTiebreak(Match match, Player player) {
 		Player losingPlayer = match.getPlayers().stream().filter(p -> !p.equals(player)).collect(Collectors.toList()).get(0);
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
-		Game currentGame = ListUtils.getLast(currentSet.getGames());
+		Game currentGame = match.getCurrentSet().getCurrentGame();
 		if (!(currentGame instanceof TiebreakGame)) {
 			Assert.fail("Attempted to win tiebreak, but current game is not a tiebreak. Current Game = " + currentGame);
 		}

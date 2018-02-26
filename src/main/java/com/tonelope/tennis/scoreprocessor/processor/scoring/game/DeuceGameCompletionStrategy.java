@@ -17,7 +17,6 @@ import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
@@ -49,7 +48,7 @@ public class DeuceGameCompletionStrategy extends GameCompletionStrategy<Game> {
 			return false;
 		}
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
+		Set currentSet = match.getCurrentSet();
 		if (currentSet.getGames().size() < 13 || this.isFinalSetWinByTwo(currentSet, match)) {
 			return !match.getMatchRules().isNoAdScoring();
 		}

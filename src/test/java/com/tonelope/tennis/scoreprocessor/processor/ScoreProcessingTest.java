@@ -28,7 +28,6 @@ import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
@@ -46,8 +45,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
-		Game currentGame = ListUtils.getLast(currentSet.getGames());
+		Game currentGame = match.getCurrentSet().getCurrentGame();
 		
 		this.validateGameScore(currentGame, PointValue.LOVE, PointValue.LOVE);
 		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
@@ -103,8 +101,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
-		Game currentGame = ListUtils.getLast(currentSet.getGames());
+		Game currentGame = match.getCurrentSet().getCurrentGame();
 		
 		this.validateGameScore(currentGame, PointValue.LOVE, PointValue.LOVE);
 		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
@@ -140,7 +137,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
+		Set currentSet = match.getCurrentSet();
 		
 		this.validateSetScore(currentSet, 0, 0);
 		
@@ -167,7 +164,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
+		Set currentSet = match.getCurrentSet();
 		
 		this.validateSetScore(currentSet, 0, 0);
 		
