@@ -47,12 +47,9 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.set.NoFinalSetTiebre
 @Configuration
 public class DefaultFrameworkConfiguration {
 
-	@Autowired
-	private MatchRepository matchRepository;
-	
 	@Bean
-	public MatchFactory matchFactory() {
-		return new DefaultMatchFactory(this.matchRepository);
+	public MatchFactory matchFactory(MatchRepository matchRepository) {
+		return new DefaultMatchFactory(matchRepository);
 	}
 	
 	@Bean
