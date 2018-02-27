@@ -33,17 +33,17 @@ public class TiebreakGameCompletionStrategy implements ScoreCompletionStrategy<T
 	}
 
 	private boolean isComplete(TiebreakScore score) {
-		if (score.getServerScore() == 7 && score.getReceieverScore() <= 5) {
+		if (score.getServerScore() == 7 && score.getReceiverScore() <= 5) {
 			return true;
-		} else if (score.getReceieverScore() == 7 && score.getServerScore() <= 5) {
+		} else if (score.getReceiverScore() == 7 && score.getServerScore() <= 5) {
 			return true;
-		} else if (score.getServerScore() == 7 && score.getReceieverScore() == 7) {
+		} else if (score.getServerScore() == 7 && score.getReceiverScore() == 7) {
 			// TODO Handle scores > 7
 			score.setServerScore(5);
-			score.setReceieverScore(5);
-		} else if (score.getServerScore() == 7 && score.getReceieverScore() == 5) {
+			score.setReceiverScore(5);
+		} else if (score.getServerScore() == 7 && score.getReceiverScore() == 5) {
 			return true;
-		} else if (score.getReceieverScore() == 7 && score.getServerScore() == 5) {
+		} else if (score.getReceiverScore() == 7 && score.getServerScore() == 5) {
 			return true;
 		}
 		return false;

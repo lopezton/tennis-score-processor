@@ -44,7 +44,7 @@ public class TiebreakPointCompletionStrategy extends PointCompletionStrategy {
 		if (winningPlayer.equals(scoringObject.getServer())) {
 			score.setServerScore(score.getServerScore() + 1);
 		} else {
-			score.setReceieverScore(score.getReceieverScore() + 1);
+			score.setReceiverScore(score.getReceiverScore() + 1);
 		}
 	}
 

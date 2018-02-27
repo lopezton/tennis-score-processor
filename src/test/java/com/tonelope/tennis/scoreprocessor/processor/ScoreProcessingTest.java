@@ -28,6 +28,8 @@ import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
+import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
+import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 
 /**
  * 
@@ -179,12 +181,69 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		this.validateSetScore(currentSet, 7, 6);
 		
 		Assert.assertEquals(2, match.getSets().size());
-		Assert.assertEquals(10, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(13, match.getSets().get(0).getGames().size());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getStatus());
 	}
 	
 	@Test
-	public void t5_match() {
+	public void t5_set_longTiebreak() {
+		Match match = this.matchRepository.save(this.createNewMatch());
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		Set currentSet = match.getCurrentSet();
+		
+		this.validateSetScore(currentSet, 0, 0);
+		
+		for(int i = 1; i <= 6; i++) {
+			this.winServiceGame(match, player1);
+			this.validateSetScore(currentSet, i, i - 1);
+			this.winServiceGame(match, player2);
+			this.validateSetScore(currentSet, i, i);
+		}
+
+		TiebreakGame tiebreak = (TiebreakGame) currentSet.getCurrentGame();
+		
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 1, 0);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 1, 1);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 1, 2);
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 2, 2);
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 3, 2);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 3, 3);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 3, 4);
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 4, 4);
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 5, 4);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 5, 5);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 5, 6);
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 6, 6);
+		this.hitFirstServeAce(match, player1);
+		this.validateTiebreakScore(tiebreak, 7, 6);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 7, 7);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 7, 8);
+		this.hitFirstServeAce(match, player2);
+		this.validateTiebreakScore(tiebreak, 7, 9);
+		
+		Assert.assertEquals(2, match.getSets().size());
+		Assert.assertEquals(13, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getStatus());
+	}
+
+	@Test
+	public void t6_match() {
 		Match match = this.matchRepository.save(this.createNewMatch());
 		Player player1 = match.getPlayers().get(0);
 		
@@ -200,7 +259,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	}
 
 	@Test
-	public void t6_match_finalset_tiebreak() {
+	public void t7_match_finalset_tiebreak() {
 		Match match = this.matchRepository.save(this.createNewMatch());
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
@@ -234,7 +293,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	}
 	
 	@Test
-	public void t7_match_finalset_winByTwo() {
+	public void t8_match_finalset_winByTwo() {
 		Match match = this.matchRepository.save(this.createNewMatch());
 		match.getMatchRules().setFinalSetTiebreakDisabled(true);
 		Player player1 = match.getPlayers().get(0);

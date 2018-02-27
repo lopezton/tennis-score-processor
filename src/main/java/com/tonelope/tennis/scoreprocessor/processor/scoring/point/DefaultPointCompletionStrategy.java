@@ -13,6 +13,9 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
 import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
@@ -45,26 +48,21 @@ public class DefaultPointCompletionStrategy extends PointCompletionStrategy {
 	protected void updateScore(Point scoringObject, Match match, Player winningPlayer) {
 		GameScore score = (GameScore) match.getCurrentSet().getCurrentGame().getScore();
 		if (winningPlayer.equals(scoringObject.getServer())) {
-			if (score.isDeuce()) {
-				score.setServerScore(score.getServerScore().next());
-			} else if (PointValue.ADVANTAGE.equals(score.getReceiverScore())) {
-				score.setReceiverScore(score.getReceiverScore().previous());
-			} else if (PointValue.FORTY.equals(score.getServerScore())) {
-				score.setServerScore(PointValue.GAME);
-			} else {
-				score.setServerScore(score.getServerScore().next());
-			}
+			this.updateScore(score, score::setServerScore, score::getServerScore, score::setReceiverScore, score::getReceiverScore);
 		} else {
-			if (score.isDeuce()) {
-				score.setReceiverScore(score.getReceiverScore().next());
-			} else if (PointValue.ADVANTAGE.equals(score.getServerScore())) {
-				score.setServerScore(score.getServerScore().previous());
-			} else if (PointValue.FORTY.equals(score.getReceiverScore())) {
-				score.setReceiverScore(PointValue.GAME);
-			} else {
-				score.setReceiverScore(score.getReceiverScore().next());
-			}
+			this.updateScore(score, score::setReceiverScore, score::getReceiverScore, score::setServerScore, score::getServerScore);
 		}
 	}
 
+	private void updateScore(GameScore score, Consumer<PointValue> p1, Supplier<PointValue> s1, Consumer<PointValue> p2, Supplier<PointValue> s2) {
+		if (score.isDeuce()) {
+			p1.accept(s1.get().next());
+		} else if (PointValue.ADVANTAGE.equals(s2.get())) {
+			p2.accept(s2.get().previous());
+		} else if (PointValue.FORTY.equals(s1.get())) {
+			p1.accept(PointValue.GAME);
+		} else {
+			p1.accept(s1.get().next());
+		}
+	}
 }

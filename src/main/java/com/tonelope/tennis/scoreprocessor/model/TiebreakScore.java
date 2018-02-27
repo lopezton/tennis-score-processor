@@ -22,14 +22,22 @@ import lombok.Setter;
  */
 @Getter @Setter
 public class TiebreakScore extends Score {
-
+	
+	public static final String LEFT_SEPARATOR = "(";
+	public static final String RIGHT_SEPARATOR = ")";
+	public static final String SEPARATOR = "-";
+	
 	private int serverScore;
-	private int receieverScore;
+	private int receiverScore;
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return new StringBuilder()
+			.append(LEFT_SEPARATOR)
+			.append(this.serverScore)
+			.append(SEPARATOR)
+			.append(this.receiverScore)
+			.append(RIGHT_SEPARATOR).toString();
 	}
 
 }

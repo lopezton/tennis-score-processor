@@ -34,6 +34,7 @@ import com.tonelope.tennis.scoreprocessor.model.SetScore;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
+import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.service.ScoringUpdateService;
 
 /**
@@ -73,14 +74,17 @@ public class AbstractProcessingTests {
 	}
 	
 	protected void hitFirstServeAce(Match match, Player player) {
+		if (!this.isPlayerCurrentServer(match, player)) {
+			Assert.fail("Attempted to serve ace as " + player + ", but this player is not the current server.");
+		}
+		
 		this.scoringUpdateService.updateMatch(match.getId(), new Stroke(player, StrokeType.FIRST_SERVE, false, true));
 	}
 	
 	private boolean isPlayerCurrentServer(Match match, Player player) {
 		Player currentServer = match.getStartingServer();
-		Set currentSet = match.getCurrentSet();
-		if (null != currentSet) {
-			currentServer = currentSet.getCurrentGame().getServer();
+		if (!match.isNotStarted()) {
+			currentServer = match.getCurrentSet().getCurrentGame().getCurrentPoint().getServer();
 		}
 		if (!currentServer.equals(player)) {
 			return false;
@@ -89,21 +93,29 @@ public class AbstractProcessingTests {
 	}
 	
 	protected void loseServiceGame(Match match, Player player) {
-		if (!this.isPlayerCurrentServer(match, player)) {
-			Assert.fail("Attempted to lose service game as " + player + ", but this player is not the current server.");
-		}
-		
 		for(int i = 0; i < 4; i++) {
-			this.missFirstServe(match, player);
-			this.missSecondServe(match, player);
+			this.hitDoubleFault(match, player);
 		}
 	}
 	
+	protected void hitDoubleFault(Match match, Player player) {
+		this.missFirstServe(match, player);
+		this.missSecondServe(match, player);
+	}
+	
 	protected void missFirstServe(Match match, Player player) {
+		if (!this.isPlayerCurrentServer(match, player)) {
+			Assert.fail("Attempted to miss first serve as " + player + ", but this player is not the current server.");
+		}
+		
 		this.scoringUpdateService.updateMatch(match.getId(), new Stroke(player, StrokeType.FIRST_SERVE, true, false));
 	}
 	
 	protected void missSecondServe(Match match, Player player) {
+		if (!this.isPlayerCurrentServer(match, player)) {
+			Assert.fail("Attempted to miss second serve as " + player + ", but this player is not the current server.");
+		}
+		
 		this.scoringUpdateService.updateMatch(match.getId(), new Stroke(player, StrokeType.SECOND_SERVE, true, false));
 	}
 	
@@ -124,11 +136,13 @@ public class AbstractProcessingTests {
 		// TODO Handle Tiebreak score
 	}
 	
+	protected void validateTiebreakScore(TiebreakGame tiebreak, int p1, int p2) {
+		Assert.assertEquals(p1, ((TiebreakScore) tiebreak.getScore()).getServerScore());
+		Assert.assertEquals(p2, ((TiebreakScore) tiebreak.getScore()).getReceiverScore());
+		Assert.assertEquals("(" + p1 + "-" + p2 + ")", tiebreak.getScore().toString());
+	}
+	
 	protected void winServiceGame(Match match, Player player) {
-		if (!this.isPlayerCurrentServer(match, player)) {
-			Assert.fail("Attempted to win service game as " + player + ", but this player is not the current server.");
-		}
-		
 		for(int i = 0; i < 4; i++) {
 			this.hitFirstServeAce(match, player);
 		}
@@ -163,30 +177,23 @@ public class AbstractProcessingTests {
 		}
 		
 		if (!currentGame.getServer().equals(player)) {
-			this.missFirstServe(match, losingPlayer);
-			this.missSecondServe(match, losingPlayer);
-			
+			this.hitDoubleFault(match, losingPlayer);
 			this.hitFirstServeAce(match, player);
 		}
 		
 		this.hitFirstServeAce(match, player);
 		
-		this.missFirstServe(match, losingPlayer);
-		this.missSecondServe(match, losingPlayer);
+		this.hitDoubleFault(match, losingPlayer);
 		
-		this.missFirstServe(match, losingPlayer);
-		this.missSecondServe(match, losingPlayer);
+		this.hitDoubleFault(match, losingPlayer);
 		
 		this.hitFirstServeAce(match, player);
 		
 		this.hitFirstServeAce(match, player);
 		
 		if (currentGame.getServer().equals(player)) {
-			this.missFirstServe(match, losingPlayer);
-			this.missSecondServe(match, losingPlayer);
-			
-			this.missFirstServe(match, losingPlayer);
-			this.missSecondServe(match, losingPlayer);
+			this.hitDoubleFault(match, losingPlayer);
+			this.hitDoubleFault(match, losingPlayer);
 		}
 	}
 }
