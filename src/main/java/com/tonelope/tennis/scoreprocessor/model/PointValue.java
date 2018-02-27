@@ -49,11 +49,11 @@ public enum PointValue {
 		this.value = value;
 	}
 	
-	public PointValue next(PointValue previous) {
+	public PointValue next() {
 		return values[(this.ordinal() + 1) % values.length];
 	}
 	
-	public PointValue previous(PointValue previous) {
+	public PointValue previous() {
 		return values[(this.ordinal() - 1) % values.length];
 	}
 	

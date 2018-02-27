@@ -14,7 +14,9 @@
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
 import com.tonelope.tennis.scoreprocessor.model.Game;
+import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.PointValue;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
@@ -26,8 +28,12 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
 public class NoAdGameCompletionStrategy extends GameCompletionStrategy<Game> {
 
 	@Override
-	protected boolean isComplete(Integer player1Pts, Integer player2Pts) {
-		if (player1Pts == 4 || player2Pts == 4) {
+	protected boolean isComplete(GameScore score) {
+		if (PointValue.ADVANTAGE.equals(score.getServerScore())) {
+			score.setServerScore(PointValue.GAME);
+			return true;
+		} else if (PointValue.ADVANTAGE.equals(score.getServerScore())) {
+			score.setReceiverScore(PointValue.GAME);
 			return true;
 		}
 		return false;

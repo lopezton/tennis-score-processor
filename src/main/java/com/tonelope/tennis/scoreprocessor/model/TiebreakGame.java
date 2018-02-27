@@ -34,6 +34,14 @@ public class TiebreakGame extends Game {
 	@Setter(AccessLevel.NONE)
 	private Player nextReceiver;
 	
+	@Getter(AccessLevel.NONE)
+	private final TiebreakScore score = new TiebreakScore();
+	
+	@Override
+	public Score getScore() {
+		return this.score;
+	}
+	
 	public TiebreakGame(Player server, Player receiver) {
 		this(server, receiver, false);
 	}

@@ -68,4 +68,12 @@ public class Point extends Winnable {
 	public void initialize() {
 		
 	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.model.Winnable#getScore()
+	 */
+	@Override
+	public Score getScore() {
+		return null;
+	}
 }

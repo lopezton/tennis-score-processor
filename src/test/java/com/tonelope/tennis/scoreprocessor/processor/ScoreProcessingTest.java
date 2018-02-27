@@ -89,7 +89,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		
 		Assert.assertEquals(1, match.getSets().size());
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
-		Assert.assertEquals(8, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(12, match.getSets().get(0).getGames().get(0).getPoints().size());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
 	}
 	

@@ -38,4 +38,7 @@ public class GameScore extends Score {
 				.toString();
 	}
 
+	public boolean isDeuce() {
+		return PointValue.FORTY.equals(this.serverScore) && PointValue.FORTY.equals(this.receiverScore);
+	}
 }

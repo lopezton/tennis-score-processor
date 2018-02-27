@@ -13,28 +13,23 @@
  */
 package com.tonelope.tennis.scoreprocessor.model;
 
-import java.util.List;
-
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
- * 
  * @author Tony Lopez
  *
  */
-public abstract class Winnable extends ScoringObject {
+@Getter @Setter
+public class TiebreakScore extends Score {
 
-	public abstract Player getWinningPlayer();
-
-	public abstract void initialize();
+	private int serverScore;
+	private int receieverScore;
 	
-	public abstract Score getScore();
-
-	protected <T extends Winnable> Player getWinningPlayer(List<T> list) {
-		if (!this.isCompleted()) {
-			return null;
-		}
-		
-		return ListUtils.getLast(list).getWinningPlayer();
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
 	}
+
 }

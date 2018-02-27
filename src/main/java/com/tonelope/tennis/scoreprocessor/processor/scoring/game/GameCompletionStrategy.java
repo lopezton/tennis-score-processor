@@ -13,13 +13,9 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.tonelope.tennis.scoreprocessor.model.Game;
+import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
@@ -33,25 +29,11 @@ public abstract class GameCompletionStrategy<T extends Game> implements ScoreCom
 
 	@Override
 	public boolean apply(Game scoringObject, Match match) {
-		boolean isComplete = false;
-		Map<Player, Integer> playerPts = new HashMap<>();
-		playerPts.put(scoringObject.getServer(), 0);
-		playerPts.put(scoringObject.getReceiver(), 0);
-		for(Point point : scoringObject.getPoints()) {
-			Player winningPlayer = point.getWinningPlayer();
-			
-			if (null == winningPlayer) {
-				return false;
-			}
-			
-			playerPts.put(winningPlayer, playerPts.get(winningPlayer) + 1);
-		}
-		
-		isComplete = this.isComplete(playerPts.get(scoringObject.getServer()), playerPts.get(scoringObject.getReceiver()));
-		if (isComplete) {
+		if (this.isComplete((GameScore) scoringObject.getScore())) {
 			scoringObject.setStatus(Status.COMPLETE);
+			return true;
 		}
-		return isComplete;
+		return false;
 	}
 	
 	protected boolean isFinalSetWinByTwo(Set currentSet, Match match) {
@@ -60,5 +42,5 @@ public abstract class GameCompletionStrategy<T extends Game> implements ScoreCom
 				match.getMatchRules().isFinalSetTiebreakDisabled();
 	}
 	
-	protected abstract boolean isComplete(Integer player1Pts, Integer player2Pts);
+	protected abstract boolean isComplete(GameScore score);
 }

@@ -14,33 +14,48 @@
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
+import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<TiebreakGame> {
+public class TiebreakGameCompletionStrategy implements ScoreCompletionStrategy<TiebreakGame> {
 
 	@Override
 	public boolean test(Winnable scoringObject, Match match) {
 		return TiebreakGame.class.isAssignableFrom(scoringObject.getClass());
 	}
 
+	private boolean isComplete(TiebreakScore score) {
+		if (score.getServerScore() == 7 && score.getReceieverScore() <= 5) {
+			return true;
+		} else if (score.getReceieverScore() == 7 && score.getServerScore() <= 5) {
+			return true;
+		} else if (score.getServerScore() == 7 && score.getReceieverScore() == 7) {
+			// TODO Handle scores > 7
+			score.setServerScore(5);
+			score.setReceieverScore(5);
+		} else if (score.getServerScore() == 7 && score.getReceieverScore() == 5) {
+			return true;
+		} else if (score.getReceieverScore() == 7 && score.getServerScore() == 5) {
+			return true;
+		}
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#apply(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 */
 	@Override
-	protected boolean isComplete(Integer player1Pts, Integer player2Pts) {
-		if (player1Pts == 7 && player2Pts <= 5) {
-			return true;
-		} else if (player2Pts == 7 && player1Pts <= 5) {
-			return true;
-		} else if (player1Pts == 7 && player2Pts == 7) {
-			player1Pts = 5;
-			player2Pts = 5;
-		} else if (player1Pts == 7 && player2Pts == 5) {
-			return true;
-		} else if (player2Pts == 7 && player1Pts == 5) {
+	public boolean apply(TiebreakGame scoringObject, Match match) {
+		if (this.isComplete((TiebreakScore) scoringObject.getScore())) {
+			scoringObject.setStatus(Status.COMPLETE);
 			return true;
 		}
 		return false;

@@ -112,8 +112,8 @@ public class AbstractProcessingTests {
 	}
 	
 	protected void validateGameScore(Game game, PointValue p1, PointValue p2) {
-		Assert.assertEquals(p1, game.getScore().getServerScore());
-		Assert.assertEquals(p2, game.getScore().getReceiverScore());
+		Assert.assertEquals(p1, ((GameScore) game.getScore()).getServerScore());
+		Assert.assertEquals(p2, ((GameScore) game.getScore()).getReceiverScore());
 		Assert.assertEquals(p1.getValue() + GameScore.SEPARATOR + p2.getValue(), game.getScore().toString());
 	}
 	

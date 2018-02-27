@@ -13,7 +13,6 @@
  */
 package com.tonelope.tennis.scoreprocessor.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +35,7 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.game.NoAdGameComplet
 import com.tonelope.tennis.scoreprocessor.processor.scoring.game.TiebreakGameCompletionStrategy;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.match.DefaultMatchCompletionStrategy;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.point.DefaultPointCompletionStrategy;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.point.TiebreakPointCompletionStrategy;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.set.DefaultSetCompletionStrategy;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.set.NoFinalSetTiebreakSetCompletionStrategy;
 
@@ -95,5 +95,10 @@ public class DefaultFrameworkConfiguration {
 	@Bean
 	public ScoreCompletionStrategy<Set> noFinalSetTiebreakSetCompletionStrategy() {
 		return new NoFinalSetTiebreakSetCompletionStrategy();
+	}
+	
+	@Bean
+	public ScoreCompletionStrategy<Point> tiebreakPointCompletionStrategy() {
+		return new TiebreakPointCompletionStrategy();
 	}
 }
