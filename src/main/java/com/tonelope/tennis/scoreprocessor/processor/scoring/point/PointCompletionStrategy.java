@@ -50,6 +50,4 @@ public abstract class PointCompletionStrategy implements ScoreCompletionStrategy
 		}
 		return false;
 	}
-	
-	protected abstract void updateScore(Point scoringObject, Match match, Player winningPlayer);
 }

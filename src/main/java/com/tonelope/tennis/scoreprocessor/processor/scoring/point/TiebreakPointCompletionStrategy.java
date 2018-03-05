@@ -16,6 +16,7 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
@@ -39,9 +40,10 @@ public class TiebreakPointCompletionStrategy extends PointCompletionStrategy {
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.Point, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
-	protected void updateScore(Point scoringObject, Match match, Player winningPlayer) {
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		Point point = (Point) scoringObject;
 		TiebreakScore score = (TiebreakScore) ((TiebreakGame) match.getCurrentSet().getCurrentGame()).getScore();
-		if (winningPlayer.equals(scoringObject.getServer())) {
+		if (winningPlayer.equals(point.getServer())) {
 			score.setServerScore(score.getServerScore() + 1);
 		} else {
 			score.setReceiverScore(score.getReceiverScore() + 1);

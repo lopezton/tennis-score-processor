@@ -35,7 +35,7 @@ public abstract class GameCompletionStrategy<T extends Game> implements ScoreCom
 		}
 		return false;
 	}
-	
+
 	protected boolean isFinalSetWinByTwo(Set currentSet, Match match) {
 		return currentSet.getGames().size() >= 13 && 
 				match.isCurrentlyInFinalSet() && 

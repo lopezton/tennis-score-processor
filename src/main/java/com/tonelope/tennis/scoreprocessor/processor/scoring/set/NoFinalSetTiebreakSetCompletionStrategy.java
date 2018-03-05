@@ -14,6 +14,8 @@
 package com.tonelope.tennis.scoreprocessor.processor.scoring.set;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
@@ -44,5 +46,14 @@ public class NoFinalSetTiebreakSetCompletionStrategy extends SetCompletionStrate
 			return true;
 		}
 		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 */
+	@Override
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		// TODO Auto-generated method stub
+		
 	}
 }
