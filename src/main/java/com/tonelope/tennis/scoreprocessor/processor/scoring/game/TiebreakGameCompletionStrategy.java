@@ -26,6 +26,8 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
  */
 public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<TiebreakGame> {
 
+	private static final int MINIMUM_PTS_NEEDED = 7;
+	
 	@Override
 	public boolean test(Winnable scoringObject, Match match) {
 		return TiebreakGame.class.isAssignableFrom(scoringObject.getClass());
@@ -37,19 +39,10 @@ public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<Tiebr
 	@Override
 	protected boolean isComplete(Score score) {
 		TiebreakScore tiebreakScore = (TiebreakScore) score;
-		if (tiebreakScore.getServerScore() == 7 && tiebreakScore.getReceiverScore() <= 5) {
+		if ((tiebreakScore.getServerScore() >= MINIMUM_PTS_NEEDED || tiebreakScore.getReceiverScore() >= MINIMUM_PTS_NEEDED) && 
+				Math.abs(tiebreakScore.getServerScore() - tiebreakScore.getReceiverScore()) > 1) {
 			return true;
-		} else if (tiebreakScore.getReceiverScore() == 7 && tiebreakScore.getServerScore() <= 5) {
-			return true;
-		} else if (tiebreakScore.getServerScore() == 7 && tiebreakScore.getReceiverScore() == 7) {
-			// TODO Handle scores > 7
-			tiebreakScore.setServerScore(5);
-			tiebreakScore.setReceiverScore(5);
-		} else if (tiebreakScore.getServerScore() == 7 && tiebreakScore.getReceiverScore() == 5) {
-			return true;
-		} else if (tiebreakScore.getReceiverScore() == 7 && tiebreakScore.getServerScore() == 5) {
-			return true;
-		}
+		}	
 		return false;
 	}
 

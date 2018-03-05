@@ -47,7 +47,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 					if (this.isComplete(match, match)) {
 						this.onMatchFinish(match);
 					} else {
-						Player server = this.getOpposingPlayer(currentGame.getServer(), match.getPlayers());
+						Player server = currentGame.getServer().getOpposingPlayer(match.getPlayers());
 						match.getSets().add(new Set(matchRules, server, currentGame.getServer(), true));
 						this.onSetFinish(match);
 					}

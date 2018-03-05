@@ -84,7 +84,12 @@ public class AbstractProcessingTests {
 	private boolean isPlayerCurrentServer(Match match, Player player) {
 		Player currentServer = match.getStartingServer();
 		if (!match.isNotStarted()) {
-			currentServer = match.getCurrentSet().getCurrentGame().getCurrentPoint().getServer();
+			if (!(match.getCurrentSet().getCurrentGame() instanceof TiebreakGame)) {
+				currentServer = match.getCurrentSet().getCurrentGame().getCurrentPoint().getServer();
+			} else {
+				// TODO
+				return true;
+			}
 		}
 		if (!currentServer.equals(player)) {
 			return false;

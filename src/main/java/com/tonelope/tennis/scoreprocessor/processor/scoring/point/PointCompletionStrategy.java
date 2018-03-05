@@ -39,10 +39,12 @@ public abstract class PointCompletionStrategy implements ScoreCompletionStrategy
 		Player winningPlayer = null;
 		if (stroke.isWinner()) {
 			winningPlayer = stroke.getPlayer();
-		} else if (stroke.isOutRallyShot() || stroke.isDoubleFault()) {
+		} else if (stroke.isOutRallyShot()) {
 			winningPlayer = ListUtils.getLast(scoringObject.getStrokes(), 2).getPlayer();
+		} else if (stroke.isDoubleFault()) {
+			winningPlayer = stroke.getPlayer().getOpposingPlayer(match.getPlayers());
 		}
-
+		
 		if (null != winningPlayer) {
 			scoringObject.setStatus(Status.COMPLETE);
 			this.updateScore(scoringObject, match, winningPlayer);

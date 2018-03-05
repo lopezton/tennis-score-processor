@@ -41,9 +41,9 @@ public class TiebreakPointCompletionStrategy extends PointCompletionStrategy {
 	 */
 	@Override
 	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		Point point = (Point) scoringObject;
-		TiebreakScore score = (TiebreakScore) ((TiebreakGame) match.getCurrentSet().getCurrentGame()).getScore();
-		if (winningPlayer.equals(point.getServer())) {
+		TiebreakGame tiebreakGame = (TiebreakGame) match.getCurrentSet().getCurrentGame();
+		TiebreakScore score = (TiebreakScore) tiebreakGame.getScore();
+		if (winningPlayer.equals(tiebreakGame.getServer())) {
 			score.setServerScore(score.getServerScore() + 1);
 		} else {
 			score.setReceiverScore(score.getReceiverScore() + 1);

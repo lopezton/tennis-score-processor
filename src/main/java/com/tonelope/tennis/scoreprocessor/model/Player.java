@@ -13,6 +13,9 @@
  */
 package com.tonelope.tennis.scoreprocessor.model;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,4 +32,8 @@ public class Player {
 
 	private String firstName;
 	private String lastName;
+	
+	public Player getOpposingPlayer(List<Player> players) {
+		return players.stream().filter(p -> !p.equals(this)).collect(Collectors.toList()).get(0);
+	}
 }

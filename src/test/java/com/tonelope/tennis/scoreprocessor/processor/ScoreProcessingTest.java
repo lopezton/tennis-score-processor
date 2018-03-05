@@ -233,7 +233,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		this.validateTiebreakScore(tiebreak, 7, 7);
 		this.hitFirstServeAce(match, player2);
 		this.validateTiebreakScore(tiebreak, 7, 8);
-		this.hitFirstServeAce(match, player2);
+		this.hitDoubleFault(match, player1);
 		this.validateTiebreakScore(tiebreak, 7, 9);
 		
 		Assert.assertEquals(2, match.getSets().size());
