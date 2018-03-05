@@ -16,8 +16,12 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.Score;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
+import com.tonelope.tennis.scoreprocessor.model.Winnable;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
 
 /**
@@ -25,12 +29,13 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrat
  * @author Tony Lopez
  *
  */
-public abstract class GameCompletionStrategy<T extends Game> implements ScoreCompletionStrategy<T> {
+public abstract class GameCompletionStrategy<T extends Winnable> implements ScoreCompletionStrategy<T> {
 
 	@Override
-	public boolean apply(Game scoringObject, Match match) {
-		if (this.isComplete((GameScore) scoringObject.getScore())) {
+	public boolean apply(T scoringObject, Match match) {
+		if (this.isComplete(scoringObject.getScore())) {
 			scoringObject.setStatus(Status.COMPLETE);
+			this.updateScore(match.getCurrentSet(), match, scoringObject.getWinningPlayer());
 			return true;
 		}
 		return false;
@@ -42,5 +47,18 @@ public abstract class GameCompletionStrategy<T extends Game> implements ScoreCom
 				match.getMatchRules().isFinalSetTiebreakDisabled();
 	}
 	
-	protected abstract boolean isComplete(GameScore score);
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 */
+	@Override
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		Set set = (Set) scoringObject;
+		if (set.getStartingServer().equals(winningPlayer)) {
+			set.getScore().setStartingServerScore(set.getScore().getStartingServerScore() + 1);
+		} else {
+			set.getScore().setStartingReceiverScore(set.getScore().getStartingReceiverScore() + 1);
+		}
+	}
+	
+	protected abstract boolean isComplete(Score score);
 }

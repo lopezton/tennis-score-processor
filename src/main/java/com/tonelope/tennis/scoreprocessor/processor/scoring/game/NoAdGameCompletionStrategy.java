@@ -16,9 +16,8 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.PointValue;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
+import com.tonelope.tennis.scoreprocessor.model.Score;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
@@ -30,12 +29,13 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
 public class NoAdGameCompletionStrategy extends GameCompletionStrategy<Game> {
 
 	@Override
-	protected boolean isComplete(GameScore score) {
-		if (PointValue.ADVANTAGE.equals(score.getServerScore())) {
-			score.setServerScore(PointValue.GAME);
+	protected boolean isComplete(Score score) {
+		GameScore gameScore = (GameScore) score;
+		if (PointValue.ADVANTAGE.equals(gameScore.getServerScore())) {
+			gameScore.setServerScore(PointValue.GAME);
 			return true;
-		} else if (PointValue.ADVANTAGE.equals(score.getServerScore())) {
-			score.setReceiverScore(PointValue.GAME);
+		} else if (PointValue.ADVANTAGE.equals(gameScore.getServerScore())) {
+			gameScore.setReceiverScore(PointValue.GAME);
 			return true;
 		}
 		return false;
@@ -52,14 +52,5 @@ public class NoAdGameCompletionStrategy extends GameCompletionStrategy<Game> {
 			return match.getMatchRules().isNoAdScoring();
 		}
 		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
-	 */
-	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		// TODO Auto-generated method stub
-		
 	}
 }
