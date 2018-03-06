@@ -11,22 +11,17 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor;
-
-import java.util.function.Consumer;
-
-import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
-import com.tonelope.tennis.scoreprocessor.model.Stroke;
+package com.tonelope.tennis.scoreprocessor.model;
 
 /**
- * 
  * @author Tony Lopez
  *
  */
-public interface MatchProcessor {
+public enum MatchEventType {
 
-	Match addStrokeToMatch(Match match, Stroke stroke);
-	
-	void registerEvent(MatchEventType event, Consumer<Match> method);
+	ON_POINT_COMPLETION,
+	ON_GAME_COMPLETION,
+	ON_SET_COMPLETION,
+	ON_TIEBREAK_COMPLETION,
+	ON_MATCH_COMPLETION;
 }

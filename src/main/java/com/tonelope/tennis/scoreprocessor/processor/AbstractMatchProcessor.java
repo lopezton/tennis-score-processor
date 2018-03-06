@@ -13,14 +13,18 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.function.Consumer;
 
-import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
-import com.tonelope.tennis.scoreprocessor.model.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,13 +38,26 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public abstract class AbstractMatchProcessor implements MatchProcessor {
 
-	protected final ScoreCompletionStrategyResolver scoreCompletionStrategyResolver;
+	public static final Logger LOG = LoggerFactory.getLogger(AbstractMatchProcessor.class);
 	
-	protected <T extends ScoringObject> T getLastAndSetInProgress(List<T> list) {
-		T scoringObject = ListUtils.getLast(list);
-		if (scoringObject.isNotStarted()) {
-			scoringObject.setStatus(Status.IN_PROGRESS);
+	protected final ScoreCompletionStrategyResolver scoreCompletionStrategyResolver;
+	protected final Map<MatchEventType, List<Consumer<Match>>> events = new HashMap<>();
+	
+	public void registerEvent(MatchEventType event, Consumer<Match> method) {
+		this.events.putIfAbsent(event, new ArrayList<>()).add(method);
+	}
+	
+	protected void executeMatchEvents(MatchEventType type, Match match) {
+		List<Consumer<Match>> eventMethods = this.events.get(type);
+		if (null != eventMethods && !eventMethods.isEmpty()) {
+			LOG.debug("Executing events for {}.", type);
+			for(Consumer<Match> eventMethod : eventMethods) {
+				try {
+					eventMethod.accept(match);
+				} catch (Exception e) {
+					LOG.error("Failed to execute an event", e);
+				}
+			}
 		}
-		return scoringObject;
 	}
 }

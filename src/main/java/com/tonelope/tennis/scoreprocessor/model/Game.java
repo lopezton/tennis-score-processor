@@ -74,4 +74,15 @@ public class Game extends Winnable {
 	public Player getNextReceiver() {
 		return this.receiver;
 	}
+
+	/**
+	 * @param stroke
+	 * @param matchRules 
+	 */
+	public void addStroke(Stroke stroke, MatchRules matchRules) {
+		this.getCurrentPoint().addStroke(stroke, matchRules);
+		if (this.isNotStarted()) {
+			this.status = Status.IN_PROGRESS;
+		}
+	}
 }

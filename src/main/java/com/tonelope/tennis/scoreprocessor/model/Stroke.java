@@ -15,23 +15,26 @@ package com.tonelope.tennis.scoreprocessor.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-@NoArgsConstructor
 @AllArgsConstructor
-@Getter @Setter
+@Getter @Setter @ToString
 public class Stroke extends ScoringObject {
 
 	private Player player;
 	private StrokeType strokeType;
 	private boolean out;
 	private boolean winner;
+	
+	public Stroke() {
+		this.status = Status.COMPLETE;
+	}
 	
 	public boolean isServe() {
 		return StrokeType.FIRST_SERVE.equals(this.strokeType) || StrokeType.SECOND_SERVE.equals(this.strokeType);

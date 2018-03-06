@@ -14,6 +14,7 @@
 package com.tonelope.tennis.scoreprocessor.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
@@ -62,6 +63,32 @@ public class Point extends Winnable {
 
 	public Stroke getCurrentStroke() {
 		return ListUtils.getLast(this.strokes);
+	}
+	
+	public List<Stroke> getStrokes() {
+		return Collections.unmodifiableList(this.strokes);
+	}
+	
+	public void addStroke(Stroke stroke, MatchRules matchRules) {
+		this.validateStroke(stroke, matchRules);
+		this.strokes.add(stroke);
+		if (this.isNotStarted()) {
+			this.setStatus(Status.IN_PROGRESS);
+		}
+	}
+	
+	private boolean validateStroke(Stroke stroke, MatchRules matchRules) {
+
+		if (this.strokes.isEmpty()) {
+			if (!StrokeType.FIRST_SERVE.equals(stroke.getStrokeType())) {
+				throw new FrameworkException("First stroke of a point must be a first serve. Found: " + stroke);
+			}
+			if (!stroke.getPlayer().equals(this.server)) {
+				throw new FrameworkException("First stroke server does not match starting server.");
+			}
+		}
+		// TODO - More validations
+		return true;
 	}
 	
 	@Override
