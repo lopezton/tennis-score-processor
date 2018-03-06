@@ -50,7 +50,7 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 			if (players.size() > 1) {
 				p2Sets = setsWonMap.get(players.get(1));
 			}
-			// TODO Handle final set win by two
+			
 			final int setsNeeded = (int) Math.ceil(((double) match.getMatchRules().getNumberOfSets()) / 2);
 			if (p1Sets == setsNeeded || p2Sets == setsNeeded) {
 				scoringObject.setStatus(Status.COMPLETE);
@@ -70,7 +70,6 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 	 */
 	@Override
 	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		// TODO Auto-generated method stub
 		
 	}
 

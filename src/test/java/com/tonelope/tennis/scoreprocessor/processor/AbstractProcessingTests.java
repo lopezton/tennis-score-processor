@@ -137,8 +137,6 @@ public class AbstractProcessingTests {
 	protected void validateSetScore(Set set, int p1, int p2) {
 		Assert.assertEquals(p1, set.getScore().getStartingServerScore());
 		Assert.assertEquals(p2, set.getScore().getStartingReceiverScore());
-		Assert.assertEquals(p1 + SetScore.SEPARATOR + p2, set.getScore().toString());
-		// TODO Handle Tiebreak score
 	}
 	
 	protected void validateTiebreakScore(TiebreakGame tiebreak, int p1, int p2) {

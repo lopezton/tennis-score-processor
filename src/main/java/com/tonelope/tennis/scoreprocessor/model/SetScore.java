@@ -27,14 +27,16 @@ public class SetScore extends Score {
 	public static final String SEPARATOR = "-";
 	private int startingServerScore = 0;
 	private int startingReceiverScore = 0;
+	private TiebreakScore tiebreakScore;
 	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(startingServerScore).append(SEPARATOR).append(startingReceiverScore);
-		
-		// TODO Tiebreak score
+		if (null != tiebreakScore) {
+			sb.append(tiebreakScore.toString());
+		}
 		
 		return sb.toString();
 	}

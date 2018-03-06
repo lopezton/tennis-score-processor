@@ -49,13 +49,4 @@ public class DefaultSetCompletionStrategy extends SetCompletionStrategy<Set> {
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
-	 */
-	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

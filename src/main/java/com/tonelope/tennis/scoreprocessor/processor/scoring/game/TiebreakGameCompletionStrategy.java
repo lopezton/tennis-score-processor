@@ -14,7 +14,10 @@
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Score;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
+import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
@@ -46,4 +49,11 @@ public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<Tiebr
 		return false;
 	}
 
+	@Override
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		super.updateScore(scoringObject, match, winningPlayer);
+		Set set = (Set) scoringObject;
+		TiebreakScore tiebreakScore = (TiebreakScore) ((TiebreakGame) set.getCurrentGame()).getScore();
+		((Set) scoringObject).getScore().setTiebreakScore(tiebreakScore);
+	}
 }

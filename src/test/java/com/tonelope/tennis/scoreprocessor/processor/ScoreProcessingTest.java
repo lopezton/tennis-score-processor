@@ -15,6 +15,7 @@ package com.tonelope.tennis.scoreprocessor.processor;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -181,6 +182,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		
 		Assert.assertEquals(2, match.getSets().size());
 		Assert.assertEquals(13, match.getSets().get(0).getGames().size());
+		Assert.assertEquals("7-6(7-0)", match.getSets().get(0).getScore().toString());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getStatus());
 	}
 	
@@ -285,7 +287,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		this.winTiebreak(match, player1);
 		
 		Assert.assertEquals(3, match.getScore().getSetScores().size());
-		Assert.assertEquals("6-0, 6-0, 7-6(0)", match.getScore().toString());
+		Assert.assertEquals("6-0, 0-6, 7-6(7-0)", match.getScore().toString());
 		
 		Assert.assertEquals(3, match.getSets().size());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getStatus());
@@ -319,9 +321,9 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 		this.loseServiceGame(match, player2);
 		
 		Assert.assertEquals(3, match.getScore().getSetScores().size());
-		Assert.assertEquals("6-0, 6-0, 8-6", match.getScore().toString());
+		Assert.assertEquals("6-0, 0-6, 8-6", match.getScore().toString());
 		
-		Assert.assertEquals(2, match.getSets().size());
+		Assert.assertEquals(3, match.getSets().size());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getStatus());
 	}
 }
