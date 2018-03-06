@@ -16,14 +16,13 @@ package com.tonelope.tennis.scoreprocessor.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter @ToString
+@Getter @Setter
 public class TiebreakGame extends Game {
 
 	@Getter(AccessLevel.NONE)
@@ -33,6 +32,14 @@ public class TiebreakGame extends Game {
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	private Player nextReceiver;
+	
+	@Getter(AccessLevel.NONE)
+	private final TiebreakScore score = new TiebreakScore();
+	
+	@Override
+	public Score getScore() {
+		return this.score;
+	}
 	
 	public TiebreakGame(Player server, Player receiver) {
 		this(server, receiver, false);
@@ -65,15 +72,5 @@ public class TiebreakGame extends Game {
 			}
 		}
 		return current;
-	}
-	
-	public static void main(String[] args) {
-		Player player1 = new Player("Roger", "Federer");
-		Player player2 = new Player("Rafael", "Nadal");
-		TiebreakGame game = new TiebreakGame(player1, player2, true);
-		for(int i = 0; i <= 12; i++) {
-			System.out.println(game.nextServer);
-			game.getPoints().add(new Point(game.getNextServer(), game.getNextReceiver()));
-		}
 	}
 }

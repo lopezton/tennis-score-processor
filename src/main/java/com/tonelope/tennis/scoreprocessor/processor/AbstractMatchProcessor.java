@@ -36,10 +36,6 @@ public abstract class AbstractMatchProcessor implements MatchProcessor {
 
 	protected final ScoreCompletionStrategyResolver scoreCompletionStrategyResolver;
 	
-	protected Player getOpposingPlayer(Player server, List<Player> players) {
-		return players.stream().filter(p -> !p.equals(server)).collect(Collectors.toList()).get(0);
-	}
-	
 	protected <T extends ScoringObject> T getLastAndSetInProgress(List<T> list) {
 		T scoringObject = ListUtils.getLast(list);
 		if (scoringObject.isNotStarted()) {

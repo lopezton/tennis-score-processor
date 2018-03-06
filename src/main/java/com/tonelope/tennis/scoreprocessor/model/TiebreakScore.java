@@ -17,28 +17,27 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 
  * @author Tony Lopez
  *
  */
 @Getter @Setter
-public class SetScore extends Score {
-
+public class TiebreakScore extends Score {
+	
+	public static final String LEFT_SEPARATOR = "(";
+	public static final String RIGHT_SEPARATOR = ")";
 	public static final String SEPARATOR = "-";
-	private int startingServerScore = 0;
-	private int startingReceiverScore = 0;
-	private TiebreakScore tiebreakScore;
+	
+	private int serverScore;
+	private int receiverScore;
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		
-		sb.append(startingServerScore).append(SEPARATOR).append(startingReceiverScore);
-		if (null != tiebreakScore) {
-			sb.append(tiebreakScore.toString());
-		}
-		
-		return sb.toString();
+		return new StringBuilder()
+			.append(LEFT_SEPARATOR)
+			.append(this.serverScore)
+			.append(SEPARATOR)
+			.append(this.receiverScore)
+			.append(RIGHT_SEPARATOR).toString();
 	}
 
 }

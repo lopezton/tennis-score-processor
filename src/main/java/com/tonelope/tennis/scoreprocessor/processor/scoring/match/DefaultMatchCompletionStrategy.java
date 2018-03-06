@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
@@ -49,7 +50,7 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 			if (players.size() > 1) {
 				p2Sets = setsWonMap.get(players.get(1));
 			}
-			// TODO Handle final set win by two
+			
 			final int setsNeeded = (int) Math.ceil(((double) match.getMatchRules().getNumberOfSets()) / 2);
 			if (p1Sets == setsNeeded || p2Sets == setsNeeded) {
 				scoringObject.setStatus(Status.COMPLETE);
@@ -62,6 +63,14 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 	@Override
 	public boolean test(Winnable scoringObject, Match match) {
 		return Match.class.isAssignableFrom(scoringObject.getClass());
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 */
+	@Override
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		
 	}
 
 }

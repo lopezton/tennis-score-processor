@@ -11,49 +11,43 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
+package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.Score;
+import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
-import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
- * 
  * @author Tony Lopez
  *
  */
-public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<TiebreakGame> {
+public class TiebreakPointCompletionStrategy extends PointCompletionStrategy {
 
-	private static final int MINIMUM_PTS_NEEDED = 7;
-	
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#test(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 */
 	@Override
 	public boolean test(Winnable scoringObject, Match match) {
-		return TiebreakGame.class.isAssignableFrom(scoringObject.getClass());
+		return Point.class.isAssignableFrom(scoringObject.getClass()) && 
+				match.getCurrentSet().getCurrentGame() instanceof TiebreakGame;
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.game.GameCompletionStrategy#isComplete(com.tonelope.tennis.scoreprocessor.model.GameScore)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.Point, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
-	protected boolean isComplete(Score score) {
-		TiebreakScore tiebreakScore = (TiebreakScore) score;
-		if ((tiebreakScore.getServerScore() >= MINIMUM_PTS_NEEDED || tiebreakScore.getReceiverScore() >= MINIMUM_PTS_NEEDED) && 
-				Math.abs(tiebreakScore.getServerScore() - tiebreakScore.getReceiverScore()) > 1) {
-			return true;
-		}	
-		return false;
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		TiebreakGame tiebreakGame = (TiebreakGame) match.getCurrentSet().getCurrentGame();
+		TiebreakScore score = (TiebreakScore) tiebreakGame.getScore();
+		if (winningPlayer.equals(tiebreakGame.getServer())) {
+			score.setServerScore(score.getServerScore() + 1);
+		} else {
+			score.setReceiverScore(score.getReceiverScore() + 1);
+		}
 	}
 
-	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		super.updateScore(scoringObject, match, winningPlayer);
-		Set set = (Set) scoringObject;
-		TiebreakScore tiebreakScore = (TiebreakScore) ((TiebreakGame) set.getCurrentGame()).getScore();
-		((Set) scoringObject).getScore().setTiebreakScore(tiebreakScore);
-	}
 }

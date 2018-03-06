@@ -16,6 +16,8 @@ package com.tonelope.tennis.scoreprocessor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,16 +34,21 @@ import lombok.ToString;
 @Getter @Setter @ToString
 public class Set extends Winnable {
 
+	private MatchRules matchRules;
 	private Player startingServer;
 	private Player startingReceiver;
 	private final SetScore score = new SetScore();
 	private final List<Game> games = new ArrayList<>();
 	
-	public Set(Player startingServer, Player startingReceiver, boolean initialize) {
-		this(startingServer, startingReceiver);
+	public Set(MatchRules matchRules, Player startingServer, Player startingReceiver, boolean initialize) {
+		this(matchRules, startingServer, startingReceiver);
 		if (initialize) {
 			this.initialize();
 		}
+	}
+	
+	public Game getCurrentGame() {
+		return ListUtils.getLast(this.games);
 	}
 	
 	@Override
@@ -52,5 +59,13 @@ public class Set extends Winnable {
 	@Override
 	public void initialize() {
 		this.games.add(new Game(startingServer, startingReceiver, true));
+	}
+	
+	/**
+	 * @param currentSet
+	 * @return
+	 */
+	public boolean isNextGameTiebreakEligible() {
+		return this.getGames().size() == (2 * this.matchRules.getNumberOfGamesPerSet());
 	}
 }

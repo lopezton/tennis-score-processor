@@ -37,14 +37,8 @@ public class SetProcessingTest extends AbstractProcessingTests {
 	public void t1_winSet() {
 		Match match = this.matchRepository.save(this.createNewMatch());
 		Player player1 = match.getPlayers().get(0);
-		Player player2 = match.getPlayers().get(1);
 		
-		this.winServiceGame(match, player1);
-		this.loseServiceGame(match, player2);
-		this.winServiceGame(match, player1);
-		this.loseServiceGame(match, player2);
-		this.winServiceGame(match, player1);
-		this.loseServiceGame(match, player2);
+		this.winSet(match, player1);
 		
 		Assert.assertEquals(2, match.getSets().size());
 		Assert.assertEquals(6, match.getSets().get(0).getGames().size());

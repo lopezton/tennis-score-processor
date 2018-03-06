@@ -16,6 +16,9 @@ package com.tonelope.tennis.scoreprocessor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
+
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,14 +37,24 @@ public class Game extends Winnable {
 
 	private Player server;
 	private Player receiver;
+	@Getter(AccessLevel.NONE)
 	private final GameScore score = new GameScore();
 	private final List<Point> points = new ArrayList<>();
+	
+	@Override
+	public Score getScore() {
+		return this.score;
+	}
 	
 	@Override
 	public Player getWinningPlayer() {
 		return this.getWinningPlayer(this.points);
 	}
 
+	public Point getCurrentPoint() {
+		return ListUtils.getLast(this.points);
+	}
+	
 	public Game(Player server, Player receiver, boolean initialize) {
 		this(server, receiver);
 		if (initialize) {

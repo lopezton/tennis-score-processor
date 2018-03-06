@@ -9,8 +9,8 @@
 	<packaging>jar</packaging>
 	
 	<name>tennis-score-processor</name>
-	<description>Tooling for tracking tennis metrics</description>
-	<url>http://scoreprocessor.tonelope.com</url>
+	<description>Open source project dedicated to collecting, analyzing, and sharing tennis match analytics using modern technologies.</description>
+	<url>https://lopezton.github.io/tennis-score-processor/</url>
 	
 	<licenses>
 		<license>
@@ -21,10 +21,14 @@
 	
 	<developers>
 	    <developer>
+	    	<id>lopezton</id>
 			<name>Tony Lopez</name>
 			<email>tony.lopez1013@gmail.com</email>
-			<organization>tonelope</organization>
-			<organizationUrl>http://tonelope.com</organizationUrl>
+			<url>http://tonelopez.com</url>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
 	    </developer>
   	</developers>
   	

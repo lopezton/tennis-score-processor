@@ -13,14 +13,43 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 
+import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.Status;
+import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
+import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public interface PointCompletionStrategy extends ScoreCompletionStrategy<Point> {
+public abstract class PointCompletionStrategy implements ScoreCompletionStrategy<Point> {
 
+	/*
+	 * (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#apply(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 */
+	@Override
+	public boolean apply(Point scoringObject, Match match) {
+		Stroke stroke = scoringObject.getCurrentStroke();
+		
+		Player winningPlayer = null;
+		if (stroke.isWinner()) {
+			winningPlayer = stroke.getPlayer();
+		} else if (stroke.isOutRallyShot()) {
+			winningPlayer = ListUtils.getLast(scoringObject.getStrokes(), 2).getPlayer();
+		} else if (stroke.isDoubleFault()) {
+			winningPlayer = stroke.getPlayer().getOpposingPlayer(match.getPlayers());
+		}
+		
+		if (null != winningPlayer) {
+			scoringObject.setStatus(Status.COMPLETE);
+			this.updateScore(scoringObject, match, winningPlayer);
+			return true;
+		}
+		return false;
+	}
 }

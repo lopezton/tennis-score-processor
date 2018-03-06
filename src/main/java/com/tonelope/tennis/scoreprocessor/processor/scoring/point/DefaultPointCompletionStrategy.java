@@ -13,36 +13,58 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 
+import java.util.function.Consumer;
+import java.util.function.Supplier;
+
+import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
-import com.tonelope.tennis.scoreprocessor.model.Status;
-import com.tonelope.tennis.scoreprocessor.model.Stroke;
+import com.tonelope.tennis.scoreprocessor.model.PointValue;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
+import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public class DefaultPointCompletionStrategy implements PointCompletionStrategy {
+public class DefaultPointCompletionStrategy extends PointCompletionStrategy {
 
-	@Override
-	public boolean apply(Point scoringObject, Match match) {
-		
-		boolean isComplete = false;
-		Stroke stroke = ListUtils.getLast(scoringObject.getStrokes());
-		
-		if (stroke.isWinner() || stroke.isOutRallyShot() || stroke.isDoubleFault()) {
-			isComplete = true;
-			scoringObject.setStatus(Status.COMPLETE);
-		}
-		return isComplete;
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#test(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 */
 	@Override
 	public boolean test(Winnable scoringObject, Match match) {
-		return Point.class.isAssignableFrom(scoringObject.getClass());
+		return Point.class.isAssignableFrom(scoringObject.getClass()) && 
+				!(match.getCurrentSet().getCurrentGame() instanceof TiebreakGame);
 	}
 
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.Player)
+	 */
+	@Override
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		Point point = (Point) scoringObject;
+		GameScore score = (GameScore) match.getCurrentSet().getCurrentGame().getScore();
+		if (winningPlayer.equals(point.getServer())) {
+			this.updateScore(score, score::setServerScore, score::getServerScore, score::setReceiverScore, score::getReceiverScore);
+		} else {
+			this.updateScore(score, score::setReceiverScore, score::getReceiverScore, score::setServerScore, score::getServerScore);
+		}
+	}
+
+	private void updateScore(GameScore score, Consumer<PointValue> p1, Supplier<PointValue> s1, Consumer<PointValue> p2, Supplier<PointValue> s2) {
+		if (score.isDeuce()) {
+			p1.accept(s1.get().next());
+		} else if (PointValue.ADVANTAGE.equals(s2.get())) {
+			p2.accept(s2.get().previous());
+		} else if (PointValue.FORTY.equals(s1.get())) {
+			p1.accept(PointValue.GAME);
+		} else {
+			p1.accept(s1.get().next());
+		}
+	}
 }

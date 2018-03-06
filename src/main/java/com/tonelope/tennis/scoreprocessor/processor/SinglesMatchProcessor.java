@@ -3,6 +3,7 @@ package com.tonelope.tennis.scoreprocessor.processor;
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.MatchRules;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Set;
@@ -12,7 +13,6 @@ import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	
@@ -34,6 +34,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	}
 
 	private Match processStroke(Match match, Stroke stroke) {
+		MatchRules matchRules = match.getMatchRules();
 		Set currentSet = this.getLastAndSetInProgress(match.getSets());
 		Game currentGame = this.getLastAndSetInProgress(currentSet.getGames());
 		Point currentPoint = this.getLastAndSetInProgress(currentGame.getPoints());
@@ -46,38 +47,56 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 					if (this.isComplete(match, match)) {
 						this.onMatchFinish(match);
 					} else {
-						Player server = this.getOpposingPlayer(currentGame.getServer(), match.getPlayers());
-						match.getSets().add(new Set(server, currentGame.getServer(), true));
+						Player server = currentGame.getServer().getOpposingPlayer(match.getPlayers());
+						match.getSets().add(new Set(matchRules, server, currentGame.getServer(), true));
+						this.onSetFinish(match);
 					}
 				} else {
-					Game nextGame;
-					if (!match.isCurrentlyInFinalSet()) {
-						if (currentSet.getGames().size() != (2 * match.getMatchRules().getNumberOfGamesPerSet())) {
-							nextGame = new Game(currentGame.getReceiver(), currentGame.getServer(), true);
-						} else {
-							nextGame = new TiebreakGame(currentGame.getReceiver(), currentGame.getServer(), true);
-						}
-					} else {
-						if (match.getMatchRules().isFinalSetTiebreakDisabled()) {
-							nextGame = new Game(currentGame.getReceiver(), currentGame.getServer(), true);
-						} else {
-							if (currentSet.getGames().size() != (2 * match.getMatchRules().getNumberOfGamesPerSet())) {
-								nextGame = new Game(currentGame.getReceiver(), currentGame.getServer(), true);
-							} else {
-								nextGame = new TiebreakGame(currentGame.getReceiver(), currentGame.getServer(), true);
-							}
-						}
-					}
-					currentSet.getGames().add(nextGame);
+					currentSet.getGames().add(this.createNextGame(matchRules, match));
+					this.onGameFinish(match);
 				}
 			} else {
 				currentGame.getPoints().add(new Point(currentGame.getNextServer(), currentGame.getNextReceiver()));
+				this.onPointFinish(match);
 			}
 		}
 		
 		return match;
 	}
 
+	/**
+	 * @param match
+	 */
+	protected void onPointFinish(Match match) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @param match
+	 */
+	protected void onGameFinish(Match match) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * @param match
+	 */
+	protected void onSetFinish(Match match) {
+		// TODO Auto-generated method stub
+	}
+
+	private Game createNextGame(MatchRules matchRules, Match match) {
+		Set currentSet = match.getCurrentSet();
+		Game currentGame = currentSet.getCurrentGame();
+		
+		if ((!matchRules.isFinalSetTiebreakDisabled() && match.isCurrentlyInFinalSet()) && currentSet.isNextGameTiebreakEligible() || 
+				(!match.isCurrentlyInFinalSet() && currentSet.isNextGameTiebreakEligible())) {
+			return new TiebreakGame(currentGame.getReceiver(), currentGame.getServer(), true);
+		} else {
+			return new Game(currentGame.getReceiver(), currentGame.getServer(), true);
+		}
+	}
+	
 	private void onMatchFinish(Match match) {
 		// TODO Auto-generated method stub	
 	}
@@ -86,10 +105,10 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 		return this.scoreCompletionStrategyResolver.resolve(scoringObject, match);
 	}
 
+	// TODO Move to validator
 	private boolean validateStroke(Match match, Stroke stroke) {
-		Set currentSet = ListUtils.getLast(match.getSets());
-		Game currentGame = ListUtils.getLast(currentSet.getGames());
-		Point currentPoint = ListUtils.getLast(currentGame.getPoints());
+		Game currentGame = match.getCurrentSet().getCurrentGame();
+		Point currentPoint = currentGame.getCurrentPoint();
 		
 		if (currentPoint.getStrokes().isEmpty()) {
 			if (!StrokeType.FIRST_SERVE.equals(stroke.getStrokeType())) {

@@ -14,10 +14,12 @@
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
 import com.tonelope.tennis.scoreprocessor.model.Game;
+import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.PointValue;
+import com.tonelope.tennis.scoreprocessor.model.Score;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
@@ -27,20 +29,9 @@ import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 public class DeuceGameCompletionStrategy extends GameCompletionStrategy<Game> {
 
 	@Override
-	protected boolean isComplete(Integer player1Pts, Integer player2Pts) {
-		if (player1Pts == 4 && player2Pts <= 2) {
-			return true;
-		} else if (player2Pts == 4 && player1Pts <= 2) {
-			return true;
-		} else if (player1Pts == 4 && player2Pts == 4) {
-			player1Pts = 3;
-			player2Pts = 3;
-		} else if (player1Pts == 5 && player2Pts == 3) {
-			return true;
-		} else if (player2Pts == 5 && player1Pts == 3) {
-			return true;
-		}
-		return false;
+	protected boolean isComplete(Score score) {
+		GameScore gameScore = (GameScore) score;
+		return PointValue.GAME.equals(gameScore.getServerScore()) || PointValue.GAME.equals(gameScore.getReceiverScore());
 	}
 
 	@Override
@@ -49,11 +40,10 @@ public class DeuceGameCompletionStrategy extends GameCompletionStrategy<Game> {
 			return false;
 		}
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
+		Set currentSet = match.getCurrentSet();
 		if (currentSet.getGames().size() < 13 || this.isFinalSetWinByTwo(currentSet, match)) {
 			return !match.getMatchRules().isNoAdScoring();
 		}
 		return false;
 	}
-
 }

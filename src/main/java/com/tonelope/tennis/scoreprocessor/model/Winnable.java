@@ -27,6 +27,8 @@ public abstract class Winnable extends ScoringObject {
 	public abstract Player getWinningPlayer();
 
 	public abstract void initialize();
+	
+	public abstract Score getScore();
 
 	protected <T extends Winnable> Player getWinningPlayer(List<T> list) {
 		if (!this.isCompleted()) {

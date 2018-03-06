@@ -13,15 +13,15 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.tonelope.tennis.scoreprocessor.model.Game;
+import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.Score;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
+import com.tonelope.tennis.scoreprocessor.model.Winnable;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
 
 /**
@@ -29,36 +29,36 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrat
  * @author Tony Lopez
  *
  */
-public abstract class GameCompletionStrategy<T extends Game> implements ScoreCompletionStrategy<T> {
+public abstract class GameCompletionStrategy<T extends Winnable> implements ScoreCompletionStrategy<T> {
 
 	@Override
-	public boolean apply(Game scoringObject, Match match) {
-		boolean isComplete = false;
-		Map<Player, Integer> playerPts = new HashMap<>();
-		playerPts.put(scoringObject.getServer(), 0);
-		playerPts.put(scoringObject.getReceiver(), 0);
-		for(Point point : scoringObject.getPoints()) {
-			Player winningPlayer = point.getWinningPlayer();
-			
-			if (null == winningPlayer) {
-				return false;
-			}
-			
-			playerPts.put(winningPlayer, playerPts.get(winningPlayer) + 1);
-		}
-		
-		isComplete = this.isComplete(playerPts.get(scoringObject.getServer()), playerPts.get(scoringObject.getReceiver()));
-		if (isComplete) {
+	public boolean apply(T scoringObject, Match match) {
+		if (this.isComplete(scoringObject.getScore())) {
 			scoringObject.setStatus(Status.COMPLETE);
+			this.updateScore(match.getCurrentSet(), match, scoringObject.getWinningPlayer());
+			return true;
 		}
-		return isComplete;
+		return false;
 	}
-	
+
 	protected boolean isFinalSetWinByTwo(Set currentSet, Match match) {
 		return currentSet.getGames().size() >= 13 && 
 				match.isCurrentlyInFinalSet() && 
 				match.getMatchRules().isFinalSetTiebreakDisabled();
 	}
 	
-	protected abstract boolean isComplete(Integer player1Pts, Integer player2Pts);
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 */
+	@Override
+	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+		Set set = (Set) scoringObject;
+		if (set.getStartingServer().equals(winningPlayer)) {
+			set.getScore().setStartingServerScore(set.getScore().getStartingServerScore() + 1);
+		} else {
+			set.getScore().setStartingReceiverScore(set.getScore().getStartingReceiverScore() + 1);
+		}
+	}
+	
+	protected abstract boolean isComplete(Score score);
 }

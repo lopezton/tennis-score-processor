@@ -14,10 +14,12 @@
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
 import com.tonelope.tennis.scoreprocessor.model.Game;
+import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.PointValue;
+import com.tonelope.tennis.scoreprocessor.model.Score;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
-import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
  * 
@@ -27,8 +29,13 @@ import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 public class NoAdGameCompletionStrategy extends GameCompletionStrategy<Game> {
 
 	@Override
-	protected boolean isComplete(Integer player1Pts, Integer player2Pts) {
-		if (player1Pts == 4 || player2Pts == 4) {
+	protected boolean isComplete(Score score) {
+		GameScore gameScore = (GameScore) score;
+		if (PointValue.ADVANTAGE.equals(gameScore.getServerScore())) {
+			gameScore.setServerScore(PointValue.GAME);
+			return true;
+		} else if (PointValue.ADVANTAGE.equals(gameScore.getServerScore())) {
+			gameScore.setReceiverScore(PointValue.GAME);
 			return true;
 		}
 		return false;
@@ -40,7 +47,7 @@ public class NoAdGameCompletionStrategy extends GameCompletionStrategy<Game> {
 			return false;
 		}
 		
-		Set currentSet = ListUtils.getLast(match.getSets());
+		Set currentSet = match.getCurrentSet();
 		if (currentSet.getGames().size() < 13 || this.isFinalSetWinByTwo(currentSet, match)) {
 			return match.getMatchRules().isNoAdScoring();
 		}
