@@ -11,15 +11,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor;
+package com.tonelope.tennis.scoreprocessor.integ.processor.singles;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
@@ -36,57 +33,55 @@ import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
  * @author Tony Lopez
  *
  */
-@RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ScoreProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_game_deuce() {
-		Match match = this.matchRepository.save(this.createNewMatch());
-		String matchId = match.getId();
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
 		Game currentGame = match.getCurrentSet().getCurrentGame();
 		
 		this.validateGameScore(currentGame, PointValue.LOVE, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.FIFTEEN, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.THIRTY, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FIFTEEN);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FIFTEEN);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.THIRTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.THIRTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.ADVANTAGE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.ADVANTAGE, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.ADVANTAGE, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.ADVANTAGE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.ADVANTAGE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.GAME);
 		
 		Assert.assertEquals(1, match.getSets().size());
@@ -97,34 +92,33 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_game_noAd() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		match.getMatchRules().setNoAdScoring(true);
-		String matchId = match.getId();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
 		Game currentGame = match.getCurrentSet().getCurrentGame();
 		
 		this.validateGameScore(currentGame, PointValue.LOVE, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.FIFTEEN, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.THIRTY, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.LOVE);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FIFTEEN);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FIFTEEN);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.THIRTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.THIRTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
 		this.validateGameScore(currentGame, PointValue.FORTY, PointValue.FORTY);
-		this.scoringUpdateService.updateMatch(matchId, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		this.validateGameScore(currentGame, PointValue.GAME, PointValue.FORTY);
 		
 		Assert.assertEquals(1, match.getSets().size());
@@ -135,7 +129,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t3_set() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -162,7 +156,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t4_set_tiebreak() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -188,7 +182,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t5_set_longTiebreak() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -245,7 +239,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t6_match() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		Assert.assertEquals(0, match.getScore().getSetScores().size());
@@ -261,7 +255,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t7_match_finalset_tiebreak() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -295,7 +289,7 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t8_match_finalset_winByTwo() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		match.getMatchRules().setFinalSetTiebreakDisabled(true);
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);

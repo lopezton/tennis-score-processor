@@ -13,8 +13,6 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 
-import com.tonelope.tennis.scoreprocessor.model.Game;
-import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Score;

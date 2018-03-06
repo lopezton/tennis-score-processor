@@ -11,26 +11,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor;
+package com.tonelope.tennis.scoreprocessor.integ.processor.singles;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 
-@RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MatchProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_winMatch_perfect() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		this.winSet(match, player1);
@@ -46,7 +43,7 @@ public class MatchProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_winMatch_fromFinalSet() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -66,7 +63,7 @@ public class MatchProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t3_winMatch_fromFinalSet_tiebreak() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -101,7 +98,7 @@ public class MatchProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t4_winMatch_fromFinalSet_winByTwo() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		match.getMatchRules().setFinalSetTiebreakDisabled(true);
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);

@@ -11,17 +11,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor;
+package com.tonelope.tennis.scoreprocessor.integ.processor.singles;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import com.tonelope.tennis.scoreprocessor.dao.MatchRepository;
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.GameScore;
 import com.tonelope.tennis.scoreprocessor.model.Match;
@@ -30,29 +27,24 @@ import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.PlayerConfig;
 import com.tonelope.tennis.scoreprocessor.model.PointValue;
 import com.tonelope.tennis.scoreprocessor.model.Set;
-import com.tonelope.tennis.scoreprocessor.model.SetScore;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
-import com.tonelope.tennis.scoreprocessor.service.ScoringUpdateService;
+import com.tonelope.tennis.scoreprocessor.processor.DefaultMatchFactory;
+import com.tonelope.tennis.scoreprocessor.processor.MatchFactory;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
+import com.tonelope.tennis.scoreprocessor.processor.SinglesMatchProcessor;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-@SpringBootTest
 public class AbstractProcessingTests {
-
-	@Autowired
-	protected MatchRepository matchRepository;
 	
-	@Autowired
-	protected ScoringUpdateService scoringUpdateService;
-	
-	@Autowired
-	protected MatchFactory matchFactory;
+	protected MatchFactory matchFactory = new DefaultMatchFactory();
+	protected MatchProcessor matchProcessor = new SinglesMatchProcessor();
 	
 	protected Match createNewMatch() {
 		return this.createNewMatch(null);
@@ -78,7 +70,7 @@ public class AbstractProcessingTests {
 			Assert.fail("Attempted to serve ace as " + player + ", but this player is not the current server.");
 		}
 		
-		this.scoringUpdateService.updateMatch(match.getId(), new Stroke(player, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player, StrokeType.FIRST_SERVE, false, true));
 	}
 	
 	private boolean isPlayerCurrentServer(Match match, Player player) {
@@ -113,7 +105,7 @@ public class AbstractProcessingTests {
 			Assert.fail("Attempted to miss first serve as " + player + ", but this player is not the current server.");
 		}
 		
-		this.scoringUpdateService.updateMatch(match.getId(), new Stroke(player, StrokeType.FIRST_SERVE, true, false));
+		this.matchProcessor.update(match, new Stroke(player, StrokeType.FIRST_SERVE, true, false));
 	}
 	
 	protected void missSecondServe(Match match, Player player) {
@@ -121,7 +113,7 @@ public class AbstractProcessingTests {
 			Assert.fail("Attempted to miss second serve as " + player + ", but this player is not the current server.");
 		}
 		
-		this.scoringUpdateService.updateMatch(match.getId(), new Stroke(player, StrokeType.SECOND_SERVE, true, false));
+		this.matchProcessor.update(match, new Stroke(player, StrokeType.SECOND_SERVE, true, false));
 	}
 	
 	protected void validateGameScore(Game game, String p1, String p2) {

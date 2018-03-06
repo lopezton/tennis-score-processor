@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.DefaultScoreCompletionStrategyResolver;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
 
 import lombok.Getter;
@@ -34,7 +35,6 @@ import lombok.RequiredArgsConstructor;
  * @author Tony Lopez
  *
  */
-@RequiredArgsConstructor
 @Getter
 public abstract class AbstractMatchProcessor implements MatchProcessor {
 
@@ -42,6 +42,14 @@ public abstract class AbstractMatchProcessor implements MatchProcessor {
 	
 	protected final ScoreCompletionStrategyResolver scoreCompletionStrategyResolver;
 	protected final Map<MatchEventType, List<Consumer<Match>>> events = new HashMap<>();
+	
+	AbstractMatchProcessor(ScoreCompletionStrategyResolver scoreCompletionStrategyResolver) {
+		if (null != scoreCompletionStrategyResolver) {
+			this.scoreCompletionStrategyResolver = scoreCompletionStrategyResolver;
+		} else {
+			this.scoreCompletionStrategyResolver = new DefaultScoreCompletionStrategyResolver();
+		}
+	}
 	
 	public void registerEvent(MatchEventType event, Consumer<Match> method) {
 		this.events.putIfAbsent(event, new ArrayList<>()).add(method);

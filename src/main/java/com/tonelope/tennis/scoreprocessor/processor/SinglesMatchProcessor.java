@@ -46,6 +46,10 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrat
  */
 public class SinglesMatchProcessor extends AbstractMatchProcessor {
 
+	public SinglesMatchProcessor() {
+		this(null);
+	}
+	
 	public SinglesMatchProcessor(ScoreCompletionStrategyResolver scoreCompletionStrategyResolver) {
 		super(scoreCompletionStrategyResolver);
 	}
@@ -58,7 +62,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	 * com.tonelope.tennis.scoreprocessor.model.Stroke)
 	 */
 	@Override
-	public Match addStrokeToMatch(Match match, Stroke stroke) {
+	public Match update(Match match, Stroke stroke) {
 		if (!match.isInProgress() && !match.isNotStarted()) {
 			throw new FrameworkException(
 					"Updating score when match status is " + match.getStatus() + " is not supported.");
@@ -182,5 +186,14 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 		}
 
 		return match;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchProcessor#update(com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Point)
+	 */
+	@Override
+	public Match update(Match match, Point point) {
+		// TODO
+		throw new UnsupportedOperationException("Not yet implemented");
 	}
 }

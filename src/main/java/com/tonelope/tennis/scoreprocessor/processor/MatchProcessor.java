@@ -17,6 +17,7 @@ import java.util.function.Consumer;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
+import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 
 /**
@@ -26,7 +27,9 @@ import com.tonelope.tennis.scoreprocessor.model.Stroke;
  */
 public interface MatchProcessor {
 
-	Match addStrokeToMatch(Match match, Stroke stroke);
+	Match update(Match match, Stroke stroke);
+	
+	Match update(Match match, Point point);
 	
 	void registerEvent(MatchEventType event, Consumer<Match> method);
 }

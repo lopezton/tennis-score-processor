@@ -13,14 +13,12 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor;
 
-import com.tonelope.tennis.scoreprocessor.dao.MatchRepository;
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchRules;
 import com.tonelope.tennis.scoreprocessor.model.PlayerConfig;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -28,11 +26,8 @@ import lombok.Setter;
  * @author Tony Lopez
  *
  */
-@RequiredArgsConstructor
 @Getter @Setter
 public class DefaultMatchFactory implements MatchFactory {
-	
-	private final MatchRepository matchRepository;
 	
 	public Match create(MatchRules matchRules, PlayerConfig playerConfig) {
 		if (null == matchRules) {
@@ -53,7 +48,6 @@ public class DefaultMatchFactory implements MatchFactory {
 		if (playerConfig.getPlayers().size() != 2 && playerConfig.getPlayers().size() != 4) {
 			throw new FrameworkException("Incorrect number of players for match.");
 		}
-		Match match = new Match(playerConfig.getPlayers(), matchRules, true);
-		return this.matchRepository.save(match);
+		return new Match(playerConfig.getPlayers(), matchRules, true);
 	}
 }

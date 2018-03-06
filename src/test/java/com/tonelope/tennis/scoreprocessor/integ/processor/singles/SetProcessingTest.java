@@ -11,14 +11,12 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor;
+package com.tonelope.tennis.scoreprocessor.integ.processor.singles;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
@@ -29,13 +27,12 @@ import com.tonelope.tennis.scoreprocessor.model.Status;
  * @author Tony Lopez
  *
  */
-@RunWith(SpringRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SetProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_winSet() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		this.winSet(match, player1);
@@ -47,7 +44,7 @@ public class SetProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_winSet_tiebreak() {
-		Match match = this.matchRepository.save(this.createNewMatch());
+		Match match = this.createNewMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
