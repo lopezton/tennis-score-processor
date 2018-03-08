@@ -16,10 +16,8 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * @author Tony Lopez
@@ -31,17 +29,17 @@ public class TiebreakPointCompletionStrategy extends PointCompletionStrategy {
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#test(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
 	 */
 	@Override
-	public boolean test(Winnable scoringObject, Match match) {
-		return Point.class.isAssignableFrom(scoringObject.getClass()) && 
-				match.getCurrentSet().getCurrentGame() instanceof TiebreakGame;
+	public boolean test(Point scoringObject, Match match) {
+		return match.getCurrentSet().getCurrentGame() instanceof TiebreakGame;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.Point, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+	public void updateScore(Point scoringObject, Match match, Player winningPlayer) {
 		TiebreakGame tiebreakGame = (TiebreakGame) match.getCurrentSet().getCurrentGame();
+		// TODO Remove cast
 		TiebreakScore score = (TiebreakScore) tiebreakGame.getScore();
 		if (winningPlayer.equals(tiebreakGame.getServer())) {
 			score.setServerScore(score.getServerScore() + 1);

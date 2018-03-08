@@ -15,7 +15,6 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
@@ -26,9 +25,9 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
  */
 public interface ScoreCompletionStrategy<T extends Winnable> {
 
-	boolean test(Winnable scoringObject, Match match);
+	boolean test(T scoringObject, Match match);
 	
 	boolean apply(T scoringObject, Match match);
 	
-	void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer);
+	void updateScore(T scoringObject, Match match, Player winningPlayer);
 }

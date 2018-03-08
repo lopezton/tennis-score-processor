@@ -23,5 +23,10 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
  */
 public interface ScoreCompletionStrategyResolver {
 
-	<T extends Winnable> boolean resolve(T scoringObject, Match match);
+	/**
+	 * @param scoringObject
+	 * @param match
+	 * @return
+	 */
+	boolean resolve(Winnable scoringObject, Match match);
 }

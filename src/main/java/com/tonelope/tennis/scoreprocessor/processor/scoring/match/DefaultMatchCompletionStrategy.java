@@ -21,10 +21,8 @@ import java.util.Optional;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
@@ -61,7 +59,7 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 	}
 
 	@Override
-	public boolean test(Winnable scoringObject, Match match) {
+	public boolean test(Match scoringObject, Match match) {
 		return Match.class.isAssignableFrom(scoringObject.getClass());
 	}
 
@@ -69,7 +67,7 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+	public void updateScore(Match scoringObject, Match match, Player winningPlayer) {
 		
 	}
 

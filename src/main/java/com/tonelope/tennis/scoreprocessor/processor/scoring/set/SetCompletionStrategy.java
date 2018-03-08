@@ -22,7 +22,6 @@ import java.util.Optional;
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
@@ -72,8 +71,8 @@ public abstract class SetCompletionStrategy<T extends Set> implements ScoreCompl
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		match.getScore().getSetScores().add(((Set) scoringObject).getScore());
+	public void updateScore(Set scoringObject, Match match, Player winningPlayer) {
+		match.getScore().getSetScores().add((scoringObject).getScore());
 	}
 	
 	protected abstract boolean isComplete(Match match, Integer p1Games, Integer p2Games);

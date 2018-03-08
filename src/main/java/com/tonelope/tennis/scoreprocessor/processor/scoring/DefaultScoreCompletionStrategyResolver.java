@@ -13,12 +13,18 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.scoring;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
+import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.Set;
+import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.game.DeuceGameCompletionStrategy;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.game.NoAdGameCompletionStrategy;
@@ -39,13 +45,13 @@ import lombok.Getter;
 @Getter
 public class DefaultScoreCompletionStrategyResolver implements ScoreCompletionStrategyResolver {
 
-	private final List<ScoreCompletionStrategy<?>> scoreCompletionStrategies;
+	private final Map<Class<?>, List<ScoreCompletionStrategy<Winnable>>> scoreCompletionStrategies;
 	
 	public DefaultScoreCompletionStrategyResolver() {
 		this(null);
 	}
 	
-	public DefaultScoreCompletionStrategyResolver(List<ScoreCompletionStrategy<?>> scoreCompletionStrategies) {
+	public DefaultScoreCompletionStrategyResolver(Map<Class<?>, List<ScoreCompletionStrategy<Winnable>>> scoreCompletionStrategies) {
 		if (null != scoreCompletionStrategies) {
 			this.scoreCompletionStrategies = scoreCompletionStrategies;
 		} else {
@@ -56,27 +62,20 @@ public class DefaultScoreCompletionStrategyResolver implements ScoreCompletionSt
 	/**
 	 * @return
 	 */
-	private List<ScoreCompletionStrategy<?>> createDefaultScoreCompletionStrategies() {
-		List<ScoreCompletionStrategy<?>> list = new ArrayList<>();
-		list.add(new DefaultPointCompletionStrategy());
-		list.add(new TiebreakPointCompletionStrategy());
-		list.add(new DeuceGameCompletionStrategy());
-		list.add(new NoAdGameCompletionStrategy());
-		list.add(new TiebreakGameCompletionStrategy());
-		list.add(new DefaultSetCompletionStrategy());
-		list.add(new NoFinalSetTiebreakSetCompletionStrategy());
-		list.add(new DefaultMatchCompletionStrategy());
-		return list;
+	@SuppressWarnings("unchecked")
+	private <T> Map<Class<?>, List<T>> createDefaultScoreCompletionStrategies() {
+		// TODO Refactor
+		Map<Class<?>, List<T>> map = new HashMap<>();
+		map.put(Point.class, (List<T>) Stream.of(new DefaultPointCompletionStrategy(), new TiebreakPointCompletionStrategy()).collect(Collectors.toList()));
+		map.put(Game.class, (List<T>) Stream.of(new DeuceGameCompletionStrategy(), new NoAdGameCompletionStrategy()).collect(Collectors.toList()));
+		map.put(TiebreakGame.class, (List<T>) Stream.of(new TiebreakGameCompletionStrategy()).collect(Collectors.toList()));
+		map.put(Set.class, (List<T>) Stream.of(new DefaultSetCompletionStrategy(), new NoFinalSetTiebreakSetCompletionStrategy()).collect(Collectors.toList()));
+		map.put(Match.class, (List<T>) Stream.of(new DefaultMatchCompletionStrategy()).collect(Collectors.toList()));
+		return map;
 	}
 
-	@Override
-	public <T extends Winnable> boolean resolve(T scoringObject, Match match) {
-		return this.getStrategy(scoringObject, match).apply(scoringObject, match);
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private <T extends Winnable> ScoreCompletionStrategy<T> getStrategy(T scoringObject, Match match) {
-		List<ScoreCompletionStrategy> acceptableStrategies = this.scoreCompletionStrategies.stream()
+	private ScoreCompletionStrategy<Winnable> getStrategy(Winnable scoringObject, Match match) {
+		List<ScoreCompletionStrategy<Winnable>> acceptableStrategies = this.scoreCompletionStrategies.get(scoringObject.getClass()).stream()
 				.filter(s -> s.test(scoringObject, match))
 				.collect(Collectors.toList());
 		
@@ -87,5 +86,13 @@ public class DefaultScoreCompletionStrategyResolver implements ScoreCompletionSt
 		} else {
 			return acceptableStrategies.get(0);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver#resolve(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 */
+	@Override
+	public boolean resolve(Winnable scoringObject, Match match) {
+		return this.getStrategy(scoringObject, match).apply(scoringObject, match);
 	}
 }

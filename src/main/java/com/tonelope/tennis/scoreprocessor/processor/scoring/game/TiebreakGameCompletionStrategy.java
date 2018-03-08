@@ -16,11 +16,8 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Score;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
-import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
@@ -32,7 +29,7 @@ public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<Tiebr
 	private static final int MINIMUM_PTS_NEEDED = 7;
 	
 	@Override
-	public boolean test(Winnable scoringObject, Match match) {
+	public boolean test(TiebreakGame scoringObject, Match match) {
 		return TiebreakGame.class.isAssignableFrom(scoringObject.getClass());
 	}
 
@@ -50,10 +47,9 @@ public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<Tiebr
 	}
 
 	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
+	public void updateScore(TiebreakGame scoringObject, Match match, Player winningPlayer) {
 		super.updateScore(scoringObject, match, winningPlayer);
-		Set set = (Set) scoringObject;
-		TiebreakScore tiebreakScore = (TiebreakScore) ((TiebreakGame) set.getCurrentGame()).getScore();
-		((Set) scoringObject).getScore().setTiebreakScore(tiebreakScore);
+		// TODO Remove casting
+		match.getCurrentSet().getScore().setTiebreakScore((TiebreakScore) scoringObject.getScore());
 	}
 }

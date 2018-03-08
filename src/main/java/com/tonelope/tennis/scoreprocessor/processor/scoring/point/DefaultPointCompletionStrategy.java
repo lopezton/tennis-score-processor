@@ -21,9 +21,7 @@ import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.PointValue;
-import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
@@ -37,19 +35,17 @@ public class DefaultPointCompletionStrategy extends PointCompletionStrategy {
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#test(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
 	 */
 	@Override
-	public boolean test(Winnable scoringObject, Match match) {
-		return Point.class.isAssignableFrom(scoringObject.getClass()) && 
-				!(match.getCurrentSet().getCurrentGame() instanceof TiebreakGame);
+	public boolean test(Point scoringObject, Match match) {
+		return !(match.getCurrentSet().getCurrentGame() instanceof TiebreakGame);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
-	public void updateScore(ScoringObject scoringObject, Match match, Player winningPlayer) {
-		Point point = (Point) scoringObject;
+	public void updateScore(Point scoringObject, Match match, Player winningPlayer) {
 		GameScore score = (GameScore) match.getCurrentSet().getCurrentGame().getScore();
-		if (winningPlayer.equals(point.getServer())) {
+		if (winningPlayer.equals(scoringObject.getServer())) {
 			this.updateScore(score, score::setServerScore, score::getServerScore, score::setReceiverScore, score::getReceiverScore);
 		} else {
 			this.updateScore(score, score::setReceiverScore, score::getReceiverScore, score::setServerScore, score::getServerScore);

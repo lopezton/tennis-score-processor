@@ -19,7 +19,6 @@ import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.PointValue;
 import com.tonelope.tennis.scoreprocessor.model.Score;
 import com.tonelope.tennis.scoreprocessor.model.Set;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
@@ -35,11 +34,7 @@ public class DeuceGameCompletionStrategy extends GameCompletionStrategy<Game> {
 	}
 
 	@Override
-	public boolean test(Winnable scoringObject, Match match) {
-		if (!Game.class.isAssignableFrom(scoringObject.getClass())) {
-			return false;
-		}
-		
+	public boolean test(Game scoringObject, Match match) {
 		Set currentSet = match.getCurrentSet();
 		if (currentSet.getGames().size() < 13 || this.isFinalSetWinByTwo(currentSet, match)) {
 			return !match.getMatchRules().isNoAdScoring();

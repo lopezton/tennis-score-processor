@@ -15,7 +15,6 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.set;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Set;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
@@ -25,11 +24,7 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
 public class DefaultSetCompletionStrategy extends SetCompletionStrategy<Set> {
 	
 	@Override
-	public boolean test(Winnable scoringObject, Match match) {
-		if (!Set.class.isAssignableFrom(scoringObject.getClass())) {
-			return false;
-		}
-		
+	public boolean test(Set scoringObject, Match match) {
 		return this.isInFinalSetTiebreak(match);
 	}
 
