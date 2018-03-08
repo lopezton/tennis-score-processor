@@ -22,13 +22,13 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.DefaultScoreCompletionStrategyResolver;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 
@@ -52,7 +52,8 @@ public abstract class AbstractMatchProcessor implements MatchProcessor {
 	}
 	
 	public void registerEvent(MatchEventType event, Consumer<Match> method) {
-		this.events.putIfAbsent(event, new ArrayList<>()).add(method);
+		this.events.putIfAbsent(event, new ArrayList<>());
+		this.events.get(event).add(method);
 	}
 	
 	protected void executeMatchEvents(MatchEventType type, Match match) {
@@ -63,7 +64,7 @@ public abstract class AbstractMatchProcessor implements MatchProcessor {
 				try {
 					eventMethod.accept(match);
 				} catch (Exception e) {
-					LOG.error("Failed to execute an event", e);
+					throw new FrameworkException("Failed to execute an event", e);
 				}
 			}
 		}

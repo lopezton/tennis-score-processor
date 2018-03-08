@@ -31,7 +31,6 @@ import lombok.ToString;
  *
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter @Setter @ToString
 public class Point extends Winnable {
 

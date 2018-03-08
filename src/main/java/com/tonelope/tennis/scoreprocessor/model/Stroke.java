@@ -23,7 +23,6 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@AllArgsConstructor
 @Getter @Setter @ToString
 public class Stroke extends ScoringObject {
 
@@ -34,6 +33,14 @@ public class Stroke extends ScoringObject {
 	
 	public Stroke() {
 		this.status = Status.COMPLETE;
+	}
+	
+	public Stroke(Player player, StrokeType strokeType, boolean out, boolean winner) {
+		this();
+		this.player = player;
+		this.strokeType = strokeType;
+		this.out = out;
+		this.winner = winner;
 	}
 	
 	public boolean isServe() {

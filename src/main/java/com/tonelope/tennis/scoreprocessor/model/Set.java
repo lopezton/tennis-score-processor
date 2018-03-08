@@ -20,7 +20,6 @@ import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -30,7 +29,6 @@ import lombok.ToString;
  *
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter @Setter @ToString
 public class Set extends Winnable {
 

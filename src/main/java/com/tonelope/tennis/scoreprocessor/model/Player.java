@@ -16,9 +16,10 @@ package com.tonelope.tennis.scoreprocessor.model;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 
@@ -26,8 +27,7 @@ import lombok.NoArgsConstructor;
  *
  */
 @NoArgsConstructor
-@AllArgsConstructor
-@Data
+@Getter @Setter @ToString
 public class Player {
 
 	private String firstName;

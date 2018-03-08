@@ -21,7 +21,6 @@ import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -30,7 +29,6 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter @ToString
 public class Game extends Winnable {

@@ -166,22 +166,22 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 		Point currentPoint = currentGame.getCurrentPoint();
 
 		if (this.isComplete(currentPoint, match)) {
+			this.executeMatchEvents(MatchEventType.ON_POINT_COMPLETION, match);
 			if (this.isComplete(currentGame, match)) {
+				this.executeMatchEvents(MatchEventType.ON_GAME_COMPLETION, match);
 				if (this.isComplete(currentSet, match)) {
+					this.executeMatchEvents(MatchEventType.ON_SET_COMPLETION, match);
 					if (this.isComplete(match, match)) {
 						this.executeMatchEvents(MatchEventType.ON_MATCH_COMPLETION, match);
 					} else {
 						Player server = currentGame.getServer().getOpposingPlayer(match.getPlayers());
 						match.getSets().add(new Set(matchRules, server, currentGame.getServer(), true));
-						this.executeMatchEvents(MatchEventType.ON_SET_COMPLETION, match);
 					}
 				} else {
 					currentSet.getGames().add(this.createNextGame(matchRules, match));
-					this.executeMatchEvents(MatchEventType.ON_GAME_COMPLETION, match);
 				}
 			} else {
 				currentGame.getPoints().add(new Point(currentGame.getNextServer(), currentGame.getNextReceiver()));
-				this.executeMatchEvents(MatchEventType.ON_POINT_COMPLETION, match);
 			}
 		}
 

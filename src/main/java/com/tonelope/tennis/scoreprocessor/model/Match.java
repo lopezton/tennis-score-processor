@@ -6,11 +6,9 @@ import java.util.List;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@RequiredArgsConstructor
 @Getter @Setter @ToString
 public class Match extends Winnable {
 
@@ -66,8 +64,5 @@ public class Match extends Winnable {
 	 */
 	public void addStroke(Stroke stroke) {
 		this.getCurrentSet().addStroke(stroke, this.matchRules);
-		if (this.isNotStarted()) {
-			this.status = Status.IN_PROGRESS;
-		}
 	}
 }
