@@ -25,7 +25,7 @@ import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandlerResolver;
 
 /**
  * <p>
@@ -35,7 +35,7 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrat
  * <p>
  * While most of the logic here is considered typical for standard tennis
  * matches, it is recommended that if changes need to be made they can be done
- * by creating a new implementation of <tt>MatchProcessor</tt>. All logic within
+ * by creating a new implementation of <tt>MatchStrategy</tt>. All logic within
  * this implementation is able to be overridden via careful implementation of
  * equivalent Spring beans. While this approach is achievable it is not
  * recommended over creating a new implementation.
@@ -44,20 +44,20 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrat
  * @author Tony Lopez
  *
  */
-public class SinglesMatchProcessor extends AbstractMatchProcessor {
+public class SinglesMatchStrategy extends AbstractMatchStrategy {
 
-	public SinglesMatchProcessor() {
+	public SinglesMatchStrategy() {
 		this(null);
 	}
 	
-	public SinglesMatchProcessor(ScoreCompletionStrategyResolver scoreCompletionStrategyResolver) {
-		super(scoreCompletionStrategyResolver);
+	public SinglesMatchStrategy(ScoreCompletionHandlerResolver scoreCompletionHandlerResolver) {
+		super(scoreCompletionHandlerResolver);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchProcessor#
+	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchStrategy#
 	 * addStrokeToMatch(com.tonelope.tennis.scoreprocessor.model.Match,
 	 * com.tonelope.tennis.scoreprocessor.model.Stroke)
 	 */
@@ -103,7 +103,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	/**
 	 * <p>
 	 * Determines if <tt>scoringObject</tt> is complete or not by using a
-	 * registered <tt>ScoreCompletionStrategy</tt> that identifies with the
+	 * registered <tt>ScoreCompletionHandler</tt> that identifies with the
 	 * current score of <tt>match</tt>.
 	 * </p>
 	 * 
@@ -115,7 +115,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	 *         false otherwise
 	 */
 	private boolean isComplete(Winnable scoringObject, Match match) {
-		return this.scoreCompletionStrategyResolver.resolve(scoringObject, match);
+		return this.scoreCompletionHandlerResolver.resolve(scoringObject, match);
 	}
 
 	/**
@@ -146,7 +146,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	 * 
 	 * <p>
 	 * Events can be registered with this instance of
-	 * <tt>SinglesMatchProcessor</tt> that occur after the completion of a
+	 * <tt>SinglesMatchStrategy</tt> that occur after the completion of a
 	 * point, game, tiebreak, set, or match.
 	 * </p>
 	 * 
@@ -189,7 +189,7 @@ public class SinglesMatchProcessor extends AbstractMatchProcessor {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchProcessor#update(com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Point)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchStrategy#update(com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Point)
 	 */
 	@Override
 	public Match update(Match match, Point point) {

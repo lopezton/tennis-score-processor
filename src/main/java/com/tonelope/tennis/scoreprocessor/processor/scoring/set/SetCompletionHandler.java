@@ -24,7 +24,7 @@ import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler;
 
 /**
  * 
@@ -32,7 +32,7 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrat
  *
  * @param <T>
  */
-public abstract class SetCompletionStrategy<T extends Set> implements ScoreCompletionStrategy<T> {
+public abstract class SetCompletionHandler<T extends Set> implements ScoreCompletionHandler<T> {
 
 	@Override
 	public boolean apply(T scoringObject, Match match) {
@@ -68,7 +68,7 @@ public abstract class SetCompletionStrategy<T extends Set> implements ScoreCompl
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
 	public void updateScore(Set scoringObject, Match match, Player winningPlayer) {

@@ -18,7 +18,7 @@ import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 /**
@@ -26,11 +26,11 @@ import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
  * @author Tony Lopez
  *
  */
-public abstract class PointCompletionStrategy implements ScoreCompletionStrategy<Point> {
+public abstract class PointCompletionHandler implements ScoreCompletionHandler<Point> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#apply(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler#apply(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
 	 */
 	@Override
 	public boolean apply(Point scoringObject, Match match) {

@@ -25,7 +25,7 @@ import com.tonelope.tennis.scoreprocessor.model.Set;
  * @author Tony Lopez
  *
  */
-public class DeuceGameCompletionStrategy extends GameCompletionStrategy<Game> {
+public class DeuceGameCompletionHandler extends GameCompletionHandler<Game> {
 
 	@Override
 	protected boolean isComplete(Score score) {

@@ -24,7 +24,7 @@ import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
  * @author Tony Lopez
  *
  */
-public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<TiebreakGame> {
+public class TiebreakGameCompletionHandler extends GameCompletionHandler<TiebreakGame> {
 
 	private static final int MINIMUM_PTS_NEEDED = 7;
 	
@@ -34,7 +34,7 @@ public class TiebreakGameCompletionStrategy extends GameCompletionStrategy<Tiebr
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.game.GameCompletionStrategy#isComplete(com.tonelope.tennis.scoreprocessor.model.GameScore)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.game.GameCompletionHandler#isComplete(com.tonelope.tennis.scoreprocessor.model.GameScore)
 	 */
 	@Override
 	protected boolean isComplete(Score score) {

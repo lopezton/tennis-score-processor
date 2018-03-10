@@ -11,25 +11,16 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor;
-
-import java.util.function.Consumer;
+package com.tonelope.tennis.scoreprocessor.processor.scoring.match;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
-import com.tonelope.tennis.scoreprocessor.model.Point;
-import com.tonelope.tennis.scoreprocessor.model.Stroke;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public interface MatchProcessor {
+public interface MatchCompletionHandler extends ScoreCompletionHandler<Match> {
 
-	Match update(Match match, Stroke stroke);
-	
-	Match update(Match match, Point point);
-	
-	void registerEvent(MatchEventType event, Consumer<Match> method);
 }

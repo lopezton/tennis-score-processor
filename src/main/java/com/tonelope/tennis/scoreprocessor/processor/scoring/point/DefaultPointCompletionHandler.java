@@ -28,11 +28,11 @@ import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
  * @author Tony Lopez
  *
  */
-public class DefaultPointCompletionStrategy extends PointCompletionStrategy {
+public class DefaultPointCompletionHandler extends PointCompletionHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#test(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler#test(com.tonelope.tennis.scoreprocessor.model.Winnable, com.tonelope.tennis.scoreprocessor.model.Match)
 	 */
 	@Override
 	public boolean test(Point scoringObject, Match match) {
@@ -40,7 +40,7 @@ public class DefaultPointCompletionStrategy extends PointCompletionStrategy {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.Player)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.point.PointCompletionHandler#updateScore(com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
 	public void updateScore(Point scoringObject, Match match, Player winningPlayer) {

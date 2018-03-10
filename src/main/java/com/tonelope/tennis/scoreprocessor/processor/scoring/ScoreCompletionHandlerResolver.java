@@ -11,16 +11,22 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor.scoring.match;
+package com.tonelope.tennis.scoreprocessor.processor.scoring;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
+import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public interface MatchCompletionStrategy extends ScoreCompletionStrategy<Match> {
+public interface ScoreCompletionHandlerResolver {
 
+	/**
+	 * @param scoringObject
+	 * @param match
+	 * @return
+	 */
+	boolean resolve(Winnable scoringObject, Match match);
 }

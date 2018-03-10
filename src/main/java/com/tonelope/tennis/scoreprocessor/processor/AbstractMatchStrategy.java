@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.DefaultScoreCompletionStrategyResolver;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategyResolver;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.DefaultScoreCompletionStrategyHandler;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandlerResolver;
 
 import lombok.Getter;
 
@@ -36,24 +36,24 @@ import lombok.Getter;
  *
  */
 @Getter
-public abstract class AbstractMatchProcessor implements MatchProcessor {
+public abstract class AbstractMatchStrategy implements MatchStrategy {
 
-	public static final Logger LOG = LoggerFactory.getLogger(AbstractMatchProcessor.class);
+	public static final Logger LOG = LoggerFactory.getLogger(AbstractMatchStrategy.class);
 	
-	protected final ScoreCompletionStrategyResolver scoreCompletionStrategyResolver;
+	protected final ScoreCompletionHandlerResolver scoreCompletionHandlerResolver;
 	protected final Map<MatchEventType, List<Consumer<Match>>> events = new HashMap<>();
 	
-	AbstractMatchProcessor(ScoreCompletionStrategyResolver scoreCompletionStrategyResolver) {
-		if (null != scoreCompletionStrategyResolver) {
-			this.scoreCompletionStrategyResolver = scoreCompletionStrategyResolver;
+	AbstractMatchStrategy(ScoreCompletionHandlerResolver scoreCompletionHandlerResolver) {
+		if (null != scoreCompletionHandlerResolver) {
+			this.scoreCompletionHandlerResolver = scoreCompletionHandlerResolver;
 		} else {
-			this.scoreCompletionStrategyResolver = new DefaultScoreCompletionStrategyResolver();
+			this.scoreCompletionHandlerResolver = new DefaultScoreCompletionStrategyHandler();
 		}
 	}
 	
-	public void registerEvent(MatchEventType event, Consumer<Match> method) {
-		this.events.putIfAbsent(event, new ArrayList<>());
-		this.events.get(event).add(method);
+	public void registerEvent(MatchEventType eventType, Consumer<Match> event) {
+		this.events.putIfAbsent(eventType, new ArrayList<>());
+		this.events.get(eventType).add(event);
 	}
 	
 	protected void executeMatchEvents(MatchEventType type, Match match) {

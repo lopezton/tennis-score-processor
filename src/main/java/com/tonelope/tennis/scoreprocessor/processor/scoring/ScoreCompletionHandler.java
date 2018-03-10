@@ -23,7 +23,7 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
  *
  * @param <T>
  */
-public interface ScoreCompletionStrategy<T extends Winnable> {
+public interface ScoreCompletionHandler<T extends Winnable> {
 
 	boolean test(T scoringObject, Match match);
 	

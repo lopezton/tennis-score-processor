@@ -19,14 +19,14 @@ import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Score;
 import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Status;
-import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy;
+import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public abstract class GameCompletionStrategy<T extends Game> implements ScoreCompletionStrategy<T> {
+public abstract class GameCompletionHandler<T extends Game> implements ScoreCompletionHandler<T> {
 
 	@Override
 	public boolean apply(T scoringObject, Match match) {
@@ -45,7 +45,7 @@ public abstract class GameCompletionStrategy<T extends Game> implements ScoreCom
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
 	public void updateScore(T scoringObject, Match match, Player winningPlayer) {

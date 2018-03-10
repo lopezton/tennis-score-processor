@@ -21,7 +21,7 @@ import com.tonelope.tennis.scoreprocessor.model.Set;
  * @author Tony Lopez
  *
  */
-public class DefaultSetCompletionStrategy extends SetCompletionStrategy<Set> {
+public class DefaultSetCompletionHandler extends SetCompletionHandler<Set> {
 	
 	@Override
 	public boolean test(Set scoringObject, Match match) {

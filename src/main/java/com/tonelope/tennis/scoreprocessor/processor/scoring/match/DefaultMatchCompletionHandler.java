@@ -29,7 +29,7 @@ import com.tonelope.tennis.scoreprocessor.model.Status;
  * @author Tony Lopez
  *
  */
-public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
+public class DefaultMatchCompletionHandler implements MatchCompletionHandler {
 
 	@Override
 	public boolean apply(Match scoringObject, Match match) {
@@ -64,7 +64,7 @@ public class DefaultMatchCompletionStrategy implements MatchCompletionStrategy {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionStrategy#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler#updateScore(com.tonelope.tennis.scoreprocessor.model.ScoringObject, com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Player)
 	 */
 	@Override
 	public void updateScore(Match scoringObject, Match match, Player winningPlayer) {

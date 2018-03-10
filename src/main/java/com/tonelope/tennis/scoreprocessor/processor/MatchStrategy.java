@@ -11,22 +11,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor.scoring;
+package com.tonelope.tennis.scoreprocessor.processor;
+
+import java.util.function.Consumer;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.model.Winnable;
+import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
+import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.Stroke;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-public interface ScoreCompletionStrategyResolver {
+public interface MatchStrategy {
 
-	/**
-	 * @param scoringObject
-	 * @param match
-	 * @return
-	 */
-	boolean resolve(Winnable scoringObject, Match match);
+	Match update(Match match, Stroke stroke);
+	
+	Match update(Match match, Point point);
+	
+	void registerEvent(MatchEventType eventType, Consumer<Match> event);
 }
