@@ -20,7 +20,6 @@ import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -30,7 +29,6 @@ import lombok.ToString;
  *
  */
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter @Setter @ToString
 public class Set extends Winnable {
 
@@ -67,5 +65,16 @@ public class Set extends Winnable {
 	 */
 	public boolean isNextGameTiebreakEligible() {
 		return this.getGames().size() == (2 * this.matchRules.getNumberOfGamesPerSet());
+	}
+
+	/**
+	 * @param stroke
+	 * @param matchRules
+	 */
+	public void addStroke(Stroke stroke, MatchRules matchRules) {
+		this.getCurrentGame().addStroke(stroke, matchRules);
+		if (this.isNotStarted()) {
+			this.status = Status.IN_PROGRESS;
+		}
 	}
 }

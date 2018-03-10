@@ -13,33 +13,15 @@
  */
 package com.tonelope.tennis.scoreprocessor.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 /**
- * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter @ToString
-public abstract class ScoringObject {
+public enum MatchEventType {
 
-	protected Status status = Status.NOT_STARTED;
-	
-	public boolean isNotStarted() {
-		return this.checkStatus(Status.NOT_STARTED);
-	}
-	
-	public boolean isInProgress() {
-		return this.checkStatus(Status.IN_PROGRESS);
-	}
-	
-	public boolean isCompleted() {
-		return this.checkStatus(Status.COMPLETE);
-	}
-
-	private boolean checkStatus(Status complete) {
-		return complete.equals(this.status);
-	}
+	ON_POINT_COMPLETION,
+	ON_GAME_COMPLETION,
+	ON_SET_COMPLETION,
+	ON_TIEBREAK_COMPLETION,
+	ON_MATCH_COMPLETION;
 }

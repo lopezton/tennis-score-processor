@@ -1,19 +1,26 @@
 # Tennis Score Processor
-> Tennis Score Processor is an open source library dedicated to processing tennis match scoring. 
+> Tennis Score Processor is an open source library dedicated to processing tennis match scoring.
 
 [![Build Status](https://travis-ci.org/lopezton/tennis-score-processor.svg?branch=master)](https://travis-ci.org/lopezton/tennis-score-processor)
 [![Coverage Status](https://coveralls.io/repos/github/lopezton/tennis-score-processor/badge.svg?branch=master)](https://coveralls.io/github/lopezton/tennis-score-processor?branch=master)
 
-Tennis Score Processor is a Java based library that accepts tennis point data as input and then processes the results into a variety of data sets. 
+Tennis Score Processor is a Java based library that records and processes tennis match data on a stroke-by-stroke or point-by-point bases. 
 
 Use Tennis Score Processor to:  
 
-* Record match data on a stroke-by-stroke basis
+* Record match data on a stroke-by-stroke or point-by-point basis
 * Analyze recorded match data
 * Process tennis scoring results in real-time
+* Build a real working tennis scoreboard
 * Whatever else your imagine can dream up!
 
-The application is currently in it's discovery phase. Feedback and Pull Requests are welcome.
+The application is currently in it's discovery phase and at the time supports simple scoring features. As the project grows, several types of scoring will be supported as well as other great features including:
+
+* Live/Post Match Reporting
+* Event Registration after Point, Game, Set, or Match completion
+* Generated Match Metrics
+
+Feedback and Pull Requests are welcome.
 
 ## Installation
 
@@ -53,3 +60,5 @@ Distributed under the Apache License. See ``LICENSE`` for more information.
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
+
+This project uses a forking Git Flow for it's contribution and deployment strategies.

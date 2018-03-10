@@ -11,35 +11,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.model;
+package com.tonelope.tennis.scoreprocessor.processor;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.function.Consumer;
+
+import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
+import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.Stroke;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter @ToString
-public abstract class ScoringObject {
+public interface MatchStrategy {
 
-	protected Status status = Status.NOT_STARTED;
+	Match update(Match match, Stroke stroke);
 	
-	public boolean isNotStarted() {
-		return this.checkStatus(Status.NOT_STARTED);
-	}
+	Match update(Match match, Point point);
 	
-	public boolean isInProgress() {
-		return this.checkStatus(Status.IN_PROGRESS);
-	}
-	
-	public boolean isCompleted() {
-		return this.checkStatus(Status.COMPLETE);
-	}
-
-	private boolean checkStatus(Status complete) {
-		return complete.equals(this.status);
-	}
+	void registerEvent(MatchEventType eventType, Consumer<Match> event);
 }

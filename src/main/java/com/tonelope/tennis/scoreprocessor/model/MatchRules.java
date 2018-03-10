@@ -13,14 +13,16 @@
  */
 package com.tonelope.tennis.scoreprocessor.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-@Data
+@Getter @Setter @ToString
 public class MatchRules {
 
 	private int numberOfSets = 3;

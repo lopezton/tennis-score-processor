@@ -6,11 +6,9 @@ import java.util.List;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@RequiredArgsConstructor
 @Getter @Setter @ToString
 public class Match extends Winnable {
 
@@ -41,6 +39,14 @@ public class Match extends Winnable {
 		return ListUtils.getLast(this.sets);
 	}
 	
+	public Game getCurrentGame() {
+		return this.getCurrentSet().getCurrentGame();
+	}
+	
+	public Point getCurrentPoint() {
+		return this.getCurrentGame().getCurrentPoint();
+	}
+	
 	public boolean isCurrentlyInFinalSet() {
 		if (null == this.sets || this.sets.isEmpty()) {
 			return false;
@@ -51,5 +57,12 @@ public class Match extends Winnable {
 	@Override
 	public void initialize() {
 		this.sets.add(new Set(this.matchRules, this.startingServer, this.startingReceiver, true));
+	}
+
+	/**
+	 * @param stroke
+	 */
+	public void addStroke(Stroke stroke) {
+		this.getCurrentSet().addStroke(stroke, this.matchRules);
 	}
 }

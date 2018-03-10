@@ -11,35 +11,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.model;
+package com.tonelope.tennis.scoreprocessor.processor.scoring;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.Winnable;
 
 /**
  * 
  * @author Tony Lopez
  *
+ * @param <T>
  */
-@Getter @Setter @ToString
-public abstract class ScoringObject {
+public interface ScoreCompletionHandler<T extends Winnable> {
 
-	protected Status status = Status.NOT_STARTED;
+	boolean test(T scoringObject, Match match);
 	
-	public boolean isNotStarted() {
-		return this.checkStatus(Status.NOT_STARTED);
-	}
+	boolean apply(T scoringObject, Match match);
 	
-	public boolean isInProgress() {
-		return this.checkStatus(Status.IN_PROGRESS);
-	}
-	
-	public boolean isCompleted() {
-		return this.checkStatus(Status.COMPLETE);
-	}
-
-	private boolean checkStatus(Status complete) {
-		return complete.equals(this.status);
-	}
+	void updateScore(T scoringObject, Match match, Player winningPlayer);
 }
