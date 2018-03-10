@@ -1,0 +1,25 @@
+<settings>
+
+  <servers>
+    <server>
+      <id>ossrh</id>
+      <username>${env.REPO_MAVEN_USER}</username>
+      <password>${env.REPO_MAVEN_PASS}</password>
+    </server>
+  </servers>
+  
+  <profiles>
+    <profile>
+      <id>release</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.keyname>1A41B585</gpg.keyname>
+        <gpg.passphrase>${env.MAVEN_GPG_PASSPHRASE}</gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
+  
+</settings>

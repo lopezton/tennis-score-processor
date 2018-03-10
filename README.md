@@ -1,5 +1,5 @@
 # Tennis Score Processor
-> Tennis Score Processor is an open source library dedicated to processing tennis match scoring. 
+> Tennis Score Processor is an open source library dedicated to processing tennis match scoring.
 
 [![Build Status](https://travis-ci.org/lopezton/tennis-score-processor.svg?branch=master)](https://travis-ci.org/lopezton/tennis-score-processor)
 [![Coverage Status](https://coveralls.io/repos/github/lopezton/tennis-score-processor/badge.svg?branch=master)](https://coveralls.io/github/lopezton/tennis-score-processor?branch=master)

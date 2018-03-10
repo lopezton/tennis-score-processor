@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 	
 	<name>tennis-score-processor</name>
-	<description>Open source project dedicated to collecting, analyzing, and sharing tennis match analytics using modern technologies.</description>
+	<description>Tennis Score Processor is an open source library dedicated to processing tennis match scoring.</description>
 	<url>https://lopezton.github.io/tennis-score-processor/</url>
 	
 	<licenses>
@@ -49,6 +49,11 @@
 		<lombok.version>1.16.20</lombok.version>
 		<junit.version>4.12</junit.version>
 		<slf4j.version>1.7.25</slf4j.version>
+		<maven.versions.plugin.version>2.5</maven.versions.plugin.version>
+		<nexus.staging.maven.version>1.6.7</nexus.staging.maven.version>
+		<maven.source.plugin.version>2.2.1</maven.source.plugin.version>
+		<maven.javadoc.plugin.version>2.9.1</maven.javadoc.plugin.version>
+		<maven.gpg.plugin.version>1.5</maven.gpg.plugin.version>
 	</properties>
 
 	<dependencies>
@@ -75,6 +80,17 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<distributionManagement>
+	  <snapshotRepository>
+	    <id>ossrh</id>
+	    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+	  </snapshotRepository>
+	  <repository>
+	    <id>ossrh</id>
+	    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+	  </repository>
+	</distributionManagement>
 
 	<build>
 		<plugins>
@@ -105,6 +121,73 @@
 			        <aggregate>true</aggregate>
 			    </configuration>
 			</plugin>
+			<plugin>
+		        <groupId>org.codehaus.mojo</groupId>
+		        <artifactId>versions-maven-plugin</artifactId>
+		        <version>${maven.versions.plugin.version}</version>
+		    </plugin>
 		</plugins>
 	</build>
+	
+	<profiles>	
+	  <profile> 
+	    <id>release</id>
+	    <build>
+	      <plugins>
+	      	<plugin>
+		      <groupId>org.sonatype.plugins</groupId>
+		      <artifactId>nexus-staging-maven-plugin</artifactId>
+		      <version>${nexus.staging.maven.version}</version>
+		      <extensions>true</extensions>
+		      <configuration>
+		        <serverId>ossrh</serverId>
+		        <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+		        <autoReleaseAfterClose>true</autoReleaseAfterClose>
+		      </configuration>
+		    </plugin>
+		    <plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-source-plugin</artifactId>
+		      <version>${maven.source.plugin.version}</version>
+		      <executions>
+		        <execution>
+		          <id>attach-sources</id>
+		          <goals>
+		            <goal>jar-no-fork</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
+		    <plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-javadoc-plugin</artifactId>
+		      <version>${maven.javadoc.plugin.version}</version>
+		      <executions>
+		        <execution>
+		          <id>attach-javadocs</id>
+		          <goals>
+		            <goal>jar</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
+		    <plugin>
+		      <groupId>org.apache.maven.plugins</groupId>
+		      <artifactId>maven-gpg-plugin</artifactId>
+		      <version>${maven.gpg.plugin.version}</version>
+		      <executions>
+		        <execution>
+		          <id>sign-artifacts</id>
+		          <phase>verify</phase>
+		          <goals>
+		            <goal>sign</goal>
+		          </goals>
+		        </execution>
+		      </executions>
+		    </plugin>
+	      </plugins>
+	    </build>
+	  </profile>
+	</profiles>
+	
 </project>
