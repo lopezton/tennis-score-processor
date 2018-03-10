@@ -3,6 +3,9 @@
 
 [![Build Status](https://travis-ci.org/lopezton/tennis-score-processor.svg?branch=master)](https://travis-ci.org/lopezton/tennis-score-processor)
 [![Coverage Status](https://coveralls.io/repos/github/lopezton/tennis-score-processor/badge.svg?branch=master)](https://coveralls.io/github/lopezton/tennis-score-processor?branch=master)
+[![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven/apache-maven.svg)]
+(https://search.maven.org/#search|ga|1|g:"com.tonelope.tennis" AND a:"scoreprocessor")
+
 
 Tennis Score Processor is a Java based library that records and processes tennis match data on a stroke-by-stroke or point-by-point bases. 
 
