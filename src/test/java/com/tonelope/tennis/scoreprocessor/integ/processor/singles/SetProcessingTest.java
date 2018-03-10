@@ -22,6 +22,7 @@ import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTest
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Status;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
 /**
  * 
@@ -33,7 +34,8 @@ public class SetProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_winSet() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		this.winSet(match, player1);
@@ -45,7 +47,8 @@ public class SetProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_winSet_tiebreak() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		

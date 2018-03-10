@@ -24,13 +24,15 @@ import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GameProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_winGame_fourServiceWinners() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		this.winServiceGame(match, player1);
@@ -43,7 +45,8 @@ public class GameProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_winGame_deuce() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -69,7 +72,8 @@ public class GameProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t3_winGame_noAdScoring() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		match.getMatchRules().setNoAdScoring(true);
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);

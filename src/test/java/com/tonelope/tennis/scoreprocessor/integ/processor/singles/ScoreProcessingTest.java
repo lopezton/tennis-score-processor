@@ -28,6 +28,7 @@ import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
 /**
  * 
@@ -39,7 +40,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_game_deuce() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -93,7 +95,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_game_noAd() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		match.getMatchRules().setNoAdScoring(true);
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
@@ -130,7 +133,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t3_set() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -157,7 +161,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t4_set_tiebreak() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -183,7 +188,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t5_set_longTiebreak() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -240,7 +246,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t6_match() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		Assert.assertEquals(0, match.getScore().getSetScores().size());
@@ -256,7 +263,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t7_match_finalset_tiebreak() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -290,7 +298,8 @@ public class ScoreProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t8_match_finalset_winByTwo() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		match.getMatchRules().setFinalSetTiebreakDisabled(true);
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);

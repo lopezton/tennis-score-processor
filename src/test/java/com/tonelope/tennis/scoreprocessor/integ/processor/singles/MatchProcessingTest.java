@@ -22,13 +22,15 @@ import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTest
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Status;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MatchProcessingTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_winMatch_perfect() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		
 		this.winSet(match, player1);
@@ -44,7 +46,8 @@ public class MatchProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_winMatch_fromFinalSet() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -64,7 +67,8 @@ public class MatchProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t3_winMatch_fromFinalSet_tiebreak() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
@@ -99,7 +103,8 @@ public class MatchProcessingTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t4_winMatch_fromFinalSet_winByTwo() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
 		match.getMatchRules().setFinalSetTiebreakDisabled(true);
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);

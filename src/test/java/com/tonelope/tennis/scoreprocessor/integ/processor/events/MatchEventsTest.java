@@ -25,8 +25,8 @@ import org.junit.runners.MethodSorters;
 
 import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTests;
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
-import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
 /**
  * @author Tony Lopez
@@ -40,7 +40,7 @@ public class MatchEventsTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t1_eventExecution() {
-		Match match = this.createNewMatch();
+		MatchProcessor processor = this.createNewMatch();
 		
 		AtomicInteger pointEventsExecuted = new AtomicInteger();
 		AtomicInteger gameEventsExecuted = new AtomicInteger();
@@ -54,8 +54,8 @@ public class MatchEventsTest extends AbstractProcessingTests {
 		this.matchProcessor.registerEvent(MatchEventType.ON_MATCH_COMPLETION, m -> matchEventsExecuted.getAndIncrement());
 		
 		// Execute the processor
-		this.winSet(match, match.getPlayers().get(0));
-		this.winSet(match, match.getPlayers().get(0));
+		this.winSet(processor.getMatch(), processor.getMatch().getPlayers().get(0));
+		this.winSet(processor.getMatch(), processor.getMatch().getPlayers().get(0));
 		
 		assertEquals(48, pointEventsExecuted.get());
 		assertEquals(12, gameEventsExecuted.get());
@@ -65,10 +65,10 @@ public class MatchEventsTest extends AbstractProcessingTests {
 	
 	@Test
 	public void t2_eventExecution_failure() {
-		Match match = this.createNewMatch();
+		MatchProcessor matchProcessor = this.createNewMatch();
 		this.matchProcessor.registerEvent(MatchEventType.ON_POINT_COMPLETION, m -> { throw new RuntimeException(); });
 		this.thrown.expect(FrameworkException.class);
 		this.thrown.expectMessage("Failed to execute an event");
-		this.winServiceGame(match, match.getPlayers().get(0));
+		this.winServiceGame(matchProcessor.getMatch(), matchProcessor.getMatch().getPlayers().get(0));
 	}
 }

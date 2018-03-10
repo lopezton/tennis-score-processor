@@ -33,6 +33,7 @@ import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.processor.DefaultMatchFactory;
 import com.tonelope.tennis.scoreprocessor.processor.MatchFactory;
+import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 import com.tonelope.tennis.scoreprocessor.processor.MatchStrategy;
 import com.tonelope.tennis.scoreprocessor.processor.SinglesMatchStrategy;
 
@@ -46,8 +47,8 @@ public class AbstractProcessingTests {
 	protected MatchFactory matchFactory = new DefaultMatchFactory();
 	protected MatchStrategy matchProcessor = new SinglesMatchStrategy();
 	
-	protected Match createNewMatch() {
-		return this.createNewMatch(null);
+	protected MatchProcessor createNewMatch() {
+		return new MatchProcessor(this.createNewMatch(null));
 	}
 	
 	protected Match createNewMatch(MatchRules matchRules) {
