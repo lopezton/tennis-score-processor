@@ -18,11 +18,34 @@ import com.tonelope.tennis.scoreprocessor.model.MatchRules;
 import com.tonelope.tennis.scoreprocessor.model.PlayerConfig;
 
 /**
+ * <p>
+ * Serves as the factory provider for <tt>Match</tt> objects.
+ * </p>
  * 
+ * <p>
+ * Implementations of this class should be responsible for validating match
+ * objects have all of the necessary information required for processing by the
+ * appropriate strategies and handlers.
+ * </p>
+ * 
+ * @see com.tonelope.tennis.scoreprocessor.processor.DefaultMatchFactory
+ * @see com.tonelope.tennis.scoreprocessor.model.Match
  * @author Tony Lopez
  *
  */
 public interface MatchFactory {
 
+	/**
+	 * <p>
+	 * Creates an instantiates a new <tt>Match</tt> object with the provided
+	 * parameters.
+	 * </p>
+	 * 
+	 * @param matchRules
+	 *            the matchRules to provide to the <tt>match</tt> object.
+	 * @param playerConfig
+	 *            the player configurations for the match
+	 * @return the new <tt>Match</tt> object.
+	 */
 	Match create(MatchRules matchRules, PlayerConfig playerConfig);
 }

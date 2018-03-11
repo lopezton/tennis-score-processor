@@ -22,13 +22,42 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * <p>
+ * Serves as the default factory provider for <tt>Match</tt> objects.
+ * </p>
  * 
+ * <p>
+ * This class will perform validations when creating a new <tt>Match</tt> entity
+ * to ensure that the provided parameters contain all of the necessary
+ * information for the scoring processor to correctly process it. If
+ * insufficient information has been provided, the
+ * </p>
+ * 
+ * <p>
+ * <tt>Match</tt> objects may be created directly, but caution should be
+ * exercised in doing so as the processor expects all <tt>Match</tt> objects to
+ * contain the necessary initial data. For this reason, it is suggested to use
+ * this or another defined factory pattern to ensure the data provided to the
+ * processor is consistent.
+ * </p>
+ * 
+ * @see com.tonelope.tennis.scoreprocessor.processor.MatchFactory
+ * @see com.tonelope.tennis.scoreprocessor.model.Match
  * @author Tony Lopez
  *
  */
-@Getter @Setter
+@Getter
+@Setter
 public class DefaultMatchFactory implements MatchFactory {
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.tonelope.tennis.scoreprocessor.processor.MatchFactory#create(com.
+	 * tonelope.tennis.scoreprocessor.model.MatchRules,
+	 * com.tonelope.tennis.scoreprocessor.model.PlayerConfig)
+	 */
 	public Match create(MatchRules matchRules, PlayerConfig playerConfig) {
 		if (null == matchRules) {
 			throw new FrameworkException("Missing configuration to create match: matchRules");

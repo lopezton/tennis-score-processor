@@ -27,14 +27,32 @@ public abstract class Winnable extends ScoringObject {
 	public abstract Player getWinningPlayer();
 
 	public abstract void initialize();
-	
+
 	public abstract Score getScore();
 
+	/**
+	 * <p>
+	 * Returns the winning player of this object, if the current point is
+	 * considered to be complete. If it is not complete, <tt>null</tt> will be
+	 * returned.
+	 * </p>
+	 * <p>
+	 * Unless overridden, the winning player is determined by retrieving the
+	 * last element in the provided <tt>list</tt> object and executes it's
+	 * <tt>getWinningPlayer</tt> method (<tt>list</tt> contains only types of
+	 * <tt>Winnable</tt>).
+	 * </p>
+	 * 
+	 * @param list
+	 *            the list of objects from which to retrieve the winning player
+	 *            from.
+	 * @return the winning player object.
+	 */
 	protected <T extends Winnable> Player getWinningPlayer(List<T> list) {
 		if (!this.isCompleted()) {
 			return null;
 		}
-		
+
 		return ListUtils.getLast(list).getWinningPlayer();
 	}
 }
