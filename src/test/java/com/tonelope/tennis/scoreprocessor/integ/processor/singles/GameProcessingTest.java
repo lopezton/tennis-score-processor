@@ -71,7 +71,7 @@ public class GameProcessingTest extends AbstractProcessingTests {
 	}
 	
 	@Test
-	public void t3_winGame_noAdScoring() {
+	public void t3_winGame_noAdScoring_serverWins() {
 		MatchProcessor matchProcessor = this.createNewMatch();
 		Match match = matchProcessor.getMatch();
 		match.getMatchRules().setNoAdScoring(true);
@@ -91,6 +91,34 @@ public class GameProcessingTest extends AbstractProcessingTests {
 		
 		Assert.assertEquals(1, match.getSets().size());
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(player1, match.getSets().get(0).getGames().get(0).getWinningPlayer());
+		Assert.assertEquals(7, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
+	}
+	
+	@Test
+	public void t4_winGame_noAdScoring_receiverWins() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		match.getMatchRules().setNoAdScoring(true);
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		
+		Assert.assertEquals(1, match.getSets().size());
+		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(player2, match.getSets().get(0).getGames().get(0).getWinningPlayer());
 		Assert.assertEquals(7, match.getSets().get(0).getGames().get(0).getPoints().size());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
 	}
