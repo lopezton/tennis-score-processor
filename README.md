@@ -46,31 +46,31 @@ Tennis Score Processor uses a main processor object called ```MatchProcessor``` 
 
 ![Entry Point](docs/images/uml/entry-point.png)  
 
-Getting started with Tennis Score Processor is easy. Create a ```Match``` entity and update it with the necessary information for the processor to be able to perform updates.
+Getting started with Tennis Score Processor is easy. Create a ```Match``` entity and update it with the necessary information for the processor to be able to perform updates. See the following code sample:  
 
 ```java
 public static void main(String[] args) {
+
+	// Build the match data
+	Player player1 = new Player("Roger", "Federer");
+	Player player2 = new Player("Rafael", "Nadal");
 		
-		// Build the match data
-		Player player1 = new Player("Roger", "Federer");
-		Player player2 = new Player("Rafael", "Nadal");
+	List<Player> players = new ArrayList<>();
+	players.add(player1);
+	players.add(player2);
 		
-		List<Player> players = new ArrayList<>();
-		players.add(player1);
-		players.add(player2);
+	// Initialize the playerConfig data
+	PlayerConfig playerConfig = new PlayerConfig(players, player1, player2);
 		
-		// Initialize the playerConfig data
-		PlayerConfig playerConfig = new PlayerConfig(players, player1, player2);
+	// Utilize the framework's match factory to create a new match entity
+	MatchFactory matchFactory = new DefaultMatchFactory();
 		
-		// Utilize the framework's match factory to create a new match entity
-		MatchFactory matchFactory = new DefaultMatchFactory();
+	// Instantiate the matchProcessor
+	MatchProcessor matchProcessor = new MatchProcessor(matchFactory.create(new MatchRules(), playerConfig));
 		
-		// Instantiate the matchProcessor
-		MatchProcessor matchProcessor = new MatchProcessor(matchFactory.create(new MatchRules(), playerConfig));
-		
-		// Use the matchProcessor to update match results on stroke or point basis
-		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-	}
+	// Use the matchProcessor to update match results on stroke or point basis
+	matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+}
 ```
 
 ## Development setup
