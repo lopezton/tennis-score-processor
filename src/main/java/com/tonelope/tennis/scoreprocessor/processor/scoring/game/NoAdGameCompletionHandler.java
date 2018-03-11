@@ -33,7 +33,7 @@ public class NoAdGameCompletionHandler extends GameCompletionHandler<Game> {
 		if (PointValue.ADVANTAGE.equals(gameScore.getServerScore())) {
 			gameScore.setServerScore(PointValue.GAME);
 			return true;
-		} else if (PointValue.ADVANTAGE.equals(gameScore.getServerScore())) {
+		} else if (PointValue.ADVANTAGE.equals(gameScore.getReceiverScore())) {
 			gameScore.setReceiverScore(PointValue.GAME);
 			return true;
 		}

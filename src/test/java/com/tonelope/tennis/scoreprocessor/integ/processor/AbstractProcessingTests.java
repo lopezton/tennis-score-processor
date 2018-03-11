@@ -34,8 +34,6 @@ import com.tonelope.tennis.scoreprocessor.model.TiebreakScore;
 import com.tonelope.tennis.scoreprocessor.processor.DefaultMatchFactory;
 import com.tonelope.tennis.scoreprocessor.processor.MatchFactory;
 import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
-import com.tonelope.tennis.scoreprocessor.processor.MatchStrategy;
-import com.tonelope.tennis.scoreprocessor.processor.SinglesMatchStrategy;
 
 /**
  * 
@@ -45,7 +43,7 @@ import com.tonelope.tennis.scoreprocessor.processor.SinglesMatchStrategy;
 public class AbstractProcessingTests {
 	
 	protected MatchFactory matchFactory = new DefaultMatchFactory();
-	protected MatchStrategy matchProcessor = new SinglesMatchStrategy();
+	protected MatchProcessor matchProcessor;
 	
 	protected MatchProcessor createNewMatch() {
 		return new MatchProcessor(this.createNewMatch(null));
@@ -63,7 +61,9 @@ public class AbstractProcessingTests {
 		playerConfig.setStartingServer(playerConfig.getPlayers().get(0));
 		playerConfig.setStartingReceiver(playerConfig.getPlayers().get(1));
 		
-		return this.matchFactory.create(Optional.ofNullable(matchRules).orElse(new MatchRules()), playerConfig);
+		Match match = this.matchFactory.create(Optional.ofNullable(matchRules).orElse(new MatchRules()), playerConfig);
+		this.matchProcessor = new MatchProcessor(match);
+		return match;
 	}
 	
 	protected void hitFirstServeAce(Match match, Player player) {
@@ -71,7 +71,7 @@ public class AbstractProcessingTests {
 			Assert.fail("Attempted to serve ace as " + player + ", but this player is not the current server.");
 		}
 		
-		this.matchProcessor.update(match, new Stroke(player, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player, StrokeType.FIRST_SERVE, false, true));
 	}
 	
 	private boolean isPlayerCurrentServer(Match match, Player player) {
@@ -106,7 +106,7 @@ public class AbstractProcessingTests {
 			Assert.fail("Attempted to miss first serve as " + player + ", but this player is not the current server.");
 		}
 		
-		this.matchProcessor.update(match, new Stroke(player, StrokeType.FIRST_SERVE, true, false));
+		this.matchProcessor.update(new Stroke(player, StrokeType.FIRST_SERVE, true, false));
 	}
 	
 	protected void missSecondServe(Match match, Player player) {
@@ -114,7 +114,7 @@ public class AbstractProcessingTests {
 			Assert.fail("Attempted to miss second serve as " + player + ", but this player is not the current server.");
 		}
 		
-		this.matchProcessor.update(match, new Stroke(player, StrokeType.SECOND_SERVE, true, false));
+		this.matchProcessor.update(new Stroke(player, StrokeType.SECOND_SERVE, true, false));
 	}
 	
 	protected void validateGameScore(Game game, String p1, String p2) {
