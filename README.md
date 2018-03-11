@@ -26,11 +26,52 @@ Feedback and Pull Requests are welcome.
 
 ## Installation
 
-There will be some pretty cool instructions on how to install this software when we have an actual release.
+### Maven
+Tennis Score Processor is hosted on [Maven Central](https://search.maven.org/). Include the following in your project's pom.xml:  
+
+```xml
+<dependency>
+    <groupId>com.tonelope.tennis</groupId>
+    <artifactId>scoreprocessor</artifactId>
+    <version>0.0.1</version>
+</dependency>
+```
+
+### Manual
+You can download the .jar file directly from the [Github release page](https://github.com/lopezton/tennis-score-processor/releases) and include it on your project's classpath.
 
 ## Usage example
 
-TODO
+Tennis Score Processor uses a main processor object called ```MatchProcessor``` to update and modify the ```Match``` object, a simple POJO containing match data.  See the following diagram:  
+
+![Entry Point](docs/images/uml/entry-point.png)  
+
+Getting started with Tennis Score Processor is easy. Create a ```Match``` entity and update it with the necessary information for the processor to be able to perform updates.
+
+```java
+public static void main(String[] args) {
+		
+		// Build the match data
+		Player player1 = new Player("Roger", "Federer");
+		Player player2 = new Player("Rafael", "Nadal");
+		
+		List<Player> players = new ArrayList<>();
+		players.add(player1);
+		players.add(player2);
+		
+		// Initialize the playerConfig data
+		PlayerConfig playerConfig = new PlayerConfig(players, player1, player2);
+		
+		// Utilize the framework's match factory to create a new match entity
+		MatchFactory matchFactory = new DefaultMatchFactory();
+		
+		// Instantiate the matchProcessor
+		MatchProcessor matchProcessor = new MatchProcessor(matchFactory.create(new MatchRules(), playerConfig));
+		
+		// Use the matchProcessor to update match results on stroke or point basis
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+	}
+```
 
 ## Development setup
 

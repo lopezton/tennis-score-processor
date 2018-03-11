@@ -65,22 +65,20 @@ public class MatchProcessor {
 	/**
 	 * <p>Updates this <tt>match</tt> object with the provided <tt>stroke</tt>.</p>
 	 * 
-	 * @param match the match object
 	 * @param stroke the stroke object to update within <tt>match</tt>.
 	 * @return the match object
 	 */
-	public Match update(Match match, Stroke stroke) {
-		return this.strategy.update(match, stroke);
+	public Match update(Stroke stroke) {
+		return this.strategy.update(this.match, stroke);
 	}
 	
 	/**
 	 * <p>Updates this <tt>match</tt> object with the provided <tt>point</tt>.</p>
 	 * 
-	 * @param match the match object
 	 * @param point the point object to update within <tt>match</tt>.
 	 * @return the match object
 	 */
-	public Match update(Match match, Point point) {
-		return this.strategy.update(match, point);
+	public Match update(Point point) {
+		return this.strategy.update(this.match, point);
 	}
 }
