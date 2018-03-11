@@ -21,6 +21,7 @@ import org.junit.runners.MethodSorters;
 import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTests;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.SimplePoint;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
@@ -120,6 +121,24 @@ public class GameProcessingTest extends AbstractProcessingTests {
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
 		Assert.assertEquals(player2, match.getSets().get(0).getGames().get(0).getWinningPlayer());
 		Assert.assertEquals(7, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
+	}
+	
+	@Test
+	public void t5_winGame_pointOnly() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		
+		Assert.assertEquals(1, match.getSets().size());
+		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(4, match.getSets().get(0).getGames().get(0).getPoints().size());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
 	}
 }

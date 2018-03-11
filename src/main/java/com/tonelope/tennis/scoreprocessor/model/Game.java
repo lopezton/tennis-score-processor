@@ -30,7 +30,9 @@ import lombok.ToString;
  *
  */
 @AllArgsConstructor
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class Game extends Winnable {
 
 	private Player server;
@@ -38,12 +40,12 @@ public class Game extends Winnable {
 	@Getter(AccessLevel.NONE)
 	private final GameScore score = new GameScore();
 	private final List<Point> points = new ArrayList<>();
-	
+
 	@Override
 	public Score getScore() {
 		return this.score;
 	}
-	
+
 	@Override
 	public Player getWinningPlayer() {
 		return this.getWinningPlayer(this.points);
@@ -52,7 +54,7 @@ public class Game extends Winnable {
 	public Point getCurrentPoint() {
 		return ListUtils.getLast(this.points);
 	}
-	
+
 	public Game(Player server, Player receiver, boolean initialize) {
 		this(server, receiver);
 		if (initialize) {
@@ -68,19 +70,53 @@ public class Game extends Winnable {
 	public Player getNextServer() {
 		return this.server;
 	}
-	
+
 	public Player getNextReceiver() {
 		return this.receiver;
 	}
 
 	/**
 	 * @param stroke
-	 * @param matchRules 
+	 * @param matchRules
 	 */
 	public void addStroke(Stroke stroke, MatchRules matchRules) {
 		this.getCurrentPoint().addStroke(stroke, matchRules);
 		if (this.isNotStarted()) {
 			this.status = Status.IN_PROGRESS;
+		}
+	}
+
+	/**
+	 * 
+	 * @param point
+	 * @param matchRules
+	 */
+	public void addPoint(Point point, MatchRules matchRules) {
+		this.validatePoint(point, matchRules);
+
+		this.points.add(point);
+		if (this.isNotStarted()) {
+			this.setStatus(Status.IN_PROGRESS);
+		}
+	}
+
+	/**
+	 * @param point
+	 * @param matchRules
+	 */
+	private void validatePoint(Point point, MatchRules matchRules) {
+		if (point instanceof SimplePoint) {
+			Point lastPoint = ListUtils.getLast(this.points);
+			if (null != lastPoint) {
+				if (lastPoint.isNotStarted()) {
+					// last point was added via processor logic and not a real
+					// point. Remove it and replace with SimplePoint.
+					this.points.remove(this.points.size() - 1);
+				} else if (lastPoint.isInProgress()) {
+					throw new FrameworkException("Attempted to add point while previous point " +
+							"is still in progress.");
+				}
+			}
 		}
 	}
 }

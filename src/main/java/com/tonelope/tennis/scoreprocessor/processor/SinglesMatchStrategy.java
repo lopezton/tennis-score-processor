@@ -49,30 +49,9 @@ public class SinglesMatchStrategy extends AbstractMatchStrategy {
 	public SinglesMatchStrategy() {
 		this(null);
 	}
-	
+
 	public SinglesMatchStrategy(ScoreCompletionHandlerResolver scoreCompletionHandlerResolver) {
 		super(scoreCompletionHandlerResolver);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchStrategy#
-	 * addStrokeToMatch(com.tonelope.tennis.scoreprocessor.model.Match,
-	 * com.tonelope.tennis.scoreprocessor.model.Stroke)
-	 */
-	@Override
-	public Match update(Match match, Stroke stroke) {
-		if (!match.isInProgress() && !match.isNotStarted()) {
-			throw new FrameworkException(
-					"Updating score when match status is " + match.getStatus() + " is not supported.");
-		}
-
-		if (match.isNotStarted()) {
-			match.setStatus(Status.IN_PROGRESS);
-		}
-
-		return this.processStroke(match, stroke);
 	}
 
 	/**
@@ -118,6 +97,76 @@ public class SinglesMatchStrategy extends AbstractMatchStrategy {
 		return this.scoreCompletionHandlerResolver.resolve(scoringObject, match);
 	}
 
+	private Match process(Match match) {
+
+		Set currentSet = match.getCurrentSet();
+		Game currentGame = currentSet.getCurrentGame();
+		Point currentPoint = currentGame.getCurrentPoint();
+
+		if (this.isComplete(currentPoint, match)) {
+			this.executeMatchEvents(MatchEventType.ON_POINT_COMPLETION, match);
+			if (this.isComplete(currentGame, match)) {
+				this.executeMatchEvents(MatchEventType.ON_GAME_COMPLETION, match);
+				if (this.isComplete(currentSet, match)) {
+					this.executeMatchEvents(MatchEventType.ON_SET_COMPLETION, match);
+					if (this.isComplete(match, match)) {
+						this.executeMatchEvents(MatchEventType.ON_MATCH_COMPLETION, match);
+					} else {
+						Player server = currentGame.getServer().getOpposingPlayer(match.getPlayers());
+						match.getSets().add(new Set(match.getMatchRules(), server, currentGame.getServer(), true));
+					}
+				} else {
+					currentSet.getGames().add(this.createNextGame(match.getMatchRules(), match));
+				}
+			} else {
+				currentGame.getPoints().add(new Point(currentGame.getNextServer(), currentGame.getNextReceiver()));
+			}
+		}
+
+		return match;
+	}
+
+	/**
+	 * <p>
+	 * Adds <tt>point</tt> into the <tt>match</tt> object.
+	 * </p>
+	 * 
+	 * <p>
+	 * Handles all processing logic that needs to occur prior and after to the
+	 * point being added to the match object including:
+	 * </p>
+	 * 
+	 * <ul>
+	 * <li>Adding the point to the current point</li>
+	 * <li>If the point ends the current game, adds a new set or tiebreak to the
+	 * match</li>
+	 * <li>If the point ends the set or tiebreak, adds a new set to the
+	 * match</li>
+	 * <li>If the point ends the set or tiebreak and it is the last in the
+	 * match, completes the match</li>
+	 * <li>Updates the scoring objects contained within the match object</tt>
+	 * <li>Executes registered events</li>
+	 * </ul>
+	 * 
+	 * <p>
+	 * Events can be registered with this instance of
+	 * <tt>SinglesMatchStrategy</tt> that occur after the completion of a point,
+	 * game, tiebreak, set, or match.
+	 * </p>
+	 * 
+	 * @param match
+	 *            the match object
+	 * @param point
+	 *            the point object to add to <tt>match</tt>
+	 * @return the match object
+	 */
+	@Override
+	public Match update(Match match, Point point) {
+		this.validateAndPrepare(match);
+		match.addPoint(point);
+		return this.process(match);
+	}
+
 	/**
 	 * <p>
 	 * Adds <tt>stroke</tt> into the <tt>match</tt> object.
@@ -146,8 +195,8 @@ public class SinglesMatchStrategy extends AbstractMatchStrategy {
 	 * 
 	 * <p>
 	 * Events can be registered with this instance of
-	 * <tt>SinglesMatchStrategy</tt> that occur after the completion of a
-	 * point, game, tiebreak, set, or match.
+	 * <tt>SinglesMatchStrategy</tt> that occur after the completion of a point,
+	 * game, tiebreak, set, or match.
 	 * </p>
 	 * 
 	 * @param match
@@ -156,44 +205,30 @@ public class SinglesMatchStrategy extends AbstractMatchStrategy {
 	 *            the stroke to add into the match object
 	 * @return the match object
 	 */
-	private Match processStroke(Match match, Stroke stroke) {
-		MatchRules matchRules = match.getMatchRules();
-
+	@Override
+	public Match update(Match match, Stroke stroke) {
+		this.validateAndPrepare(match);
 		match.addStroke(stroke);
-
-		Set currentSet = match.getCurrentSet();
-		Game currentGame = currentSet.getCurrentGame();
-		Point currentPoint = currentGame.getCurrentPoint();
-
-		if (this.isComplete(currentPoint, match)) {
-			this.executeMatchEvents(MatchEventType.ON_POINT_COMPLETION, match);
-			if (this.isComplete(currentGame, match)) {
-				this.executeMatchEvents(MatchEventType.ON_GAME_COMPLETION, match);
-				if (this.isComplete(currentSet, match)) {
-					this.executeMatchEvents(MatchEventType.ON_SET_COMPLETION, match);
-					if (this.isComplete(match, match)) {
-						this.executeMatchEvents(MatchEventType.ON_MATCH_COMPLETION, match);
-					} else {
-						Player server = currentGame.getServer().getOpposingPlayer(match.getPlayers());
-						match.getSets().add(new Set(matchRules, server, currentGame.getServer(), true));
-					}
-				} else {
-					currentSet.getGames().add(this.createNextGame(matchRules, match));
-				}
-			} else {
-				currentGame.getPoints().add(new Point(currentGame.getNextServer(), currentGame.getNextReceiver()));
-			}
-		}
-
-		return match;
+		return this.process(match);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.MatchStrategy#update(com.tonelope.tennis.scoreprocessor.model.Match, com.tonelope.tennis.scoreprocessor.model.Point)
+	/**
+	 * <p>
+	 * Validates <tt>match</tt> is as expected and performs any preparatory
+	 * steps needed for the <tt>match</tt> object.
+	 * </p>
+	 * 
+	 * @param match
+	 *            the match object
 	 */
-	@Override
-	public Match update(Match match, Point point) {
-		// TODO
-		throw new UnsupportedOperationException("Not yet implemented");
+	private void validateAndPrepare(Match match) {
+		if (!match.isInProgress() && !match.isNotStarted()) {
+			throw new FrameworkException(
+					"Updating score when match status is " + match.getStatus() + " is not supported.");
+		}
+
+		if (match.isNotStarted()) {
+			match.setStatus(Status.IN_PROGRESS);
+		}
 	}
 }
