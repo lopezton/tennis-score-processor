@@ -50,19 +50,19 @@ public class GameProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
 		
 		Assert.assertEquals(1, match.getSets().size());
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
@@ -78,16 +78,16 @@ public class GameProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
 		
 		Assert.assertEquals(1, match.getSets().size());
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
@@ -104,17 +104,17 @@ public class GameProcessingTest extends AbstractProcessingTests {
 		Player player1 = match.getPlayers().get(0);
 		Player player2 = match.getPlayers().get(1);
 		
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
-		this.matchProcessor.update(match, new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
-		this.matchProcessor.update(match, new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		this.matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		this.matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
 		
 		Assert.assertEquals(1, match.getSets().size());
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
