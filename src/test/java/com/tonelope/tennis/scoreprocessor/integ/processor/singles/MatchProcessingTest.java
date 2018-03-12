@@ -24,6 +24,11 @@ import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
+/**
+ * 
+ * @author Tony Lopez
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MatchProcessingTest extends AbstractProcessingTests {
 
