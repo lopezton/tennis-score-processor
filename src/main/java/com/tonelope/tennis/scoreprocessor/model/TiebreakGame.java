@@ -15,22 +15,19 @@ package com.tonelope.tennis.scoreprocessor.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter
+@Getter
 public class TiebreakGame extends Game {
 
 	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private Player nextServer;
 	
 	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private Player nextReceiver;
 	
 	@Getter(AccessLevel.NONE)

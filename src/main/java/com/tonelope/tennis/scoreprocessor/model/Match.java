@@ -19,7 +19,6 @@ import java.util.List;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -53,9 +52,7 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@Getter
-@Setter
-@ToString
+@Getter @ToString
 public class Match extends Winnable {
 
 	private String id;

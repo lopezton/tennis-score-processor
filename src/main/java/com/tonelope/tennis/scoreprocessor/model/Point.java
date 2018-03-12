@@ -19,9 +19,7 @@ import java.util.List;
 
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -29,13 +27,17 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@AllArgsConstructor
-@Getter @Setter @ToString
+@Getter @ToString
 public class Point extends Winnable {
 
-	private Player server;
-	private Player receiver;
+	private final Player server;
+	private final Player receiver;
 	private final List<Stroke> strokes = new ArrayList<>();
+	
+	public Point(Player server, Player receiver) {
+		this.server = server;
+		this.receiver = receiver;
+	}
 	
 	@Override
 	public Player getWinningPlayer() {

@@ -19,9 +19,7 @@ import java.util.List;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -29,14 +27,11 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Getter @ToString
 public class Game extends Winnable {
 
-	private Player server;
-	private Player receiver;
+	private final Player server;
+	private final Player receiver;
 	@Getter(AccessLevel.NONE)
 	private final GameScore score = new GameScore();
 	private final List<Point> points = new ArrayList<>();
@@ -55,6 +50,11 @@ public class Game extends Winnable {
 		return ListUtils.getLast(this.points);
 	}
 
+	public Game(Player server, Player receiver) {
+		this.server = server;
+		this.receiver = receiver;
+	}
+	
 	public Game(Player server, Player receiver, boolean initialize) {
 		this(server, receiver);
 		if (initialize) {

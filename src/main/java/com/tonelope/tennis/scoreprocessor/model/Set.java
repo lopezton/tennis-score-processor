@@ -18,9 +18,7 @@ import java.util.List;
 
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -28,13 +26,12 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@AllArgsConstructor
-@Getter @Setter @ToString
+@Getter @ToString
 public class Set extends Winnable {
 
-	private MatchRules matchRules;
-	private Player startingServer;
-	private Player startingReceiver;
+	private final MatchRules matchRules;
+	private final Player startingServer;
+	private final Player startingReceiver;
 	private final SetScore score = new SetScore();
 	private final List<Game> games = new ArrayList<>();
 	
@@ -43,6 +40,12 @@ public class Set extends Winnable {
 		if (initialize) {
 			this.initialize();
 		}
+	}
+	
+	public Set(MatchRules matchRules, Player startingServer, Player startingReceiver) {
+		this.matchRules = matchRules;
+		this.startingServer = startingServer;
+		this.startingReceiver = startingReceiver;
 	}
 	
 	public Game getCurrentGame() {
