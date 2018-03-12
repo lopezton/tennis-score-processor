@@ -19,7 +19,6 @@ import java.util.List;
 import com.tonelope.tennis.scoreprocessor.utils.ListUtils;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -53,9 +52,7 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@Getter
-@Setter
-@ToString
+@Getter @ToString
 public class Match extends Winnable {
 
 	private String id;
@@ -78,6 +75,7 @@ public class Match extends Winnable {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see com.tonelope.tennis.scoreprocessor.model.Winnable#getWinningPlayer()
 	 */
 	@Override
@@ -159,5 +157,19 @@ public class Match extends Winnable {
 	 */
 	public void addStroke(Stroke stroke) {
 		this.getCurrentPoint().addStroke(stroke, this.matchRules);
+	}
+
+	/**
+	 * <p>
+	 * Adds the provided <tt>point</tt> object to the current game of this
+	 * match.
+	 * </p>
+	 * 
+	 * @param point
+	 *            the point object to add.
+	 * @see com.tonelope.tennis.scoreprocessor.model.Match#getCurrentGame()
+	 */
+	public void addPoint(Point point) {
+		this.getCurrentGame().addPoint(point, this.matchRules);
 	}
 }

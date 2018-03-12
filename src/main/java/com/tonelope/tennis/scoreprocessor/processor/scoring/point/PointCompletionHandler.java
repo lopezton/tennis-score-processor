@@ -16,6 +16,7 @@ package com.tonelope.tennis.scoreprocessor.processor.scoring.point;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
+import com.tonelope.tennis.scoreprocessor.model.SimplePoint;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandler;
@@ -34,15 +35,22 @@ public abstract class PointCompletionHandler implements ScoreCompletionHandler<P
 	 */
 	@Override
 	public boolean apply(Point scoringObject, Match match) {
-		Stroke stroke = scoringObject.getCurrentStroke();
 		
 		Player winningPlayer = null;
-		if (stroke.isWinner()) {
-			winningPlayer = stroke.getPlayer();
-		} else if (stroke.isOutRallyShot()) {
-			winningPlayer = ListUtils.getLast(scoringObject.getStrokes(), 2).getPlayer();
-		} else if (stroke.isDoubleFault()) {
-			winningPlayer = stroke.getPlayer().getOpposingPlayer(match.getPlayers());
+		
+		if (!(scoringObject instanceof SimplePoint)) {
+			
+			Stroke stroke = scoringObject.getCurrentStroke();
+			if (stroke.isWinner()) {
+				winningPlayer = stroke.getPlayer();
+			} else if (stroke.isOutRallyShot()) {
+				winningPlayer = ListUtils.getLast(scoringObject.getStrokes(), 2).getPlayer();
+			} else if (stroke.isDoubleFault()) {
+				winningPlayer = stroke.getPlayer().getOpposingPlayer(match.getPlayers());
+			}
+		} else {
+			
+			winningPlayer = scoringObject.getWinningPlayer();
 		}
 		
 		if (null != winningPlayer) {

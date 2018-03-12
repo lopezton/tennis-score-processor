@@ -24,6 +24,7 @@ import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Set;
+import com.tonelope.tennis.scoreprocessor.model.SimplePoint;
 import com.tonelope.tennis.scoreprocessor.model.TiebreakGame;
 import com.tonelope.tennis.scoreprocessor.model.Winnable;
 import com.tonelope.tennis.scoreprocessor.processor.scoring.game.DeuceGameCompletionHandler;
@@ -66,6 +67,7 @@ public class DefaultScoreCompletionStrategyHandler implements ScoreCompletionHan
 	private <T> Map<Class<?>, List<T>> createDefaultScoreCompletionHandlers() {
 		// TODO Refactor
 		Map<Class<?>, List<T>> map = new HashMap<>();
+		map.put(SimplePoint.class, (List<T>) Stream.of(new DefaultPointCompletionHandler(), new TiebreakPointCompletionHandler()).collect(Collectors.toList()));
 		map.put(Point.class, (List<T>) Stream.of(new DefaultPointCompletionHandler(), new TiebreakPointCompletionHandler()).collect(Collectors.toList()));
 		map.put(Game.class, (List<T>) Stream.of(new DeuceGameCompletionHandler(), new NoAdGameCompletionHandler()).collect(Collectors.toList()));
 		map.put(TiebreakGame.class, (List<T>) Stream.of(new TiebreakGameCompletionHandler()).collect(Collectors.toList()));

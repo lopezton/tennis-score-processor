@@ -21,11 +21,17 @@ import org.junit.runners.MethodSorters;
 import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTests;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.SimplePoint;
 import com.tonelope.tennis.scoreprocessor.model.Status;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 
+/**
+ * 
+ * @author Tony Lopez
+ *
+ */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class GameProcessingTest extends AbstractProcessingTests {
 
@@ -120,6 +126,97 @@ public class GameProcessingTest extends AbstractProcessingTests {
 		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
 		Assert.assertEquals(player2, match.getSets().get(0).getGames().get(0).getWinningPlayer());
 		Assert.assertEquals(7, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
+	}
+	
+	@Test
+	public void t5_winGame_simplePoint() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		
+		Assert.assertEquals(1, match.getSets().size());
+		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(4, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(player1, match.getSets().get(0).getGames().get(0).getWinningPlayer());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
+	}
+	
+	@Test
+	public void t6_winGame_simplePoint_deuce() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		
+		Assert.assertEquals(1, match.getSets().size());
+		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(8, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(player2, match.getSets().get(0).getGames().get(0).getWinningPlayer());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
+	}
+	
+	@Test
+	public void t7_winGame_simplePoint_noAd() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		match.getMatchRules().setNoAdScoring(true);
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		matchProcessor.update(new SimplePoint(player1, player2, player2));
+		
+		Assert.assertEquals(1, match.getSets().size());
+		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(7, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(player2, match.getSets().get(0).getGames().get(0).getWinningPlayer());
+		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
+	}
+	
+	@Test
+	public void t7_winGame_strokeAndSimplePoint() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		matchProcessor.update(new SimplePoint(player1, player2, player1));
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+		
+		Assert.assertEquals(1, match.getSets().size());
+		Assert.assertEquals(2, match.getSets().get(0).getGames().size());
+		Assert.assertEquals(8, match.getSets().get(0).getGames().get(0).getPoints().size());
+		Assert.assertEquals(player1, match.getSets().get(0).getGames().get(0).getWinningPlayer());
 		Assert.assertEquals(Status.COMPLETE, match.getSets().get(0).getGames().get(0).getStatus());
 	}
 }
