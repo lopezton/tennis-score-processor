@@ -21,7 +21,7 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
  * 
  * @author Tony Lopez
  *
- * @param <T>
+ * @param <T> The <tt>Winnable</tt> type.
  */
 public interface ScoreCompletionHandler<T extends Winnable> {
 

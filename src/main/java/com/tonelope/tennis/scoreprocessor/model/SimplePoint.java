@@ -23,11 +23,7 @@ import lombok.Getter;
 public class SimplePoint extends Point {
 
 	private final Player winningPlayer;
-	
-	/**
-	 * @param server
-	 * @param receiver
-	 */
+
 	public SimplePoint(Player server, Player receiver, Player winningPlayer) {
 		super(server, receiver);
 		this.winningPlayer = winningPlayer;
