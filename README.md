@@ -75,13 +75,7 @@ public static void main(String[] args) {
 
 ## Contributing
 
-1. Fork the repository (<https://github.com/lopezton/tennis-score-processor/fork>)
-2. Create your feature branch (`git checkout -b feature/my-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin feature/my-feature`)
-5. Create a new Pull Request
-
-This project uses a forking Git Flow for it's contribution and deployment strategies.
+See [Contributing](/docs/CONTRIBUTING.md) for information on how to contribute to this project. Contributions are open to the community and very much appreciated!
 
 ## Meta
 
