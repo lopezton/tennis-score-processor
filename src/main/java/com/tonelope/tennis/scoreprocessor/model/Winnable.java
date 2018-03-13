@@ -46,6 +46,8 @@ public abstract class Winnable extends ScoringObject {
 	 * @param list
 	 *            the list of objects from which to retrieve the winning player
 	 *            from.
+	 * @param <T>
+	 * 			  the <tt>Winnable</tt> object.
 	 * @return the winning player object.
 	 */
 	protected <T extends Winnable> Player getWinningPlayer(List<T> list) {

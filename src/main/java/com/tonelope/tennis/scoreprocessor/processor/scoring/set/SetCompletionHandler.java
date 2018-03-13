@@ -30,7 +30,7 @@ import com.tonelope.tennis.scoreprocessor.processor.scoring.ScoreCompletionHandl
  * 
  * @author Tony Lopez
  *
- * @param <T>
+ * @param <T> The type of <tt>Set</tt>.
  */
 public abstract class SetCompletionHandler<T extends Set> implements ScoreCompletionHandler<T> {
 

@@ -61,19 +61,11 @@ public class Set extends Winnable {
 	public void initialize() {
 		this.games.add(new Game(startingServer, startingReceiver, true));
 	}
-	
-	/**
-	 * @param currentSet
-	 * @return
-	 */
+
 	public boolean isNextGameTiebreakEligible() {
 		return this.getGames().size() == (2 * this.matchRules.getNumberOfGamesPerSet());
 	}
 
-	/**
-	 * @param stroke
-	 * @param matchRules
-	 */
 	public void addStroke(Stroke stroke, MatchRules matchRules) {
 		this.getCurrentGame().addStroke(stroke, matchRules);
 		if (this.isNotStarted()) {

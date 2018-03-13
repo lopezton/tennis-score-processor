@@ -23,10 +23,5 @@ import com.tonelope.tennis.scoreprocessor.model.Winnable;
  */
 public interface ScoreCompletionHandlerResolver {
 
-	/**
-	 * @param scoringObject
-	 * @param match
-	 * @return
-	 */
 	boolean resolve(Winnable scoringObject, Match match);
 }

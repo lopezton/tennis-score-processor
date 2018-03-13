@@ -144,7 +144,7 @@ public class SinglesMatchStrategy extends AbstractMatchStrategy {
 	 * match</li>
 	 * <li>If the point ends the set or tiebreak and it is the last in the
 	 * match, completes the match</li>
-	 * <li>Updates the scoring objects contained within the match object</tt>
+	 * <li>Updates the scoring objects contained within the match object</li>
 	 * <li>Executes registered events</li>
 	 * </ul>
 	 * 
@@ -189,7 +189,7 @@ public class SinglesMatchStrategy extends AbstractMatchStrategy {
 	 * match</li>
 	 * <li>If the stroke ends the set or tiebreak and it is the last in the
 	 * match, completes the match</li>
-	 * <li>Updates the scoring objects contained within the match object</tt>
+	 * <li>Updates the scoring objects contained within the match object</li>
 	 * <li>Executes registered events</li>
 	 * </ul>
 	 * 

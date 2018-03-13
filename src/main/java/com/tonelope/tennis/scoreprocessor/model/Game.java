@@ -75,10 +75,6 @@ public class Game extends Winnable {
 		return this.receiver;
 	}
 
-	/**
-	 * @param stroke
-	 * @param matchRules
-	 */
 	public void addStroke(Stroke stroke, MatchRules matchRules) {
 		this.getCurrentPoint().addStroke(stroke, matchRules);
 		if (this.isNotStarted()) {
@@ -86,11 +82,6 @@ public class Game extends Winnable {
 		}
 	}
 
-	/**
-	 * 
-	 * @param point
-	 * @param matchRules
-	 */
 	public void addPoint(Point point, MatchRules matchRules) {
 		this.validatePoint(point, matchRules);
 
@@ -100,10 +91,6 @@ public class Game extends Winnable {
 		}
 	}
 
-	/**
-	 * @param point
-	 * @param matchRules
-	 */
 	private void validatePoint(Point point, MatchRules matchRules) {
 		if (point instanceof SimplePoint) {
 			Point lastPoint = ListUtils.getLast(this.points);
