@@ -12,6 +12,11 @@ Tennis Score Processor uses a main processor object called ```MatchProcessor``` 
 
 ![Entry Point](docs/images/uml/entry-point.png)  
 
+## Quick Links
+
+* [Request a feature](https://github.com/lopezton/tennis-score-processor/issues/new?template=issue_template.md)
+* [Report a defect](https://github.com/lopezton/tennis-score-processor/issues/new?template=defect_template.md)
+
 ## Installation
 
 ### Maven
