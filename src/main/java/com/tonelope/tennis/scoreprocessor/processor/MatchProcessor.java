@@ -15,11 +15,16 @@ package com.tonelope.tennis.scoreprocessor.processor;
 
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.TennisStatistic;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.TennisStatisticResult;
 
 import lombok.Getter;
 
@@ -50,6 +55,8 @@ import lombok.Getter;
 @Getter
 public class MatchProcessor {
 
+	public static final Logger LOG = LoggerFactory.getLogger(MatchProcessor.class);
+	
 	private final Match match;
 	private final MatchStrategy strategy;
 
@@ -134,5 +141,9 @@ public class MatchProcessor {
 	 */
 	public void registerEvent(MatchEventType eventType, Consumer<Match> event) {
 		this.strategy.registerEvent(eventType, event);
+	}
+	
+	public <R extends TennisStatisticResult, T extends TennisStatistic<R>> R evaluateStatistic(T statistic) {
+		return statistic.getResult(this.match);
 	}
 }

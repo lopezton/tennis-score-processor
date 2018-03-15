@@ -80,7 +80,7 @@ public class Point extends Winnable {
 	private boolean validateStroke(Stroke stroke, MatchRules matchRules) {
 
 		if (this.strokes.isEmpty()) {
-			if (!StrokeType.FIRST_SERVE.equals(stroke.getStrokeType())) {
+			if (!stroke.isA(StrokeType.FIRST_SERVE)) {
 				throw new FrameworkException("First stroke of a point must be a first serve. Found: " + stroke);
 			}
 			if (!stroke.getPlayer().equals(this.server)) {
