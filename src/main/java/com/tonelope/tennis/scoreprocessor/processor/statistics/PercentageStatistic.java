@@ -17,7 +17,7 @@ package com.tonelope.tennis.scoreprocessor.processor.statistics;
  * @author Tony Lopez
  *
  */
-public interface PercentageResult extends TennisStatisticResult {
+public interface PercentageStatistic extends Statistic {
 
 	int getNumerator();
 	

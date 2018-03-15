@@ -19,21 +19,21 @@ import java.text.DecimalFormat;
  * @author Tony Lopez
  *
  */
-public class SimplePercentageResult implements PercentageResult {
+public class SimplePercentageStatistic implements PercentageStatistic {
 
 	public static final DecimalFormat FORMATTER = new DecimalFormat("##%");
 	
 	private final int numerator;
 	private final int denominator;
 	
-	public SimplePercentageResult(int numerator, int denominator) {
+	public SimplePercentageStatistic(int numerator, int denominator) {
 		// TODO no negatives
 		this.numerator = numerator;
 		this.denominator = denominator;
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.PercentageResult#getNumerator()
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.PercentageStatistic#getNumerator()
 	 */
 	@Override
 	public int getNumerator() {
@@ -41,7 +41,7 @@ public class SimplePercentageResult implements PercentageResult {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.PercentageResult#getDenominator()
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.PercentageStatistic#getDenominator()
 	 */
 	@Override
 	public int getDenominator() {

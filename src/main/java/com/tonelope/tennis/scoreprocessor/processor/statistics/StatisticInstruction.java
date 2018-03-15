@@ -13,7 +13,7 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.statistics;
 
-import com.tonelope.tennis.scoreprocessor.model.Match;
+import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 
 /**
  * 
@@ -21,7 +21,9 @@ import com.tonelope.tennis.scoreprocessor.model.Match;
  *
  * @param <T>
  */
-public interface TennisStatistic<T extends TennisStatisticResult> {
+public interface StatisticInstruction<S extends ScoringObject, T extends Statistic> {
 
-	T getResult(Match match);
+	void evaluate(S scoringObject);
+	
+	T getResult();
 }

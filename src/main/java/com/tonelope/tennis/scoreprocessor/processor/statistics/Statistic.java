@@ -17,6 +17,6 @@ package com.tonelope.tennis.scoreprocessor.processor.statistics;
  * @author Tony Lopez
  *
  */
-public interface TennisStatisticResult {
+public interface Statistic {
 	
 }

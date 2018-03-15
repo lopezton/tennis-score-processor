@@ -13,15 +13,11 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor.statistics.extension;
 
-import java.util.List;
-
-import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.AbstractStatistic;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageResult;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.TennisStatistic;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction;
 
 import lombok.Getter;
 
@@ -30,22 +26,36 @@ import lombok.Getter;
  *
  */
 @Getter
-public class FirstServeInStatistic extends AbstractStatistic implements TennisStatistic<SimplePercentageResult> {
+public class FirstServeInStatisticInstruction implements StatisticInstruction<Stroke, SimplePercentageStatistic> {
 
 	private final Player player;
 	
-	public FirstServeInStatistic(Player player) {
+	private int firstServesIn;
+	private int totalFirstServes;
+	
+	public FirstServeInStatisticInstruction(Player player) {
 		this.player = player;
 	}
 	
 	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.TennisStatistic#getResult(com.tonelope.tennis.scoreprocessor.model.Match)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#getResult(com.tonelope.tennis.scoreprocessor.model.Match)
 	 */
 	@Override
-	public SimplePercentageResult getResult(Match match) {
-		List<Stroke> firstServes = this.getStrokes(match, s -> s.isA(StrokeType.FIRST_SERVE));
-		long in = firstServes.stream().filter(s -> !s.isOut()).count();
-		return new SimplePercentageResult(Math.toIntExact(in), firstServes.size());
+	public SimplePercentageStatistic getResult() {
+		return new SimplePercentageStatistic(firstServesIn, totalFirstServes);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.ScoringObject)
+	 */
+	@Override
+	public void evaluate(Stroke stroke) {
+		if (stroke.isA(StrokeType.FIRST_SERVE) && stroke.getPlayer().equals(player)) {
+			totalFirstServes++;
+			if (!stroke.isOut()) {
+				firstServesIn++;
+			}
+		}
 	}
 
 }

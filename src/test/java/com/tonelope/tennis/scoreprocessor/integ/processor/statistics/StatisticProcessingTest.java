@@ -21,8 +21,8 @@ import org.junit.runners.MethodSorters;
 import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTests;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageResult;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServeInStatistic;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServeInStatisticInstruction;
 
 /**
  * @author Tony Lopez
@@ -46,8 +46,10 @@ public class StatisticProcessingTest extends AbstractProcessingTests {
 		this.hitFirstServeAce(match, player1);
 		this.hitFirstServeAce(match, player1);
 		
-		SimplePercentageResult result = 
-				this.matchProcessor.evaluateStatistic(new FirstServeInStatistic(player1));
+		this.matchProcessor.addStatisticInstruction(new FirstServeInStatisticInstruction(player1));
+		
+		SimplePercentageStatistic result = (SimplePercentageStatistic) 
+				this.matchProcessor.getStatistics().get(0);
 		Assert.assertEquals(5, result.getNumerator());
 		Assert.assertEquals(8, result.getDenominator());
 		Assert.assertEquals("5/8 (62%)", result.toString());
