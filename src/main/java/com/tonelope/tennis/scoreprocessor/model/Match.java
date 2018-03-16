@@ -53,7 +53,7 @@ import lombok.ToString;
  *
  */
 @Getter @ToString
-public class Match extends Winnable {
+public class Match extends Winnable implements HasChildScoringObject<Set> {
 
 	private String id;
 	private final List<Player> players;
@@ -171,5 +171,13 @@ public class Match extends Winnable {
 	 */
 	public void addPoint(Point point) {
 		this.getCurrentGame().addPoint(point, this.matchRules);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.model.HasChildScoringObject#getChildScoringObjects()
+	 */
+	@Override
+	public List<Set> getChildScoringObjects() {
+		return this.getSets();
 	}
 }

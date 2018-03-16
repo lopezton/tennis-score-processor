@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Game;
+import com.tonelope.tennis.scoreprocessor.model.HasChildScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
 import com.tonelope.tennis.scoreprocessor.model.Point;
@@ -66,7 +67,7 @@ public class MatchProcessor {
 	
 	private final Match match;
 	private final MatchStrategy strategy;
-	private final List<StatisticInstruction> statisticInstructions = new ArrayList<>();
+	private final List<StatisticInstruction<? extends ScoringObject, ? extends Statistic>> statisticInstructions = new ArrayList<>();
 
 	public MatchProcessor(Match match) {
 		if (null == match) {
@@ -159,35 +160,31 @@ public class MatchProcessor {
 		return this.statisticInstructions.remove(instruction);
 	}
 	
-	private <T extends ScoringObject> List<StatisticInstruction<T, Statistic>> getStatisticInstructionsForType(Class<?> clazz) {
-		return this.statisticInstructions.stream().filter(instruction -> {
-			return clazz.equals(((ParameterizedType) instruction.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0]);
-		}).collect(Collectors.toList());
+	@SuppressWarnings("unchecked")
+	private <T extends ScoringObject> void evaluateStatisticInstruction(List<T> scoringObjects) {
+		
+		// Get the instructions that should be executed for type T.
+		List<StatisticInstruction<T, Statistic>> instructions = new ArrayList<>();
+		for(StatisticInstruction<? extends ScoringObject, ? extends Statistic> instruction: this.statisticInstructions) {
+			// TODO would love to clean this up
+			if (!scoringObjects.isEmpty() && scoringObjects.get(0).getClass().equals(((ParameterizedType) instruction.getClass().getGenericInterfaces()[0]).getActualTypeArguments()[0])) {
+				instructions.add((StatisticInstruction<T, Statistic>) instruction);
+			}
+		}
+		
+		// Recursively evaluate children statistic instructions
+		// Set -> Game -> Point -> Stroke
+		for (T scoringObject: scoringObjects) {
+			if (scoringObject instanceof HasChildScoringObject) {
+				HasChildScoringObject<T> parent = (HasChildScoringObject<T>) scoringObject;
+				this.evaluateStatisticInstruction(parent.getChildScoringObjects());
+			}
+			instructions.forEach(instruction -> instruction.evaluate(scoringObject));
+		}
 	}
 	
 	public List<Statistic> getStatistics() {
-
-		List<StatisticInstruction<Set, Statistic>> setInstructions = this.getStatisticInstructionsForType(Set.class);
-		List<StatisticInstruction<Game, Statistic>> gameInstructions = this.getStatisticInstructionsForType(Game.class);
-		List<StatisticInstruction<Point, Statistic>> pointInstructions = this.getStatisticInstructionsForType(Point.class);
-		List<StatisticInstruction<Stroke, Statistic>> strokeInstructions = this.getStatisticInstructionsForType(Stroke.class);
-		
-		// build the statistic data
-		for (Set set: this.match.getSets()) {
-			for (Game game: set.getGames()) {
-				for (Point point: game.getPoints()) {
-					for (Stroke stroke: point.getStrokes()) {
-						strokeInstructions.forEach(s -> s.evaluate(stroke));
-					}
-					pointInstructions.forEach(s -> s.evaluate(point));
-				}
-				gameInstructions.forEach(s -> s.evaluate(game));
-			}
-			setInstructions.forEach(s -> s.evaluate(set));
-		}
-		
-		// evaluate and return the statistic results
-		return this.statisticInstructions.stream()
-				.map(StatisticInstruction::getResult).collect(Collectors.toList());
+		this.evaluateStatisticInstruction(this.match.getSets());
+		return this.statisticInstructions.stream().map(StatisticInstruction::getResult).collect(Collectors.toList());
 	}
 }
