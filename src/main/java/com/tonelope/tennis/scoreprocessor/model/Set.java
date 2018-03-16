@@ -27,7 +27,7 @@ import lombok.ToString;
  *
  */
 @Getter @ToString
-public class Set extends Winnable {
+public class Set extends Winnable implements HasChildScoringObject<Game> {
 
 	private final MatchRules matchRules;
 	private final Player startingServer;
@@ -71,5 +71,13 @@ public class Set extends Winnable {
 		if (this.isNotStarted()) {
 			this.status = Status.IN_PROGRESS;
 		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.model.HasChildScoringObject#getChildScoringObjects()
+	 */
+	@Override
+	public List<Game> getChildScoringObjects() {
+		return this.getGames();
 	}
 }

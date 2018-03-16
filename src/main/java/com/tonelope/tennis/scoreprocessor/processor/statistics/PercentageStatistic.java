@@ -11,37 +11,30 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.model;
-
-import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+package com.tonelope.tennis.scoreprocessor.processor.statistics;
 
 /**
+ * <p>
+ * An interface of <tt>Statistic</tt> that requires all subclasses provide both
+ * a numerator and a denominator for processing.
+ * </p>
  * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter @ToString
-public abstract class ScoringObject {
+public interface PercentageStatistic extends Statistic {
 
-	protected Status status = Status.NOT_STARTED;
-	
-	public boolean isNotStarted() {
-		return this.checkStatus(Status.NOT_STARTED);
-	}
-	
-	public boolean isInProgress() {
-		return this.checkStatus(Status.IN_PROGRESS);
-	}
-	
-	public boolean isCompleted() {
-		return this.checkStatus(Status.COMPLETE);
-	}
+	/**
+	 * Retrieve the denominator value for this percentage statistic.
+	 * 
+	 * @return the denominator value
+	 */
+	int getDenominator();
 
-	private boolean checkStatus(Status complete) {
-		return complete.equals(this.status);
-	}
+	/**
+	 * Retrieve the numerator value for this percentage statistic.
+	 * 
+	 * @return the numerator value
+	 */
+	int getNumerator();
 }

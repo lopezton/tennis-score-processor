@@ -11,37 +11,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.model;
-
-import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+package com.tonelope.tennis.scoreprocessor.processor.statistics;
 
 /**
+ * <p>Base interface for delivering statistic results.</p>
  * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter @ToString
-public abstract class ScoringObject {
-
-	protected Status status = Status.NOT_STARTED;
+public interface Statistic {
 	
-	public boolean isNotStarted() {
-		return this.checkStatus(Status.NOT_STARTED);
-	}
-	
-	public boolean isInProgress() {
-		return this.checkStatus(Status.IN_PROGRESS);
-	}
-	
-	public boolean isCompleted() {
-		return this.checkStatus(Status.COMPLETE);
-	}
-
-	private boolean checkStatus(Status complete) {
-		return complete.equals(this.status);
-	}
 }

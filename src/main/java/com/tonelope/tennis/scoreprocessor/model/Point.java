@@ -28,7 +28,7 @@ import lombok.ToString;
  *
  */
 @Getter @ToString
-public class Point extends Winnable {
+public class Point extends Winnable implements HasChildScoringObject<Stroke> {
 
 	private final Player server;
 	private final Player receiver;
@@ -80,7 +80,7 @@ public class Point extends Winnable {
 	private boolean validateStroke(Stroke stroke, MatchRules matchRules) {
 
 		if (this.strokes.isEmpty()) {
-			if (!StrokeType.FIRST_SERVE.equals(stroke.getStrokeType())) {
+			if (!stroke.isA(StrokeType.FIRST_SERVE)) {
 				throw new FrameworkException("First stroke of a point must be a first serve. Found: " + stroke);
 			}
 			if (!stroke.getPlayer().equals(this.server)) {
@@ -102,5 +102,13 @@ public class Point extends Winnable {
 	@Override
 	public Score getScore() {
 		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.model.HasChildScoringObject#getChildScoringObjects()
+	 */
+	@Override
+	public List<Stroke> getChildScoringObjects() {
+		return this.getStrokes();
 	}
 }

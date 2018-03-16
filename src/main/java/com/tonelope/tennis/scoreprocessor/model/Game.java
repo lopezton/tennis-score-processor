@@ -28,7 +28,7 @@ import lombok.ToString;
  *
  */
 @Getter @ToString
-public class Game extends Winnable {
+public class Game extends Winnable implements HasChildScoringObject<Point> {
 
 	private final Player server;
 	private final Player receiver;
@@ -105,5 +105,13 @@ public class Game extends Winnable {
 				}
 			}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.model.ScoringObject#getChildScoringObject()
+	 */
+	@Override
+	public List<Point> getChildScoringObjects() {
+		return this.getPoints();
 	}
 }

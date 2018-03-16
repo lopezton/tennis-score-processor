@@ -15,33 +15,11 @@ package com.tonelope.tennis.scoreprocessor.model;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 /**
- * 
  * @author Tony Lopez
  *
  */
-@Getter @Setter @ToString
-public abstract class ScoringObject {
+public interface HasChildScoringObject<T extends ScoringObject> {
 
-	protected Status status = Status.NOT_STARTED;
-	
-	public boolean isNotStarted() {
-		return this.checkStatus(Status.NOT_STARTED);
-	}
-	
-	public boolean isInProgress() {
-		return this.checkStatus(Status.IN_PROGRESS);
-	}
-	
-	public boolean isCompleted() {
-		return this.checkStatus(Status.COMPLETE);
-	}
-
-	private boolean checkStatus(Status complete) {
-		return complete.equals(this.status);
-	}
+	List<T> getChildScoringObjects();
 }

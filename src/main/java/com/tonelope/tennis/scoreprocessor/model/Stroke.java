@@ -13,6 +13,8 @@
  */
 package com.tonelope.tennis.scoreprocessor.model;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.ToString;
 
@@ -38,7 +40,7 @@ public class Stroke extends ScoringObject {
 	}
 	
 	public boolean isServe() {
-		return StrokeType.FIRST_SERVE.equals(this.strokeType) || StrokeType.SECOND_SERVE.equals(this.strokeType);
+		return this.isA(StrokeType.FIRST_SERVE) || this.isA(StrokeType.SECOND_SERVE);
 	}
 	
 	public boolean isOutRallyShot() {
@@ -46,10 +48,17 @@ public class Stroke extends ScoringObject {
 	}
 	
 	public boolean isDoubleFault() {
-		return StrokeType.SECOND_SERVE.equals(strokeType) && this.out;
+		return this.isA(StrokeType.SECOND_SERVE) && this.out;
 	}
 	
 	public boolean isServiceAce() {
-		return StrokeType.FIRST_SERVE.equals(strokeType) && this.winner;
+		return this.isA(StrokeType.FIRST_SERVE) && this.winner;
+	}
+
+	public boolean isA(StrokeType strokeType) {
+		if (null == this.strokeType) {
+			return false;
+		}
+		return this.strokeType.equals(strokeType);
 	}
 }
