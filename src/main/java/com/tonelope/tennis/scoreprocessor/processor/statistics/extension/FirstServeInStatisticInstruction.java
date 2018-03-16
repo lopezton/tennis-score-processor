@@ -22,6 +22,11 @@ import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruct
 import lombok.Getter;
 
 /**
+ * <p>
+ * Calculates the number of first serves in of total first serves and the
+ * percentage value.
+ * </p>
+ * 
  * @author Tony Lopez
  *
  */
@@ -29,24 +34,31 @@ import lombok.Getter;
 public class FirstServeInStatisticInstruction implements StatisticInstruction<Stroke, SimplePercentageStatistic> {
 
 	private final Player player;
-	
+
 	private int firstServesIn;
 	private int totalFirstServes;
-	
+
 	public FirstServeInStatisticInstruction(Player player) {
 		this.player = player;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#getResult(com.tonelope.tennis.scoreprocessor.model.Match)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.
+	 * StatisticInstruction#buildResult()
 	 */
 	@Override
-	public SimplePercentageStatistic getResult() {
+	public SimplePercentageStatistic createResult() {
 		return new SimplePercentageStatistic(firstServesIn, totalFirstServes);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.ScoringObject)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.
+	 * StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.
+	 * ScoringObject)
 	 */
 	@Override
 	public void evaluate(Stroke stroke) {
@@ -56,6 +68,18 @@ public class FirstServeInStatisticInstruction implements StatisticInstruction<St
 				firstServesIn++;
 			}
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.
+	 * StatisticInstruction#reset()
+	 */
+	@Override
+	public void reset() {
+		this.firstServesIn = 0;
+		this.totalFirstServes = 0;
 	}
 
 }

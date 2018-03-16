@@ -53,5 +53,14 @@ public class StatisticProcessingTest extends AbstractProcessingTests {
 		Assert.assertEquals(5, result.getNumerator());
 		Assert.assertEquals(8, result.getDenominator());
 		Assert.assertEquals("5/8 (62%)", result.toString());
+		
+		this.winServiceGame(match, match.getStartingReceiver());
+		this.hitFirstServeAce(match, player1);
+		
+		result = (SimplePercentageStatistic) 
+				this.matchProcessor.getStatistics().get(0);
+		Assert.assertEquals(6, result.getNumerator());
+		Assert.assertEquals(9, result.getDenominator());
+		Assert.assertEquals("6/9 (67%)", result.toString());
 	}
 }

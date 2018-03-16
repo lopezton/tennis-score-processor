@@ -14,12 +14,27 @@
 package com.tonelope.tennis.scoreprocessor.processor.statistics;
 
 /**
+ * <p>
+ * An interface of <tt>Statistic</tt> that requires all subclasses provide both
+ * a numerator and a denominator for processing.
+ * </p>
+ * 
  * @author Tony Lopez
  *
  */
 public interface PercentageStatistic extends Statistic {
 
-	int getNumerator();
-	
+	/**
+	 * Retrieve the denominator value for this percentage statistic.
+	 * 
+	 * @return the denominator value
+	 */
 	int getDenominator();
+
+	/**
+	 * Retrieve the numerator value for this percentage statistic.
+	 * 
+	 * @return the numerator value
+	 */
+	int getNumerator();
 }
