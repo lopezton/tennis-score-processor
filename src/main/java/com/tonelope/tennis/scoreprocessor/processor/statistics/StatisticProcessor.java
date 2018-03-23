@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
-import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
 import com.tonelope.tennis.scoreprocessor.model.Set;
@@ -139,7 +138,7 @@ public class StatisticProcessor {
 	private <T extends ScoringObject> List<StatisticInstruction<T, ? extends Statistic>> getStatisticInstructionsForType(
 			List<StatisticInstruction<? extends ScoringObject, ? extends Statistic>> instructions, Class<?> clazz) {
 		List<StatisticInstruction<T, ? extends Statistic>> applicableInstructions = new ArrayList<>();
-		for (StatisticInstruction<?, ? extends Statistic> instruction : this.instructions) {
+		for (StatisticInstruction<?, ? extends Statistic> instruction : instructions) {
 			if (clazz.equals(((ParameterizedType) instruction.getClass().getGenericInterfaces()[0])
 					.getActualTypeArguments()[0])) {
 				applicableInstructions.add((StatisticInstruction<T, Statistic>) instruction);
@@ -190,5 +189,9 @@ public class StatisticProcessor {
 	 */
 	public boolean removeInstruction(StatisticInstruction<? extends ScoringObject, ? extends Statistic> instruction) {
 		return this.instructions.remove(instruction);
+	}
+	
+	public CommonStatisticProcessor toCommonStatisticProcessor() {
+		return new CommonStatisticProcessor(this);
 	}
 }

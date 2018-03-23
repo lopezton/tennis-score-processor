@@ -29,7 +29,7 @@ import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstSe
  *
  */
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class StatisticProcessingTest extends AbstractProcessingTests {
+public class StatisticProcessorTest extends AbstractProcessingTests {
 
 	@Test
 	public void t1_firstServeIn_getResult() {
