@@ -13,25 +13,21 @@
  */
 package com.tonelope.tennis.scoreprocessor.processor;
 
-import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
-import com.tonelope.tennis.scoreprocessor.model.Game;
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.MatchEventType;
 import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.ScoringObject;
-import com.tonelope.tennis.scoreprocessor.model.Set;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.Statistic;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticProcessor;
 
 import lombok.Getter;
 
@@ -66,7 +62,7 @@ public class MatchProcessor {
 
 	private final Match match;
 	private final MatchStrategy strategy;
-	private final List<StatisticInstruction<? extends ScoringObject, ? extends Statistic>> statisticInstructions = new ArrayList<>();
+	private final StatisticProcessor statisticProcessor;
 
 	public MatchProcessor(Match match) {
 		if (null == match) {
@@ -75,6 +71,7 @@ public class MatchProcessor {
 		// TODO validate match
 		this.match = match;
 		this.strategy = this.determineStrategy(match);
+		this.statisticProcessor = new StatisticProcessor(match);
 	}
 
 	/**
@@ -88,7 +85,7 @@ public class MatchProcessor {
 	 */
 	public <S extends ScoringObject> boolean addStatisticInstruction(
 			StatisticInstruction<S, ? extends Statistic> instruction) {
-		return this.statisticInstructions.add(instruction);
+		return this.statisticProcessor.addInstruction(instruction);
 	}
 
 	/**
@@ -122,32 +119,6 @@ public class MatchProcessor {
 
 	/**
 	 * <p>
-	 * Retrieves a list of <tt>StatisticInstructions</tt> from this instance's
-	 * list of instructions who's type T class matches the provided
-	 * <tt>clazz</tt>. This is used to retrieve a specific set of instructions
-	 * for a specific type, when only that type is needed.
-	 * </p>
-	 * 
-	 * @param clazz
-	 *            the type to check for matching against T
-	 * @return the subset of <tt>StatisticInstructions</tt> who's type T class
-	 *         matches <tt>class</tt>
-	 */
-	@SuppressWarnings("unchecked")
-	private <T extends ScoringObject> List<StatisticInstruction<T, ? extends Statistic>> getStatisticInstructionsForType(
-			Class<?> clazz) {
-		List<StatisticInstruction<T, ? extends Statistic>> instructions = new ArrayList<>();
-		for (StatisticInstruction<?, ? extends Statistic> instruction : this.statisticInstructions) {
-			if (clazz.equals(((ParameterizedType) instruction.getClass().getGenericInterfaces()[0])
-					.getActualTypeArguments()[0])) {
-				instructions.add((StatisticInstruction<T, Statistic>) instruction);
-			}
-		}
-		return instructions;
-	}
-
-	/**
-	 * <p>
 	 * Executes this instance's set of <tt>StatisticInstructions</tt> over the
 	 * current <tt>match</tt> object and delivers a result set.
 	 * </p>
@@ -155,33 +126,7 @@ public class MatchProcessor {
 	 * @return the list containing the statistic results
 	 */
 	public List<Statistic> getStatistics() {
-
-		// collect the instructions prior to building statistic data
-		List<StatisticInstruction<Set, ? extends Statistic>> setInstructions = this
-				.getStatisticInstructionsForType(Set.class);
-		List<StatisticInstruction<Game, ? extends Statistic>> gameInstructions = this
-				.getStatisticInstructionsForType(Game.class);
-		List<StatisticInstruction<Point, ? extends Statistic>> pointInstructions = this
-				.getStatisticInstructionsForType(Point.class);
-		List<StatisticInstruction<Stroke, ? extends Statistic>> strokeInstructions = this
-				.getStatisticInstructionsForType(Stroke.class);
-
-		// build the statistic data
-		for (Set set : this.match.getSets()) {
-			for (Game game : set.getGames()) {
-				for (Point point : game.getPoints()) {
-					for (Stroke stroke : point.getStrokes()) {
-						strokeInstructions.forEach(s -> s.evaluate(stroke));
-					}
-					pointInstructions.forEach(s -> s.evaluate(point));
-				}
-				gameInstructions.forEach(s -> s.evaluate(game));
-			}
-			setInstructions.forEach(s -> s.evaluate(set));
-		}
-
-		// build and return the result set
-		return this.statisticInstructions.stream().map(StatisticInstruction::getResult).collect(Collectors.toList());
+		return this.statisticProcessor.getStatistics();
 	}
 
 	/**
@@ -219,7 +164,7 @@ public class MatchProcessor {
 	 */
 	public <S extends ScoringObject> boolean removeStatisticInstruction(
 			StatisticInstruction<S, ? extends Statistic> instruction) {
-		return this.statisticInstructions.remove(instruction);
+		return this.statisticProcessor.removeInstruction(instruction);
 	}
 
 	/**
