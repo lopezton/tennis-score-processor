@@ -25,6 +25,7 @@ import com.tonelope.tennis.scoreprocessor.model.SimplePoint;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.CommonStatisticProcessor;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServePointsWonStatisticInstruction;
 
@@ -90,7 +91,7 @@ public class FirstServePointsWonStatisticInstructionTest extends AbstractProcess
 	}
 	
 	@Test
-	public void t1_simplePoint() {
+	public void t2_simplePoint() {
 		MatchProcessor matchProcessor = this.createNewMatch();
 		Match match = matchProcessor.getMatch();
 		Player player1 = match.getPlayers().get(0);
@@ -139,5 +140,53 @@ public class FirstServePointsWonStatisticInstructionTest extends AbstractProcess
 		Assert.assertEquals(3, statistic.getNumerator());
 		Assert.assertEquals(4, statistic.getDenominator());
 		Assert.assertEquals(.75, statistic.getPercentage(), 0);
+	}
+	
+	@Test
+	public void t3_commonStatisticProcessor() {
+		MatchProcessor matchProcessor = this.createNewMatch();
+		Match match = matchProcessor.getMatch();
+		CommonStatisticProcessor stats = matchProcessor.getStatisticProcessor().toCommonStatisticProcessor();
+		Player player1 = match.getPlayers().get(0);
+		Player player2 = match.getPlayers().get(1);
+		
+		this.hitFirstServeAce(match, player1);
+		SimplePercentageStatistic statistic = stats.getFirstServePointsWon(player1);
+		Assert.assertEquals(1, statistic.getNumerator());
+		Assert.assertEquals(1, statistic.getDenominator());
+		Assert.assertEquals(1.0, statistic.getPercentage(), 0);
+		
+		this.hitDoubleFault(match, player1);
+		statistic = stats.getFirstServePointsWon(player1);
+		Assert.assertEquals(1, statistic.getNumerator());
+		Assert.assertEquals(1, statistic.getDenominator());
+		Assert.assertEquals(1.0, statistic.getPercentage(), 0);
+		
+		this.hitFirstServeAce(match, player1);
+		statistic = stats.getFirstServePointsWon(player1);
+		Assert.assertEquals(2, statistic.getNumerator());
+		Assert.assertEquals(2, statistic.getDenominator());
+		Assert.assertEquals(1.0, statistic.getPercentage(), 0);
+		
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, true));
+		statistic = stats.getFirstServePointsWon(player1);
+		Assert.assertEquals(2, statistic.getNumerator());
+		Assert.assertEquals(3, statistic.getDenominator());
+		Assert.assertEquals(0.667, statistic.getPercentage(), .001);
+		
+		this.hitFirstServeAce(match, player1);
+		statistic = stats.getFirstServePointsWon(player1);
+		Assert.assertEquals(3, statistic.getNumerator());
+		Assert.assertEquals(4, statistic.getDenominator());
+		Assert.assertEquals(0.75, statistic.getPercentage(), 0);
+		
+		matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, false));
+		matchProcessor.update(new Stroke(player2, StrokeType.FOREHAND, false, false));
+		matchProcessor.update(new Stroke(player1, StrokeType.FOREHAND_VOLLEY, false, true));
+		statistic = stats.getFirstServePointsWon(player1);
+		Assert.assertEquals(4, statistic.getNumerator());
+		Assert.assertEquals(5, statistic.getDenominator());
+		Assert.assertEquals(0.8, statistic.getPercentage(), 0);
 	}
 }
