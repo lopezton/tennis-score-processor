@@ -30,4 +30,11 @@ public class SimplePoint extends Point {
 		this.setStatus(Status.COMPLETE);
 	}
 
+	/**
+	 * <p>Always returns true.</p>
+	 */
+	@Override
+	public boolean isSimple() {
+		return true;
+	}
 }
