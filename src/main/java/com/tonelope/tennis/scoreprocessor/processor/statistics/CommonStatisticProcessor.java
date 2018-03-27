@@ -18,6 +18,7 @@ import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServeInStatisticInstruction;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServePointsWonStatisticInstruction;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.SecondServeInStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.SecondServePointsWonStatisticInstruction;
 
 /**
  * @author Tony Lopez
@@ -43,5 +44,9 @@ public class CommonStatisticProcessor extends StatisticProcessor {
 	
 	public SimplePercentageStatistic getSecondServesIn(Player player) {
 		return (SimplePercentageStatistic) this.getStatistic(new SecondServeInStatisticInstruction(player));
+	}
+
+	public SimplePercentageStatistic getSecondServePointsWon(Player player) {
+		return (SimplePercentageStatistic) this.getStatistic(new SecondServePointsWonStatisticInstruction(player));
 	}
 }
