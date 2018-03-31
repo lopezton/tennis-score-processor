@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.integ.processor.statistics.extension;
+package com.tonelope.tennis.scoreprocessor.integ.processor.statistics.extension.serve;
 
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -27,7 +27,7 @@ import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.processor.MatchProcessor;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.CommonStatisticProcessor;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.SecondServePointsWonStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.SecondServePointsWonStatisticInstruction;
 
 /**
  * @author Tony Lopez

@@ -15,10 +15,13 @@ package com.tonelope.tennis.scoreprocessor.processor.statistics;
 
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServeInStatisticInstruction;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServePointsWonStatisticInstruction;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.SecondServeInStatisticInstruction;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.SecondServePointsWonStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.AceStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.DoubleFaultStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.FirstServeInStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.FirstServePointsWonStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.SecondServeInStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.SecondServePointsWonStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.ServiceGamesWonStatisticInstruction;
 
 /**
  * @author Tony Lopez
@@ -48,5 +51,17 @@ public class CommonStatisticProcessor extends StatisticProcessor {
 
 	public SimplePercentageStatistic getSecondServePointsWon(Player player) {
 		return (SimplePercentageStatistic) this.getStatistic(new SecondServePointsWonStatisticInstruction(player));
+	}
+	
+	public SimpleCountStatistic getNumberOfAces(Player player) {
+		return (SimpleCountStatistic) this.getStatistic(new AceStatisticInstruction(player));
+	}
+	
+	public SimpleCountStatistic getNumberOfDoubleFaults(Player player) {
+		return (SimpleCountStatistic) this.getStatistic(new DoubleFaultStatisticInstruction(player));
+	}
+	
+	public SimplePercentageStatistic getServiceGamesWon(Player player) {
+		return (SimplePercentageStatistic) this.getStatistic(new ServiceGamesWonStatisticInstruction(player));
 	}
 }

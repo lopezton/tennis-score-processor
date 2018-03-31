@@ -11,32 +11,26 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor.statistics.extension;
+package com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve;
 
-import java.util.List;
-
-import com.tonelope.tennis.scoreprocessor.model.FrameworkException;
 import com.tonelope.tennis.scoreprocessor.model.Player;
-import com.tonelope.tennis.scoreprocessor.model.Point;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
 import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction;
 
-import lombok.Getter;
-
 /**
  * @author Tony Lopez
  *
  */
-@Getter
-public class FirstServePointsWonStatisticInstruction implements StatisticInstruction<Point, SimplePercentageStatistic> {
+public class SecondServeInStatisticInstruction implements StatisticInstruction<Stroke, SimplePercentageStatistic> {
 
 	private final Player player;
-	private int pointsWon;
-	private int totalPoints;
-	
-	public FirstServePointsWonStatisticInstruction(Player player) {
+
+	private int secondServesIn;
+	private int totalSecondServes;
+
+	public SecondServeInStatisticInstruction(Player player) {
 		this.player = player;
 	}
 	
@@ -45,33 +39,20 @@ public class FirstServePointsWonStatisticInstruction implements StatisticInstruc
 	 */
 	@Override
 	public SimplePercentageStatistic createResult() {
-		return new SimplePercentageStatistic(pointsWon, totalPoints);
+		return new SimplePercentageStatistic(secondServesIn, totalSecondServes);
 	}
 
 	/* (non-Javadoc)
 	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.ScoringObject)
 	 */
 	@Override
-	public void evaluate(Point point) {
-		if (point.isSimple()) {
-			return;
-		}
-		
-		// iterate over the strokes until first serve is found (in case of let serves)
-		List<Stroke> strokes = point.getStrokes();
-		for(Stroke stroke: strokes) {
-			if (StrokeType.FIRST_SERVE.equals(stroke.getStrokeType())) {
-				if (!stroke.isOut()) {
-					this.totalPoints++;
-				}
-				if (point.getWinningPlayer().equals(player)) {
-					this.pointsWon++;
-				}
-				return;
+	public void evaluate(Stroke stroke) {
+		if (stroke.isA(StrokeType.SECOND_SERVE) && stroke.getPlayer().equals(player)) {
+			totalSecondServes++;
+			if (!stroke.isOut()) {
+				secondServesIn++;
 			}
 		}
-		
-		throw new FrameworkException("A first serve was never taken in the current point. Point = " + point);
 	}
 
 	/* (non-Javadoc)
@@ -79,8 +60,8 @@ public class FirstServePointsWonStatisticInstruction implements StatisticInstruc
 	 */
 	@Override
 	public void reset() {
-		this.pointsWon = 0;
-		this.totalPoints = 0;
+		this.secondServesIn = 0;
+		this.totalSecondServes = 0;
 	}
 
 }
