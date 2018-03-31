@@ -27,48 +27,19 @@ import lombok.ToString;
  * @author Tony Lopez
  *
  */
-@Getter @ToString
+@Getter
+@ToString
 public class Point extends Winnable implements HasChildScoringObject<Stroke> {
 
 	private final Player server;
 	private final Player receiver;
 	private final List<Stroke> strokes = new ArrayList<>();
-	
+
 	public Point(Player server, Player receiver) {
 		this.server = server;
 		this.receiver = receiver;
 	}
-	
-	@Override
-	public Player getWinningPlayer() {
-		if (!this.isCompleted()) {
-			return null;
-		}
-		
-		Stroke stroke = this.getCurrentStroke();
-		
-		// Winner
-		if (!stroke.isOut()) {
-			return stroke.getPlayer();
-		}
-		
-		// Forced/Unforced Error
-		if (!stroke.isServe()) {
-			return this.strokes.get(this.strokes.size() - 2).getPlayer();
-		} 
 
-		// Double fault is only remaining option.
-		return this.receiver;
-	}
-
-	public Stroke getCurrentStroke() {
-		return ListUtils.getLast(this.strokes);
-	}
-	
-	public List<Stroke> getStrokes() {
-		return Collections.unmodifiableList(this.strokes);
-	}
-	
 	public void addStroke(Stroke stroke, MatchRules matchRules) {
 		this.validateStroke(stroke, matchRules);
 		this.strokes.add(stroke);
@@ -76,7 +47,79 @@ public class Point extends Winnable implements HasChildScoringObject<Stroke> {
 			this.setStatus(Status.IN_PROGRESS);
 		}
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tonelope.tennis.scoreprocessor.model.HasChildScoringObject#
+	 * getChildScoringObjects()
+	 */
+	@Override
+	public List<Stroke> getChildScoringObjects() {
+		return this.getStrokes();
+	}
+
+	public Stroke getCurrentStroke() {
+		return ListUtils.getLast(this.strokes);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.tonelope.tennis.scoreprocessor.model.Winnable#getScore()
+	 */
+	@Override
+	public Score getScore() {
+		return null;
+	}
+
+	public List<Stroke> getStrokes() {
+		return Collections.unmodifiableList(this.strokes);
+	}
+
+	@Override
+	public Player getWinningPlayer() {
+		if (!this.isCompleted()) {
+			return null;
+		}
+
+		Stroke stroke = this.getCurrentStroke();
+
+		// Winner
+		if (!stroke.isOut()) {
+			return stroke.getPlayer();
+		}
+
+		// Forced/Unforced Error
+		if (!stroke.isServe()) {
+			return this.strokes.get(this.strokes.size() - 2).getPlayer();
+		}
+
+		// Double fault is only remaining option.
+		return this.receiver;
+	}
+
+	@Override
+	public void initialize() {
+
+	}
+
+	/**
+	 * <p>
+	 * Returns if this point is simple, meaning that it does not have any stroke
+	 * information and simply the winner information is available in this point.
+	 * </p>
+	 * <p>
+	 * This instance will already return false. Subclass implementations should
+	 * override this method, if necessary.
+	 * </p>
+	 * 
+	 * @return always returns false
+	 */
+	public boolean isSimple() {
+		return false;
+	}
+
 	private boolean validateStroke(Stroke stroke, MatchRules matchRules) {
 
 		if (this.strokes.isEmpty()) {
@@ -89,26 +132,5 @@ public class Point extends Winnable implements HasChildScoringObject<Stroke> {
 		}
 		// TODO - More validations
 		return true;
-	}
-	
-	@Override
-	public void initialize() {
-		
-	}
-
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.model.Winnable#getScore()
-	 */
-	@Override
-	public Score getScore() {
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see com.tonelope.tennis.scoreprocessor.model.HasChildScoringObject#getChildScoringObjects()
-	 */
-	@Override
-	public List<Stroke> getChildScoringObjects() {
-		return this.getStrokes();
 	}
 }

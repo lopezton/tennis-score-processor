@@ -11,7 +11,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.processor.statistics.extension;
+package com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve;
 
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.model.Stroke;
@@ -19,67 +19,49 @@ import com.tonelope.tennis.scoreprocessor.model.StrokeType;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction;
 
-import lombok.Getter;
-
 /**
- * <p>
- * Calculates the number of first serves in of total first serves and the
- * percentage value.
- * </p>
- * 
  * @author Tony Lopez
  *
  */
-@Getter
-public class FirstServeInStatisticInstruction implements StatisticInstruction<Stroke, SimplePercentageStatistic> {
+public class SecondServeInStatisticInstruction implements StatisticInstruction<Stroke, SimplePercentageStatistic> {
 
 	private final Player player;
 
-	private int firstServesIn;
-	private int totalFirstServes;
+	private int secondServesIn;
+	private int totalSecondServes;
 
-	public FirstServeInStatisticInstruction(Player player) {
+	public SecondServeInStatisticInstruction(Player player) {
 		this.player = player;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.
-	 * StatisticInstruction#buildResult()
+	
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#createResult()
 	 */
 	@Override
 	public SimplePercentageStatistic createResult() {
-		return new SimplePercentageStatistic(firstServesIn, totalFirstServes);
+		return new SimplePercentageStatistic(secondServesIn, totalSecondServes);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.
-	 * StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.
-	 * ScoringObject)
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.ScoringObject)
 	 */
 	@Override
 	public void evaluate(Stroke stroke) {
-		if (stroke.isA(StrokeType.FIRST_SERVE) && stroke.getPlayer().equals(player)) {
-			totalFirstServes++;
+		if (stroke.isA(StrokeType.SECOND_SERVE) && stroke.getPlayer().equals(player)) {
+			totalSecondServes++;
 			if (!stroke.isOut()) {
-				firstServesIn++;
+				secondServesIn++;
 			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.
-	 * StatisticInstruction#reset()
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#reset()
 	 */
 	@Override
 	public void reset() {
-		this.firstServesIn = 0;
-		this.totalFirstServes = 0;
+		this.secondServesIn = 0;
+		this.totalSecondServes = 0;
 	}
 
 }

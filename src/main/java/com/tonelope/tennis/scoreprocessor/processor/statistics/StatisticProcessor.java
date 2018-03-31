@@ -77,17 +77,24 @@ public class StatisticProcessor {
 				.getStatisticInstructionsForType(instructions, Stroke.class);
 
 		// evaluate the statistic data
+		// TODO Refactor
 		for (Set set : this.match.getSets()) {
 			for (Game game : set.getGames()) {
 				for (Point point : game.getPoints()) {
 					for (Stroke stroke : point.getStrokes()) {
 						strokeInstructions.forEach(s -> s.evaluate(stroke));
 					}
-					pointInstructions.forEach(s -> s.evaluate(point));
+					if (point.isCompleted()) {
+						pointInstructions.forEach(s -> s.evaluate(point));
+					}
 				}
-				gameInstructions.forEach(s -> s.evaluate(game));
+				if (game.isCompleted()) {
+					gameInstructions.forEach(s -> s.evaluate(game));
+				}
 			}
-			setInstructions.forEach(s -> s.evaluate(set));
+			if (set.isCompleted()) {
+				setInstructions.forEach(s -> s.evaluate(set));
+			}
 		}
 
 		// user has access already, but return the instructions anyway.

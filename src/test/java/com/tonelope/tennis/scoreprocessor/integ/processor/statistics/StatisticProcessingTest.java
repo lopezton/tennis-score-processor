@@ -22,7 +22,7 @@ import com.tonelope.tennis.scoreprocessor.integ.processor.AbstractProcessingTest
 import com.tonelope.tennis.scoreprocessor.model.Match;
 import com.tonelope.tennis.scoreprocessor.model.Player;
 import com.tonelope.tennis.scoreprocessor.processor.statistics.SimplePercentageStatistic;
-import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.FirstServeInStatisticInstruction;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve.FirstServeInStatisticInstruction;
 
 /**
  * @author Tony Lopez

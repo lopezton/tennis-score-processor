@@ -1,0 +1,60 @@
+/**
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+package com.tonelope.tennis.scoreprocessor.processor.statistics.extension.serve;
+
+import com.tonelope.tennis.scoreprocessor.model.Player;
+import com.tonelope.tennis.scoreprocessor.model.Stroke;
+import com.tonelope.tennis.scoreprocessor.model.StrokeType;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.SimpleCountStatistic;
+import com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction;
+
+import lombok.RequiredArgsConstructor;
+
+/**
+ * @author Tony Lopez
+ *
+ */
+@RequiredArgsConstructor
+public class DoubleFaultStatisticInstruction implements StatisticInstruction<Stroke, SimpleCountStatistic> {
+
+	private final Player player;
+	private int count;
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#createResult()
+	 */
+	@Override
+	public SimpleCountStatistic createResult() {
+		return new SimpleCountStatistic(this.count);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#evaluate(com.tonelope.tennis.scoreprocessor.model.ScoringObject)
+	 */
+	@Override
+	public void evaluate(Stroke stroke) {
+		if (this.player.equals(stroke.getPlayer()) && StrokeType.SECOND_SERVE.equals(stroke.getStrokeType()) && stroke.isOut()) {
+			count++;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.tonelope.tennis.scoreprocessor.processor.statistics.StatisticInstruction#reset()
+	 */
+	@Override
+	public void reset() {
+		this.count = 0;
+	}
+
+}

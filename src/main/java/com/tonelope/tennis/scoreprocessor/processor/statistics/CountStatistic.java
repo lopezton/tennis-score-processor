@@ -11,30 +11,18 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package com.tonelope.tennis.scoreprocessor.model;
-
-import lombok.Getter;
+package com.tonelope.tennis.scoreprocessor.processor.statistics;
 
 /**
  * @author Tony Lopez
  *
  */
-@Getter
-public class SimplePoint extends Point {
-
-	private final Player winningPlayer;
-
-	public SimplePoint(Player server, Player receiver, Player winningPlayer) {
-		super(server, receiver);
-		this.winningPlayer = winningPlayer;
-		this.setStatus(Status.COMPLETE);
-	}
+public interface CountStatistic extends Statistic {
 
 	/**
-	 * <p>Always returns true.</p>
+	 * <p>Totals the number of times this statistic implementation occurs.</p>
+	 * 
+	 * @return the total count number.
 	 */
-	@Override
-	public boolean isSimple() {
-		return true;
-	}
+	int getCount();
 }
