@@ -8,9 +8,7 @@
 Tennis Score Processor is a Java based library that records and processes tennis match data on a stroke-by-stroke or point-by-point bases. 
 
 ## Overview
-Tennis Score Processor uses a main processor object called ```MatchProcessor``` to update and modify the ```Match``` object, a simple POJO containing match data.  See the following diagram:  
-
-![Entry Point](docs/images/uml/entry-point.png)  
+Tennis Score Processor uses a main processor object called `TennisScoreProcessor` or `TennisScoreProcessorBuilder` to update and modify match data.
 
 ## Quick Links
 
@@ -45,30 +43,20 @@ Use Tennis Score Processor to:
 * Whatever else your imagine can dream up!
 
 ### Get Started
-Getting started with Tennis Score Processor is easy. Create a ```Match``` entity and update it with the necessary information for the processor to be able to perform updates. See the following code sample:  
+Getting started with Tennis Score Processor is easy. See the following code sample:  
 
 ```java
 public static void main(String[] args) {
 
-	// Build the match data
-	Player player1 = new Player("Roger", "Federer");
-	Player player2 = new Player("Rafael", "Nadal");
-		
-	List<Player> players = new ArrayList<>();
-	players.add(player1);
-	players.add(player2);
-		
-	// Initialize the playerConfig data
-	PlayerConfig playerConfig = new PlayerConfig(players, player1, player2);
-		
-	// Utilize the framework's match factory to create a new match entity
-	MatchFactory matchFactory = new DefaultMatchFactory();
-		
-	// Instantiate the matchProcessor
-	MatchProcessor matchProcessor = new MatchProcessor(matchFactory.create(new MatchRules(), playerConfig));
-		
-	// Use the matchProcessor to update match results on stroke or point basis
-	matchProcessor.update(new Stroke(player1, StrokeType.FIRST_SERVE, false, true));
+	// Build the processor
+	private TennisScoreProcessor tsp = new ScoreKeeperBuilder().build();
+	
+	// Record a point(s)
+	Point point = new Point(Team.HOME);
+	tsp.update(point);
+
+	// Print desired results
+	System.out.println(tsp.getScore());
 }
 ```
 

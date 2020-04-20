@@ -44,11 +44,12 @@
 		<java.version>1.8</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
     	<maven.compiler.target>${java.version}</maven.compiler.target>
+		<maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+		<maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
+		<junit.version>5.6.2</junit.version>
+		<assertj.version>3.15.0</assertj.version>
 		<coveralls.version>4.3.0</coveralls.version>
 		<cobertura.version>2.7</cobertura.version>
-		<lombok.version>1.16.20</lombok.version>
-		<junit.version>4.12</junit.version>
-		<slf4j.version>1.7.25</slf4j.version>
 		<maven.versions.plugin.version>2.5</maven.versions.plugin.version>
 		<nexus.staging.maven.version>1.6.7</nexus.staging.maven.version>
 		<maven.source.plugin.version>2.2.1</maven.source.plugin.version>
@@ -58,24 +59,26 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>${lombok.version}</version>
-			<scope>provided</scope>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.slf4j</groupId>
-		    <artifactId>slf4j-api</artifactId>
-		    <version>${slf4j.version}</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${slf4j.version}</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
@@ -93,7 +96,16 @@
 	</distributionManagement>
 
 	<build>
+		<finalName>${project.name}</finalName>
 		<plugins>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.plugin.version}</version>
+			</plugin>
+			<plugin>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven.failsafe.plugin.version}</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
