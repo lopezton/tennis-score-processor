@@ -185,15 +185,24 @@ public class TennisScoreProcessor {
 	private void updateGameScore(int idxWinner) {
 		final int idxLoser = idxWinner == 0 ? 1 : 0;
 		gameScores[idxWinner]++;
-
-		if (gameScores[idxWinner] == AD_POINT && gameScores[idxLoser] < DEUCE_POINT
-				|| gameScores[idxWinner] == GAME_POINT) {
-			setScores[currentSetNumber][idxWinner]++;
-			gameScores[idxWinner] = 0;
-			gameScores[idxLoser] = 0;
-		} else if (gameScores[0] == AD_POINT && gameScores[1] == AD_POINT) {
-			gameScores[0] = DEUCE_POINT;
-			gameScores[1] = DEUCE_POINT;
+		
+		if (adScoring) {
+			if (gameScores[idxWinner] == AD_POINT && gameScores[idxLoser] < DEUCE_POINT
+					|| gameScores[idxWinner] == GAME_POINT) {
+				setScores[currentSetNumber][idxWinner]++;
+				gameScores[idxWinner] = 0;
+				gameScores[idxLoser] = 0;
+			} else if (gameScores[0] == AD_POINT && gameScores[1] == AD_POINT) {
+				gameScores[0] = DEUCE_POINT;
+				gameScores[1] = DEUCE_POINT;
+			}
+			
+		} else {
+			if (gameScores[idxWinner] == AD_POINT) {
+				setScores[currentSetNumber][idxWinner]++;
+				gameScores[idxWinner] = 0;
+				gameScores[idxLoser] = 0;
+			}
 		}
 	}
 

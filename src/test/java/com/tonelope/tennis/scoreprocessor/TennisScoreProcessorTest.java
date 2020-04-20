@@ -33,7 +33,7 @@ public class TennisScoreProcessorTest {
 		"'0001111', '0-1'"
 	})
 	public void testNoAdScoring(String pointsString, String expected) {
-		this.testee = new TennisScoreProcessorBuilder().build();
+		this.testee = new TennisScoreProcessorBuilder().noAdScoring().build();
 		AbstractPoint[] points = ConversionUtils.binaryStringToPoints(pointsString);
 		this.testee.update(points);
 		String actual = this.testee.getScore();
