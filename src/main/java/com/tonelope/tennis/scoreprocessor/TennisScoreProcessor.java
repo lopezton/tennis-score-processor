@@ -14,17 +14,57 @@ import com.tonelope.tennis.scoreprocessor.AbstractPoint.Team;
  */
 public class TennisScoreProcessor {
 
-	public static class TennisScoreProcessorBuilder {
+	public enum FinalSet {
+
+		/**
+		 * A 7-point tiebreaker is played at 6-6 in the final set of the match.
+		 */
+		TIEBREAK,
+
+		/**
+		 * A 10-point tiebreaker is played at 6-6 in the final set of the match.
+		 */
+		TEN_POINT_TIEBREAK,
 		
+		/**
+		 * The final set is win by 2 games up until 12-12. A 7-point tiebreaker is
+		 * played at 12-12 in the final set of the match.
+		 */
+		TIEBREAK_AT_12_ALL,
+
+		/**
+		 * A 10-point tiebreaker is played in lieu of a final set of the match.
+		 */
+		SUPER_TIEBREAK,
+
+		/**
+		 * The final set is win by 2 games.
+		 */
+		WIN_BY_2;
+	}
+
+	public static class TennisScoreProcessorBuilder {
+
 		String homeTeam = "Player 1";
 		String visitorTeam = "Player 2";
 		int gamesPerSet = 6;
 		int numberOfSets = 3;
 		int pointsPerSetTiebreak = 7;
 		boolean adScoring = true;
+		FinalSet finalSet = FinalSet.TIEBREAK;
+
+		public TennisScoreProcessorBuilder adScoring() {
+			this.adScoring = true;
+			return this;
+		}
 
 		public TennisScoreProcessor build() {
 			return new TennisScoreProcessor(this);
+		}
+
+		public TennisScoreProcessorBuilder finalSet(FinalSet type) {
+			this.finalSet = type;
+			return this;
 		}
 
 		public TennisScoreProcessorBuilder gamesPerSet(int gamesPerSet) {
@@ -37,6 +77,11 @@ public class TennisScoreProcessor {
 			return this;
 		}
 
+		public TennisScoreProcessorBuilder noAdScoring() {
+			this.adScoring = false;
+			return this;
+		}
+
 		public TennisScoreProcessorBuilder numberOfSets(int numberOfSets) {
 			this.numberOfSets = numberOfSets;
 			return this;
@@ -46,17 +91,8 @@ public class TennisScoreProcessor {
 			this.visitorTeam = visitorTeam;
 			return this;
 		}
-		
-		public TennisScoreProcessorBuilder noAdScoring() {
-			this.adScoring = false;
-			return this;
-		}
-		
-		public TennisScoreProcessorBuilder adScoring() {
-			this.adScoring = true;
-			return this;
-		}
 	}
+
 	protected static final Map<Integer, String> GAME_SCORE_MAP = new HashMap<>();
 	static {
 		GAME_SCORE_MAP.put(0, "0");
@@ -86,7 +122,7 @@ public class TennisScoreProcessor {
 	public TennisScoreProcessor() {
 		this(new TennisScoreProcessorBuilder());
 	}
-	
+
 	public TennisScoreProcessor(TennisScoreProcessorBuilder builder) {
 		this.team1 = builder.homeTeam;
 		this.team2 = builder.visitorTeam;
@@ -176,7 +212,7 @@ public class TennisScoreProcessor {
 	}
 
 	public void update(AbstractPoint... points) {
-		for(AbstractPoint point: points) {
+		for (AbstractPoint point : points) {
 			int idx = point.getWinner() == Team.HOME ? 0 : 1;
 			updatePointWonFor(idx);
 		}
@@ -185,7 +221,7 @@ public class TennisScoreProcessor {
 	private void updateGameScore(int idxWinner) {
 		final int idxLoser = idxWinner == 0 ? 1 : 0;
 		gameScores[idxWinner]++;
-		
+
 		if (adScoring) {
 			if (gameScores[idxWinner] == AD_POINT && gameScores[idxLoser] < DEUCE_POINT
 					|| gameScores[idxWinner] == GAME_POINT) {
@@ -196,7 +232,7 @@ public class TennisScoreProcessor {
 				gameScores[0] = DEUCE_POINT;
 				gameScores[1] = DEUCE_POINT;
 			}
-			
+
 		} else {
 			if (gameScores[idxWinner] == AD_POINT) {
 				setScores[currentSetNumber][idxWinner]++;
