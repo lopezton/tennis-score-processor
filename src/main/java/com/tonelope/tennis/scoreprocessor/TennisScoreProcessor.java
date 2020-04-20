@@ -21,6 +21,7 @@ public class TennisScoreProcessor {
 		int gamesPerSet = 6;
 		int numberOfSets = 3;
 		int pointsPerSetTiebreak = 7;
+		boolean adScoring = true;
 
 		public TennisScoreProcessor build() {
 			return new TennisScoreProcessor(this);
@@ -45,6 +46,16 @@ public class TennisScoreProcessor {
 			this.visitorTeam = visitorTeam;
 			return this;
 		}
+		
+		public TennisScoreProcessorBuilder noAdScoring() {
+			this.adScoring = false;
+			return this;
+		}
+		
+		public TennisScoreProcessorBuilder adScoring() {
+			this.adScoring = true;
+			return this;
+		}
 	}
 	protected static final Map<Integer, String> GAME_SCORE_MAP = new HashMap<>();
 	static {
@@ -63,6 +74,7 @@ public class TennisScoreProcessor {
 	private final int numberOfSets;
 	private final int numSetsToWin;
 	private final int pointsPerSetTiebreak;
+	private final boolean adScoring;
 
 	private int[] gameScores = new int[2];
 	private int[][] tiebreakScores;
@@ -82,6 +94,7 @@ public class TennisScoreProcessor {
 		this.numberOfSets = builder.numberOfSets;
 		this.numSetsToWin = (builder.numberOfSets / 2) + 1;
 		this.pointsPerSetTiebreak = builder.pointsPerSetTiebreak;
+		this.adScoring = builder.adScoring;
 
 		this.tiebreakScores = new int[this.numberOfSets][2];
 		this.setScores = new int[this.numberOfSets][2];
