@@ -111,6 +111,8 @@ public class TennisScoreProcessor {
 	private final int numSetsToWin;
 	private final int pointsPerSetTiebreak;
 	private final boolean adScoring;
+	private final FinalSet finalSet;
+	private final FinalSetHandler finalSetHandler;
 
 	private int[] gameScores = new int[2];
 	private int[][] tiebreakScores;
@@ -131,12 +133,19 @@ public class TennisScoreProcessor {
 		this.numSetsToWin = (builder.numberOfSets / 2) + 1;
 		this.pointsPerSetTiebreak = builder.pointsPerSetTiebreak;
 		this.adScoring = builder.adScoring;
+		this.finalSet = builder.finalSet;
 
 		this.tiebreakScores = new int[this.numberOfSets][2];
 		this.setScores = new int[this.numberOfSets][2];
 		this.matchScores = new int[this.numberOfSets][2];
 		this.setsWonScores = new int[this.numberOfSets];
 		this.currentSetNumber = 0;
+		
+		if (this.finalSet == FinalSet.SUPER_TIEBREAK) {
+			this.finalSetHandler = new SuperTiebreakFinalSetHandler();
+		} else {
+			this.finalSetHandler = null;
+		}
 	}
 
 	private String getGameScore() {
@@ -156,16 +165,21 @@ public class TennisScoreProcessor {
 		for (int i = 0; i < currentSetNumber; i++) {
 			sb.append(getSetScore(i)).append(", ");
 		}
-		sb.append(getSetScore(currentSetNumber));
-
-		if (!isTiebreak()) {
-			if (isGameStarted()) {
-				sb.append(" ");
-				sb.append(getGameScore());
-			}
+		
+		if (null != finalSetHandler) {
+			sb.append(finalSetHandler.getScore());
+			
 		} else {
-			sb.append("(").append(tiebreakScores[currentSetNumber][0]).append(" - ")
-					.append(tiebreakScores[currentSetNumber][1]).append(")");
+			sb.append(getSetScore(currentSetNumber));
+			if (!isTiebreak()) {
+				if (isGameStarted()) {
+					sb.append(" ");
+					sb.append(getGameScore());
+				}
+			} else {
+				sb.append("(").append(tiebreakScores[currentSetNumber][0]).append(" - ")
+						.append(tiebreakScores[currentSetNumber][1]).append(")");
+			}
 		}
 		return sb.toString();
 	}
@@ -246,22 +260,31 @@ public class TennisScoreProcessor {
 		final int NUM_GAMES_TO_WIN_BY_2 = this.gamesPerSet + 1;
 		final int NUM_GAMES_NEEDED_FOR_TIEBREAK = this.gamesPerSet - 1;
 		final int idxLoser = idxWinner == 0 ? 1 : 0;
-		if (!isTiebreak()) {
-			updateGameScore(idxWinner);
-
-			if ((setScores[currentSetNumber][idxWinner] == this.gamesPerSet
-					&& setScores[currentSetNumber][idxLoser] < NUM_GAMES_NEEDED_FOR_TIEBREAK)
-					|| setScores[currentSetNumber][idxWinner] == NUM_GAMES_TO_WIN_BY_2) {
-				matchScores[currentSetNumber][idxWinner]++;
-				setsWonScores[idxWinner]++;
-
-				if (!isMatchComplete()) {
-					currentSetNumber++;
-				}
-			}
+		
+		if (isFinalSet() && null != finalSetHandler) {
+			finalSetHandler.update(idxWinner);
 		} else {
-			updateTiebreakScore(idxWinner);
+			if (!isTiebreak()) {
+				updateGameScore(idxWinner);
+	
+				if ((setScores[currentSetNumber][idxWinner] == this.gamesPerSet
+						&& setScores[currentSetNumber][idxLoser] < NUM_GAMES_NEEDED_FOR_TIEBREAK)
+						|| setScores[currentSetNumber][idxWinner] == NUM_GAMES_TO_WIN_BY_2) {
+					matchScores[currentSetNumber][idxWinner]++;
+					setsWonScores[idxWinner]++;
+	
+					if (!isMatchComplete()) {
+						currentSetNumber++;
+					}
+				}
+			} else {
+				updateTiebreakScore(idxWinner);
+			}
 		}
+	}
+	
+	public boolean isFinalSet() {
+		return currentSetNumber + 1 == this.numberOfSets;
 	}
 
 	private void updateTiebreakScore(int idxWinner) {
